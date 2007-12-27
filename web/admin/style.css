@@ -1,0 +1,92 @@
+
+body {
+	font-family:sans-serif;
+	
+}
+
+table {
+	width:inherit;
+}
+
+#page {
+	margin: 0px;
+	padding: 0px;
+	width: 1000px;
+}
+
+#banner
+{
+  position:absolute;
+  top:0px;
+  background-color:#3d5b99; 
+  margin: 0px;
+  padding:0px;
+  width:inherit;
+  text-align:center;
+  line-height:200%
+}
+
+#haupt-navi
+{
+  position:absolute;
+  width:120px;
+
+  top:70px;
+  margin:0px auto;
+  padding-top:0px;
+  padding-bottom:0px;
+  padding-left:0px;
+  padding-right:0px;
+  background-color:#3d5b99; 
+/*  color:#c0c0c0; */
+  font-size:15px;
+}
+
+#haupt-navi .navi1 {
+	text-align:left;
+}
+#haupt-navi .navi2 {
+	text-align:right;
+}
+
+#sub-navi
+{
+  position:absolute;
+ 
+  top:146px;
+  width:1000px;
+  margin:0px auto;
+  padding-top:0px;
+  padding-bottom:0px;
+  padding-left:10px;
+  padding-right:10px;
+/*  background-color:#3d5b99; */
+/*  color:#c0c0c0; */
+  font-size:10px;
+}
+
+#content
+{
+  position:absolute;
+  top:70px;
+  left:130px;
+  height: 550px;
+  /* width:880px; */
+  width:850px;
+ 
+  background-color:#c0c0c0; 
+  padding-left:10px;
+  padding-top:20px;
+  padding-right:10px;
+  overflow:auto;
+/*  color:#2f4778; */
+  font-size:12px;
+  }
+
+#haupt-navi a:link {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
+#haupt-navi a:visited {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
+#haupt-navi a:hover {color:#ffffff;text-decoration:underline overline;padding-right:10px;padding-left:10px;}
+
+#sub-navi a:link {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
+#sub-navi a:visited {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
+#sub-navi a:hover {color:#ffffff;text-decoration:underline overline;padding-right:10px;padding-left:10px;}

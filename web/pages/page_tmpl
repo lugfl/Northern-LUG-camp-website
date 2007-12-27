@@ -1,0 +1,21 @@
+<?php
+
+$PAGE['###NAME###']['name'] = "Startseite";
+$PAGE['###NAME###']['navilevel'] = 1;
+$PAGE['###NAME###']['login_required'] = 0;
+$PAGE['###NAME###']['phpclass'] = 'HtmlPage_###NAME###';
+$PAGE['###NAME###']['parent'] = 'root';
+
+class HtmlPage_###NAME### extends HtmlPage {
+
+	function getContent() {
+    		$ret = '
+
+		';
+		return $ret;
+	}
+
+}
+
+
+?>

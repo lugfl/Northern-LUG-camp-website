@@ -1,0 +1,192 @@
+BEGIN:VCALENDAR
+PRODID:-//WebCalendar-v1.0.5
+VERSION:2.0
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:20071014T085510Z-3537037-11536@192.168.6.3
+SUMMARY:[Orga] Aufbau 
+DESCRIPTION:Tische aufstellen, Kabel verlegen, etc.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080430T130000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080430T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-9407380-11536@192.168.6.3
+SUMMARY:Begrüssung
+DESCRIPTION:Begrüssung und Vorstellung des Programms.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080501T140000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080501T143000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-7855413-11536@192.168.6.3
+SUMMARY:Vortrag 1
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080501T160000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080501T170000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-2100611-11536@192.168.6.3
+SUMMARY:Vortrag 2
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080501T173000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080501T183000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-6100783-11536@192.168.6.3
+SUMMARY:Vortrag 3
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080501T190000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080501T200000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-1088069-11536@192.168.6.3
+SUMMARY:Vortrag 4
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080502T110000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080502T120000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-2698989-11536@192.168.6.3
+SUMMARY:Vortrag 5
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080502T123000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080502T133000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-4685438-11536@192.168.6.3
+SUMMARY:Brauereibesichtigung
+DESCRIPTION:Mal schaun wo das Bier herkommt.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080502T150000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080502T190000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-8124267-11536@192.168.6.3
+SUMMARY:Vortrag 6
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080502T193000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080502T203000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-1130235-11536@192.168.6.3
+SUMMARY:LPI-Prüfungen
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080503T090000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080503T113000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-7067237-11536@192.168.6.3
+SUMMARY:Tag der offenen Tür
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080503T120000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080503T160000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-1383659-11536@192.168.6.3
+SUMMARY:TdoT Vortrag 1
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080503T130000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080503T140000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-3578157-11536@192.168.6.3
+SUMMARY:TdoT Vortrag 2
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080503T143000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080503T153000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-1992779-11536@192.168.6.3
+SUMMARY:Vortrag 7
+DESCRIPTION:ksdjvksd dsdb ödjsnvkjdnv dönvdnsv ösdjvn ödsjfvndksjfv
+  öjdfvnkds hkvbd udihdnjvsdöldk oödjvnd ödjnvkd dvndkfv
+  öodjvndkjvnjdnv döjnvkdjnv dkllvbdkvbdk.
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080503T170000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080503T180000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:20071014T085510Z-3747389-11536@192.168.6.3
+SUMMARY:Abfahrt
+DESCRIPTION:See you next year
+CLASS:PUBLIC
+ATTENDEE;ROLE=OWNER;STATUS=CONFIRMED:Lug-Camp 2008 Vortragsprogramm
+  <call4paper@lug-camp-2008.de>
+DTSTART:20080504T103000Z
+DTSTAMP:20071014T085510Z
+DTEND:20080504T103000Z
+END:VEVENT
+END:VCALENDAR
