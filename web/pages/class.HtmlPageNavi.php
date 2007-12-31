@@ -71,7 +71,7 @@ function getNaviHtml($parent='root') {
 		foreach($pages as $pname=>$pdata) {
 			if(! htmlpage_is_hidden($pname) ) {
 				$l = '<a href="./index.php?p='.$pname.'"';
-				if($this->current_page == $pname) {
+				if($this->current_page == $pname || $PAGE[$this->current_page]['parent'] == $pname) {
 					$l .= ' class="akktiv"';
 				}
 				$l .= '>'.$pdata['name'].'</a>';
