@@ -18,7 +18,7 @@ Mittlerweile hat es sich ja eingespielt, da&szlig; die jeweils ausrichtende LUG 
 
 <b>Am Freitag geht es bereits los:</b><br /> 
 
-<p>Alle Linux-Fans, die etwas auf sich halten, m&uuml;ssen unbedingt das Abzeichen &quot;Tux&quot tragen! Was ist das? Ganz einfach: Ein offizielles Schwimmabzeichen, vergleichbar dem deutschen &quot;Seepferdchen&quot;, dass zwar eigentlich "Piinguin" heisst, welches wir aber nat&uuml;rlich "Tux" nennen. Und wenn ein Abzeichen schon &quot;Tux&quot; hei&szlig;t und wir die M&ouml;glichkeit haben, diese Schwimmpr&uuml;fung ganz offiziell abzulegen, dann m&uuml;&szlig;en wir das doch einfach ausnutzen! Wir haben zu diesem Zweck extra eine Schwimmhalle angemietet, die am Freitag Nachmittag dann au&szlig;chlie&szlig;lich f&uuml;r uns zur Verf&uuml;gung steht.</p> 
+<p>Alle Linux-Fans, die etwas auf sich halten, m&uuml;ssen unbedingt das Abzeichen &quot;Tux&quot tragen! Was ist das? Ganz einfach: Ein offizielles Schwimmabzeichen, vergleichbar dem deutschen &quot;Seepferdchen&quot;, dass zwar eigentlich "Pinguin" heisst, welches wir aber nat&uuml;rlich "Tux" nennen. Und wenn ein Abzeichen schon &quot;Tux&quot; hei&szlig;t und wir die M&ouml;glichkeit haben, diese Schwimmpr&uuml;fung ganz offiziell abzulegen, dann m&uuml;&szlig;en wir das doch einfach ausnutzen! Wir haben zu diesem Zweck extra eine Schwimmhalle angemietet, die am Freitag Nachmittag dann au&szlig;chlie&szlig;lich f&uuml;r uns zur Verf&uuml;gung steht.</p> 
 
 <p>Daher hoffen wir (und gehen auch davon aus!), dass m&ouml;glichst viele von euch in ihrem Reisegep&auml;ck noch etwas Platz f&uuml;r ihre Badesachen finden! Jeder, der daran teilnehmen m&ouml;chte, der gibt das bitte bei der Anmeldung mit an.</p>
 
