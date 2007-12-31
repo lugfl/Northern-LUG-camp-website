@@ -499,7 +499,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$code .= $account_id;
 			$msg = "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg .= " klicke bitte auf folgenden Link:\n\n";
-			$msg .= 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
+			$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
 			$msg .= "\n\nDie Kontodaten zur Zahlung werden bald im Loginbereich bekanntgegeben.";
 			$msg .= "\nIm Loginbereich wirst Du Zugriff auf alle Daten der Anmeldung bekommen ";
 			$msg .= "\nund auch die Anmeldungen fuer Addons (LPI,T-Shirts) nachholen koennen.";
