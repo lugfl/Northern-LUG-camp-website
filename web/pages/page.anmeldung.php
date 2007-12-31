@@ -497,14 +497,19 @@ class HtmlPage_anmeldung extends HtmlPage {
 			if($account_id < 10) { $code .= '0'; }
 			if($account_id < 100) { $code .= '0'; }
 			$code .= $account_id;
-			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
-			$msg 		.= " klicke bitte auf folgenden Link:\n\n";
-			$msg		.= 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
-			$msg		.= "\n\nWir freuen uns auf Dich\n\n, die Mitglieder der LUG Flensburg";
+			$msg = "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
+			$msg .= " klicke bitte auf folgenden Link:\n\n";
+			$msg .= 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
+			$msg .= "\n\nDie Kontodaten zur Zahlung werden bald im Loginbereich bekanntgegeben.";
+			$msg .= "\nIm Loginbereich wirst Du Zugriff auf alle Daten der Anmeldung bekommen ";
+			$msg .= "\nund auch die Anmeldungen fuer Addons (LPI,T-Shirts) nachholen koennen.";
+			$msg .= "\n";
+			$msg .= "\nNeuigkeiten zur Webseite werden auf der Mailingliste bekanntgegeben.";
+			$msg .= "\n\nWir freuen uns auf Dich\n\ndie Mitglieder der LUG Flensburg";
 			
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
 
-			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest eine jeden Moment eine Aktivierungs-Mail von uns erhalten.</p>';
+			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest jeden Moment eine Aktivierungs-Mail von uns erhalten.</p>';
 			$_SESSION['_login_ok'] = 1;
 		}
 		return $ret;
@@ -542,7 +547,8 @@ class HtmlPage_anmeldung extends HtmlPage {
 		# Damit die Anmeldung erst ab dem 01.01.2008 0:00:01 Uhr funktioniert
 		$ret = '<h1>Anmeldung</h1>';
 		#if(time() <= mktime(0,0,1,1,1,2008)) # richtiger Timestamp!
-		if(time() <= mktime(14,30,0,12,31,2007))
+		//if(time() <= mktime(21,31,0,12,31,2007))
+		if(time() <= mktime(00,00,0,01,01,2008))
     		{
 			$ret .= '
 				<p>	
