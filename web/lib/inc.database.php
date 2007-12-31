@@ -41,4 +41,50 @@ function my_query($SQL,$db='DEFAULT') {
 	}
 	return $ret;
 }
+
+/**
+ *
+ */
+function my_affected_rows($db='DEFAULT') {
+	global $DB;
+	global $DEBUG;
+
+	$ret = false;
+	if(is_resource($DB[$db]['conn'])) {
+		$ret = @mysql_affected_rows($DB[$db]['conn']);
+		if(mysql_errno() != 0) {
+			if( isset($DEBUG) && $DEBUG==1 ) {
+				trigger_error('Database Error: '.mysql_error().' ('.$SQL.')',E_USER_ERROR);
+			}else{
+				trigger_error('Database Problem',E_USER_ERROR);
+			}
+			$ret = false;
+		}
+	}
+	return $ret;
+}
+
+function my_insert_id($db='DEFAULT') {
+	global $DB;
+	global $DEBUG;
+
+	if(is_resource($DB[$db]['conn'])) {
+		$ret = @mysql_insert_id($DB[$db]['conn']);
+		if(mysql_errno() != 0) {
+			if( isset($DEBUG) && $DEBUG==1 ) {
+				trigger_error('Database Error: '.mysql_error().' ('.$SQL.')',E_USER_ERROR);
+			}else{
+				trigger_error('Database Problem',E_USER_ERROR);
+			}
+			$ret = false;
+		}
+	}
+	return $ret;
+}
+
+function my_escape_string($str,$db='DEFAULT') {
+	global $DB;
+	return mysql_real_escape_string($str,$DB[$db]['conn']);
+}
+
 ?>
