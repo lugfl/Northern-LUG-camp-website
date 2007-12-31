@@ -70,7 +70,11 @@ function getNaviHtml($parent='root') {
 	if(count($pages) > 0) {
 		foreach($pages as $pname=>$pdata) {
 			if(! htmlpage_is_hidden($pname) ) {
-				$l = '<a href="./index.php?p='.$pname.'">'.$pdata['name'].'</a>';
+				$l = '<a href="./index.php?p='.$pname.'"';
+				if($this->current_page == $pname) {
+					$l .= ' class="akktiv"';
+				}
+				$l .= '>'.$pdata['name'].'</a>';
 				array_push($items,$l);
 			}
 		}
