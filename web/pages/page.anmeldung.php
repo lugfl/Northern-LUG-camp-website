@@ -1,6 +1,7 @@
 <?php
 
 require_once('lib/func.pear_mail.php');
+require_once('Mail/RFC822.php');
 
 $PAGE['anmeldung']['name'] = "Anmeldung";
 $PAGE['anmeldung']['navilevel'] = 1;
@@ -55,7 +56,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['nickname'] = '<p>Dieser Nickname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-30 Zeichen)</p>';
 		}
 		$nickname_query	= my_query("SELECT accountid FROM account WHERE username='".my_escape_string($this->in['nickname'])."';");
-		if(my_affected_rows() != 0) {
+		if(mysql_num_rows($nickname_query) != 0) {
 			$this->err['nickname'] = '<p>Dieser Nickname ist bereits vergeben!</p>';
 		}
 		
@@ -70,6 +71,11 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['email'] = '<p>Diese Adresse enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (8-50 Zeichen)</p>';
 		}
 
+		$mrfc822 = new Mail_RFC822();
+		if($mrfc822->isValidInetAddress($this->in['email']) == FALSE) {
+			$this->err['email'] = '<p>Diese Adresse ist ung&uuml;ltig!</p>';
+		}
+
 		if(!preg_match('/^[a-zäöüß]{3,40}$/i',$this->in['vorname'])) {
 			// Fehler im Vornamen
 			$this->err['vorname'] = '<p>Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
@@ -80,7 +86,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['nachname'] = '<p>Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[a-zäöüß]{3,40}$/i',$this->in['strasse'])) {
+		if(!preg_match('/^[a-z.-äöüß]{3,40}$/i',$this->in['strasse'])) {
 			// Fehler in der Strasse
 			$this->err['strasse'] = '<p>Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
@@ -90,7 +96,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['haus'] = '<p>Diese Hausnummer enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (1-5 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[0-9]{3,6}$/i',$this->in['plz'])) {
+		if(!preg_match('/^[0-9a-z-_.:]{3,6}$/i',$this->in['plz'])) {
 			// Fehler in der PLZ
 			$this->err['plz'] = '<p>Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-6 Zeichen)</p>';
 		}
@@ -266,7 +272,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		$ret .= '</dd>
 
-				<dt><label for-id="anmeldung_form_geb_d">Geburtsdatum*</label></dt>
+				<dt><label for-id="anmeldung_form_geb_d">Geburtsdatum (dd-mm-yyyy)*</label></dt>
 				<dd>
 					<input id="anmeldung_form_geb_d" type="text" name="anmeldung_form_geb_d" value="'.$this->in['geb_d'].'" size="2" maxlength="2" />
 					<input id="anmeldung_form_geb_m" type="text" name="anmeldung_form_geb_m" value="'.$this->in['geb_m'].'" size="2" maxlength="2" />
@@ -300,7 +306,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		}
 		$ret .= '
 				</dd>
-
+				<h3>Optionale Angaben</h3>
 
 				<dt><label for-id="anmeldung_form_vegetarier">Essen</label></dt>
 				<dd><input id="anmeldung_form_vegetarier" type="checkbox" name="anmeldung_form_vegetarier" value="1"';
@@ -318,7 +324,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			if($events_row->quota) {
 				$event_quota_SQL	= "SELECT * FROM event_anmeldung_event WHERE eventid='".$events_row->eventid."'";
 				$event_quota_query	= my_query($event_quota_SQL);
-				$event_member		= my_affected_rows($event_quota_query);
+				$event_member		= mysql_num_rows($event_quota_query);
 				if(($events_row->quota-$event_member) > 0) {
 					$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid;
 					if(in_array($events_row->eventid,$this->in['events'])) { $ret .= ' checked="checked" '; }
@@ -422,15 +428,14 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$this->_readInput();
 
 		$kosten			= 45;
-		$crdate			= date("Y-m-d H:i:s",time());
 
 		if($this->in['lugnew'] != '') {
 			$lug_exists_SQL = "SELECT lugid FROM event_lug WHERE name='".my_escape_string($this->in['lugnew'])."'";
 			$lug_exists_query = my_query($lug_exists_SQL);
-			if(my_affected_rows($lug_exists_query) == 0)
+			if(mysql_num_rows($lug_exists_query) == 0)
 			{
 				# neue Lug in DB einfuegen und id zurückbekommen
-				$lugnew_SQL	= "INSERT INTO event_lug (name,crdate) VALUES ('".my_escape_string($this->in['lugnew'])."','".$crdate."');";
+				$lugnew_SQL	= "INSERT INTO event_lug (name,crdate) VALUES ('".my_escape_string($this->in['lugnew'])."',NOW());";
 				$lugnew_query	= my_query($lugnew_SQL);
 				$this->in['lugid']	= my_insert_id();
 			}else{
@@ -439,12 +444,30 @@ class HtmlPage_anmeldung extends HtmlPage {
 			}
 		}
 
-		// ALLES ANPASSEN !!!
+		if($this->in['landnew'] != '') {
+			$land_exists_SQL = "SELECT landid FROM event_land WHERE name='".my_escape_string($this->in['landnew'])."'";
+			$land_exists_query = my_query($land_exists_SQL);
+			if(mysql_num_rows($land_exists_query) == 0)
+			{
+				# neues Land in DB einfuegen und id zurückbekommen
+				$landnew_SQL	= "INSERT INTO event_land (name,crdate) VALUES ('".my_escape_string($this->in['landnew'])."',NOW());";
+				$landnew_query	= my_query($landnew_SQL);
+				$this->in['landid']	= my_insert_id();
+			}else{
+				$landid_array	= mysql_fetch_array($land_exists_query);
+				$this->in['landid']	= $landid_array['landid'];
+			}
+		}
+
+		if(($this->in['geb_y'] == 1990 && $this->in['geb_m'] >= 4 && $this->in['geb_d'] >= 1) || ($this->in['geb_y'] > 1990)) {
+			$ret .= '<p>Du bist zum LugCamp 2008 noch nicht vollj&auml;hrig! Du brauchst diese unterschriebene <a href="?p=mycamp_einverstaendniserklaerung">Einverst&auml;ndniserkl&auml;rung</a> um am Camp teilzunehmen!</p>';
+		}
+		
 		$geb = date("Y-m-d H:i:s",mktime(0,0,0,$this->in['geb_m'],$this->in['geb_d'],$this->in['geb_y']));
 
 		$account_sql	= "INSERT INTO account (username,passwd,email,crdate,lugid) VALUES ";
 		$account_sql	.= "('".my_escape_string($this->in['nickname'])."','".md5(my_escape_string($this->in['passwort']))."','".my_escape_string($this->in['email']);
-		$account_sql	.= "','".$crdate."',".$this->in['lugid'].");";
+		$account_sql	.= "',NOW(),".$this->in['lugid'].");";
 		$account_query	= my_query($account_sql);
 		$account_id	= my_insert_id();
 
@@ -468,19 +491,15 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$anmeldung_sql .= ",'".my_escape_string($this->in['ankunft'])."','".my_escape_string($this->in['abfahrt'])."')";
 		$anmeldung_query = my_query($anmeldung_sql);
 
-		$zahlung_sql	 = "INSERT INTO event_zahlung (accountid,crdate,valuta) VALUES ";
-		$zahlung_sql	.= "('".$account_id."','".$crdate."','".$kosten."')";
-		$zahlung_query	 = my_query($zahlung_sql);
-
 		if(mysql_errno() == 0) {
 			$code = md5($this->in['nickname']);
 			if($account_id < 10) { $code .= '0'; }
 			if($account_id < 100) { $code .= '0'; }
 			$code .= $account_id;
-			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
+			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung für das LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg 		.= " klicke bitte auf folgenden Link:\n\n";
-			$msg		.= 'http://dev.lug-camp-2008.de/mn04/index.php?p=anmeldung&code='.$code;
-			$msg		.= "\n\nDeine LUG Flensburg";
+			$msg		.= 'http://localhost/lugcamp/mn04/index.php?p=anmeldung&code='.$code;
+			$msg		.= "\n\nMit freundlichen Grüßen, deine LUG Flensburg";
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
 			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest eine Aktivierungs-Mail von uns erhalten haben.</p>';
 			$_SESSION['_login_ok'] = 1;
@@ -519,8 +538,8 @@ class HtmlPage_anmeldung extends HtmlPage {
 	function getContent() {
 		# Damit die Anmeldung erst ab dem 01.01.2008 0:00:01 Uhr funktioniert
 		$ret = '<h1>Anmeldung</h1>';
-		# if(time() <= 1199142001) # Richtiger Timestamp !
-		if(time() <= 1190040001) # Zum testen ;)
+		#if(time() <= mktime(0,0,1,1,1,2008)) # richtiger Timestamp!
+		if(time() <= mktime(14,30,0,12,31,2007))
     		{
 			$ret .= '
 				<p>	
