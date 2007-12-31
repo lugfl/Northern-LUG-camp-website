@@ -55,6 +55,7 @@ body
 }
 
 
+
 #sub-navi
 {
   position:absolute;
@@ -92,6 +93,8 @@ body
 #haupt-navi a:link {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 #haupt-navi a:visited {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 #haupt-navi a:hover {color:#ffffff;text-decoration:underline overline;padding-right:10px;padding-left:10px;}
+#haupt-navi akktiv {color:#ffffff;text-decoration:underline overline;padding-right:10px;padding-left:10px;}
+#haupt-navi passiv {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 
 #sub-navi a:link {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 #sub-navi a:visited {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
