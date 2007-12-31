@@ -552,7 +552,7 @@ class HtmlPage_anmeldung extends HtmlPage {
     		{
 			$ret .= '
 				<p>	
-				Hier kannst du dich ab dem 01.01.2008 0:00:01 Uhr f&uuml;r das Camp anmelden.
+				Hier kannst Du Dich ab dem 01.01.2008 0:00:01 Uhr f&uuml;r das Camp anmelden.
 				</p>
 			';
 		}
