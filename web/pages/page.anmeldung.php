@@ -76,39 +76,39 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['email'] = '<p>Diese Adresse ist ung&uuml;ltig!</p>';
 		}
 
-		if(!preg_match('/^[a-zäöüß]{3,40}$/i',$this->in['vorname'])) {
+		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['vorname'])) {
 			// Fehler im Vornamen
 			$this->err['vorname'] = '<p>Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[a-zäöüß]{3,40}$/i',$this->in['nachname'])) {
+		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['nachname'])) {
 			// Fehler im Nachnamen
 			$this->err['nachname'] = '<p>Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[a-z.-äöüß]{3,40}$/i',$this->in['strasse'])) {
+		if(!preg_match('/^[[:alpha:]. -]{3,40}$/i',$this->in['strasse'])) {
 			// Fehler in der Strasse
 			$this->err['strasse'] = '<p>Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[0-9]{1,5}$/i',$this->in['haus'])) {
+		if(!preg_match('/^[[:alpha:]0-9]{1,5}$/i',$this->in['haus'])) {
 			// Fehler in der Hausnummer
 			$this->err['haus'] = '<p>Diese Hausnummer enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (1-5 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[0-9a-z-_.:]{3,6}$/i',$this->in['plz'])) {
+		if(!preg_match('/^[[:alpha:]0-9.: -]{3,10}$/i',$this->in['plz'])) {
 			// Fehler in der PLZ
-			$this->err['plz'] = '<p>Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-6 Zeichen)</p>';
+			$this->err['plz'] = '<p>Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-10 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[a-zäöüß]{3,40}$/i',$this->in['ort'])) {
+		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['ort'])) {
 			// Fehler im Ort
 			$this->err['ort'] = '<p>Dieser Ort enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
 		if($this->in['landid'] == 0)
 		{
-			if(!preg_match('/^[a-zäöüß.:,;]{3,50}$/i',$this->in['landnew'])) {
+			if(!preg_match('/^[[:alpha:].:,; -]{3,50}$/i',$this->in['landnew'])) {
 				// Fehler im neu angegebenen Land
 				$this->err['land'] = '<p>Du hast kein Land angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 			}
@@ -132,7 +132,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		if($this->in['lugid'] == 0)
 		{
-			if(!preg_match('/^[a-zäöüß.:,;]{3,50}$/i',$this->in['lugnew'])) {
+			if(!preg_match('/^[[:alpha:].:,;]{3,50}$/i',$this->in['lugnew'])) {
 				// Fehler in der neu angegebenen Lug
 				$this->err['lug'] = '<p>Du hast keine LUG angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 			}
