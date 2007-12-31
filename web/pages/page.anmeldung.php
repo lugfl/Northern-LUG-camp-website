@@ -496,12 +496,14 @@ class HtmlPage_anmeldung extends HtmlPage {
 			if($account_id < 10) { $code .= '0'; }
 			if($account_id < 100) { $code .= '0'; }
 			$code .= $account_id;
-			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung für das LugCamp 2008 erfolgreich abgeschlossen werden kann,";
+			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg 		.= " klicke bitte auf folgenden Link:\n\n";
-			$msg		.= 'http://localhost/lugcamp/mn04/index.php?p=anmeldung&code='.$code;
-			$msg		.= "\n\nMit freundlichen Grüßen, deine LUG Flensburg";
+			$msg		.= 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
+			$msg		.= "\n\nWir freuen uns auf Dich\n\n, die Mitglieder der LUG Flensburg
+			
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
-			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest eine Aktivierungs-Mail von uns erhalten haben.</p>';
+
+			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest eine jeden Moment eine Aktivierungs-Mail von uns erhalten.</p>';
 			$_SESSION['_login_ok'] = 1;
 		}
 		return $ret;
