@@ -69,7 +69,6 @@ class HtmlPage_news extends HtmlPage {
 				}else{
 					$ret .= 'Eingabefehler';
 				}
-				$ret .= 'Edit';
 			break;
 			case 'save':
 				$this->readFormInput();
@@ -112,17 +111,17 @@ class HtmlPage_news extends HtmlPage {
 		global $_SESSION;
 		if($this->tn == 'news_eintrag') {
 			$pairs = Array();
-			if($this->details['title'] != $this->formdata['title']) {
+			if(!isset($this->details['title']) || $this->details['title'] != $this->formdata['title']) {
 				$tmp = "title='".my_escape_string($this->formdata['title'])."'";
 				array_push($pairs,$tmp);
 			}
 
-			if($this->details['short'] != $this->formdata['short']) {
+			if(!isset($this->details['short']) || $this->details['short'] != $this->formdata['short']) {
 				$tmp = "short='".my_escape_string($this->formdata['short'])."'";
 				array_push($pairs,$tmp);
 			}
 
-			if($this->details['txt'] != $this->formdata['txt']) {
+			if(!isset($this->details['txt']) || $this->details['txt'] != $this->formdata['txt']) {
 				$tmp = "txt='".my_escape_string($this->formdata['txt'])."'";
 				array_push($pairs,$tmp);
 			}
@@ -154,10 +153,14 @@ class HtmlPage_news extends HtmlPage {
 				$SQL .= join(',',$pairs);
 				my_query($SQL);
 			}else{
-				$SQL = "UPDATE news_eintrag SET ";
-				$SQL .= join(',',$pairs);
-				$SQL .= ' WHERE eintragid='.$this->id;
-				my_query($SQL);
+				if(count($pairs)>0) {
+					// Wenn sich nichts geaendert hat, brauch auch nichts upgedatet zu werden.
+					$SQL = "UPDATE news_eintrag SET ";
+					$SQL .= join(',',$pairs);
+					$SQL .= ' WHERE eintragid='.$this->id;
+					
+					my_query($SQL);
+				}
 			}
 		}else if($this->tn == 'news_cat') {
 		}
@@ -185,7 +188,7 @@ class HtmlPage_news extends HtmlPage {
 	}
 
 	function form_news_eintrag() {
-		$ret = 'Form News Eintrag';
+		$ret = '';
 		$title = '';
 		if(isset($this->details['title'])) {
 			$title = $this->details['title'];
@@ -205,17 +208,17 @@ class HtmlPage_news extends HtmlPage {
 			<input type="hidden" name="c" value="save"/>
 			<input type="hidden" name="eintragid" value="'.$this->id.'"/>
 
-			<dl>
+			<dl class="news_form">
 				<dt>Titel</dt>
-				<dd><input type="text" name="title" value="'.$title.'"/></dd>
+				<dd><input type="text" name="title" value="'.$title.'" class="news_text""/></dd>
 
-				<dt>Teaser</dt>
-				<dd><textarea name="short">'.$short.'</textarea></dd>
+				<dt>Schlagzeile (Teaser)</dt>
+				<dd><textarea name="short" class="news_textarea">'.$short.'</textarea></dd>
 
 				<dt>Text</dt>
-				<dd><textarea name="txt">'.$title.'</textarea></dd>
+				<dd><textarea name="txt" class="news_textarea">'.$txt.'</textarea></dd>
 			</dl>
-			<input type="submit" value="speichern"/>
+			<input type="submit" value="speichern" class="button"/>
 			
 		</form>
 		';
@@ -223,15 +226,15 @@ class HtmlPage_news extends HtmlPage {
 	}
 
 	function form_news_cat() {
-		$ret = 'Form News Cat';
+		$ret = '';
 		return $ret;
 	}
 
 	function detail_news_eintrag() {
-		$ret = 'Detail News Eintrag';
+		$ret = '<h2>Detail News Eintrag</h2>';
 		$title = $this->details['title'];
 		$teaser = $this->details['short'];
-		$text = $this->details['text'];
+		$text = $this->details['txt'];
 		$ret .= '
 			<div class="news-single">
 				<div class="news-title">'.$title.'</div>
@@ -239,7 +242,7 @@ class HtmlPage_news extends HtmlPage {
 				<div class="news-text">'.$text.'</div>
 			</div>
 		';
-		$ret .= '<pre>'.print_r($this->details,true).'</pre>';
+		//$ret .= '<pre>'.print_r($this->details,true).'</pre>';
 		return $ret;
 	}
 
