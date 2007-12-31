@@ -421,6 +421,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 	}
 
 	function anmeldung_schritt2() {
+		global $_SESSION;
 		$ret = '';
 		my_connect();
 		# Ueberpruefung und DB eintrag
@@ -499,7 +500,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$msg		= "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg 		.= " klicke bitte auf folgenden Link:\n\n";
 			$msg		.= 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
-			$msg		.= "\n\nWir freuen uns auf Dich\n\n, die Mitglieder der LUG Flensburg
+			$msg		.= "\n\nWir freuen uns auf Dich\n\n, die Mitglieder der LUG Flensburg";
 			
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once('.htconfig.php');
+//require_once('.htconfig.php');
 
 function my_connect($db='DEFAULT') {
 	global $DB;

@@ -1,5 +1,5 @@
 <?php
-include_once(".htconfig.php");
+
 include_once("inc.connect.php");
 
 $PAGE['news']['name'] = "News";

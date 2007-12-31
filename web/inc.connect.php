@@ -1,6 +1,6 @@
 <?php
 
-include_once("./.htconfig.php");
+include_once('global.php');
 
 	$conn = @mysql_connect($DB_host,$DB_user,$DB_pass);
 	if(mysql_errno() != 0) {

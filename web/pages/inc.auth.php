@@ -3,7 +3,7 @@
 if(!defined('WEB_INSIDE'))
 	die("geh wech");
 
-require_once('.htconfig.php');
+require_once('global.php');
 require_once('lib/inc.database.php');
 
 
