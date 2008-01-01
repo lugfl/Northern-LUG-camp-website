@@ -367,7 +367,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$ret .= '
 				</dd>
 
-				<dt><label for-id="anmeldung_form_ankunft">vorraussichtlicher Ankunftstag und -zeit (nur angeben, wenn du abgeholt werden willst)</label></dt>
+				<dt><label for-id="anmeldung_form_ankunft">voraussichtlicher Ankunftstag und -zeit (nur angeben, wenn du abgeholt werden willst)</label></dt>
 				<dd>
 					<input id="anmeldung_form_ankunft" type="text" name="anmeldung_form_ankunft" value="'.$this->in['ankunft'].'" /> 
 					falls du keinen genauen Zeitpunkt festlegen kannst, oder der Zug mal wieder Versp&auml;tung hat, 
@@ -379,7 +379,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$ret .= '
 				</dd>
 
-				<dt><label for-id="anmeldung_form_abfahrt">vorraussichtlicher Abfahrtstag und -zeit (nur angeben, wenn du gefahren werden willst)</label></dt>
+				<dt><label for-id="anmeldung_form_abfahrt">voraussichtlicher Abfahrtstag und -zeit (nur angeben, wenn du gefahren werden willst)</label></dt>
 				<dd>
 					<input id="anmeldung_form_abfahrt" type="text" name="anmeldung_form_abfahrt" value="'.$this->in['abfahrt'].'" /> 
 					falls du keinen genauen Zeitpunkt festlegen kannst, informiere einfach einen von uns rechtzeitig auf dem Camp 

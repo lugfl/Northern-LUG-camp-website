@@ -30,8 +30,8 @@ require_once('pages/page.camp_np.php');
 require_once('pages/page.prog.php');
 require_once('pages/page.anmeldung.php');
 require_once('pages/page.mycamp.php');
-require_once('pages/page.mycamp_anmeldung.php');
-require_once('pages/page.mycamp_einverstaendniserklaerung.php');
+//require_once('pages/page.mycamp_anmeldung.php');
+//require_once('pages/page.mycamp_einverstaendniserklaerung.php');
 
 require_once('pages/page.impressum.php');
 
