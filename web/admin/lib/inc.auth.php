@@ -28,6 +28,7 @@ if($auth_user != '' && $auth_pass != '') {
 	$SQL = "SELECT username,email FROM account WHERE username='";
 	$SQL .= my_escape_string($auth_user)."' AND passwd=MD5('";
 	$SQL .= my_escape_string($auth_pass)."')";
+	$SQL .= " AND FIND_IN_SET('admin',acl)";
 	$result = my_query($SQL,'DEFAULT');
 	if($result && mysql_num_rows($result)==1) {
 		$row = mysql_fetch_assoc($result);

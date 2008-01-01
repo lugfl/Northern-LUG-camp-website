@@ -10,6 +10,8 @@ require_once('lib/class.HtmlPageNavi.php');
 require_once('pages/page.start.php');
 require_once('pages/page.news.php');
 
+require_once('pages/page.anmeldungsliste.php');
+
 /*
 require_once('pages/page.demo1_1.php');
 require_once('pages/page.demo1_2a.php');
