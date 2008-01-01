@@ -101,7 +101,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['plz'] = '<p>Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-10 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['ort'])) {
+		if(!preg_match('/^[[:alpha:]0-9 -]{3,40}$/i',$this->in['ort'])) {
 			// Fehler im Ort
 			$this->err['ort'] = '<p>Dieser Ort enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
