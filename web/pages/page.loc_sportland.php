@@ -13,7 +13,7 @@ class HtmlPage_loc_sportland extends HtmlPage {
 
 <h1>Das Sportland:</h1>
 
-<p><img src="images/loc_sportland01_200x160.jpg" align="left" style="markgin-right:10px"/>Das LUG Camp 2008 findet an bew&auml;hrter Stelle im <a href="http://www.sportland-flensburg.de" target="blank">Sportland-Flensburg</a> statt. Die von der LUG Flensburg organisierte ehemalige Tennishalle bietet ausreichend Platz f&uuml;r bis zu 250 Teilnehmern. 
+<p><img src="images/loc_sportland01_200x160.jpg" align="left" style="margin-right:10px"/>Das LUG Camp 2008 findet an bew&auml;hrter Stelle im <a href="http://www.sportland-flensburg.de" target="blank">Sportland-Flensburg</a> statt. Die von der LUG Flensburg organisierte ehemalige Tennishalle bietet ausreichend Platz f&uuml;r bis zu 250 Teilnehmern. 
 
 <p>Schlafen k&ouml;nnt ihr also sowohl direkt bei euren PC\'s als auch wie gewohnt im abgetrennten, hinteren Teil der Halle, alternativ dazu nun auch in euren mitgebrachten Zelten (allerdings wieder nur in begrenzter St&uuml;ckzahl).
  Und wer meint, er m&ouml;chte aus guter alter Flensburger Tradition heraus sein Zelt in der Halle aufschlagen, auch der wird das wohl wieder durchf&uuml;hren k&ouml;nnen, denn Platz sollte ausreichend vorhanden sein.</p>
