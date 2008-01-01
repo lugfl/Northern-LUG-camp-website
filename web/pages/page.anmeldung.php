@@ -510,6 +510,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
 
 			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest jeden Moment eine Aktivierungs-Mail von uns erhalten.</p>';
+			$ret .= '<p>Teilnehmer, die auf dem Camp noch nicht 18 Jahre Alt sind, m&uuml;ssen eine Einverst&auml;ndniserkl&auml;rung nachweisen. Den Vordruck hierf&uuml;r kannst Du hier <a href="download/einverstaendniserklaerung_2008.pdf">herunterladen</a>.</p>';
 			$_SESSION['_login_ok'] = 1;
 		}
 		return $ret;
