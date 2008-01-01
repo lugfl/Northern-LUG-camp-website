@@ -132,7 +132,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		if($this->in['lugid'] == 0)
 		{
-			if(!preg_match('/^[[:alpha:].:,; -]{3,50}$/i',$this->in['lugnew'])) {
+			if(!preg_match('/^[[:alpha:]0-9.:,; -]{3,50}$/i',$this->in['lugnew'])) {
 				// Fehler in der neu angegebenen Lug
 				$this->err['lug'] = '<p>Du hast keine LUG angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 			}
