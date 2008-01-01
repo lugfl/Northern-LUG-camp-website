@@ -31,6 +31,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 				$ret .= '
 				<table>
 					<tr>
+						<th>LfdNr</th>
 						<th>Benutzername</th>
 						<th>Vorname</th>
 						<th>Nachname</th>
@@ -39,11 +40,13 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						<th>Accountstatus</th>
 					</tr>
 				';
+				$ctr = 1;
 				while($row = mysql_fetch_assoc($res)) {
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
 					$act = ($row['active'] ? 'aktiv': '-');
 					$ret .= '
 					<tr>
+						<td>'.$ctr.'</td>
 						<td>'.$row['username'].'</td>
 						<td>'.$row['vorname'].'</td>
 						<td>'.$row['nachname'].'</td>
@@ -52,6 +55,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						<td>'.$act.'</td>
 					</tr>
 					';
+					$ctr++;
 				}
 				$ret .= '
 				</table>
