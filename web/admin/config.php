@@ -38,6 +38,17 @@ $DB_SCHEMA['news_eintrag']['cols']['txt']['name'] = 'Newstext';
 $DB_SCHEMA['news_eintrag']['cols']['crdate']['name'] = 'Erstellt am';
 $DB_SCHEMA['news_eintrag']['cols']['author']['name'] = 'Autor';
 
+$DB_SCHMEA['event_lug']['cols']['lugid']['name'] = "ID";
+$DB_SCHEMA['event_lug']['cols']['lugid']['cmd']['detailview']['name'] = 'Details';
+$DB_SCHEMA['event_lug']['cols']['lugid']['cmd']['detailview']['p'] = 'lugs';
+$DB_SCHEMA['event_lug']['cols']['lugid']['cmd']['edit']['name'] = 'Editieren';
+$DB_SCHEMA['event_lug']['cols']['lugid']['cmd']['edit']['p'] = 'lugs';
+
+$DB_SCHEMA['event_lug']['cols']['name']['name'] = 'Titel';
+$DB_SCHEMA['event_lug']['cols']['abk']['name'] = 'Abk.';
+$DB_SCHEMA['event_lug']['cols']['url']['name'] = 'URL';
+$DB_SCHEMA['event_lug']['cols']['crdate']['name'] = 'Erstellt am';
+
 if( is_file('.htconfig.php') ) {
 	include_once('.htconfig.php');
 }
