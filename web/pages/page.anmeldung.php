@@ -47,6 +47,9 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$this->in['anreise']		= http_get_var("anmeldung_form_anreise");
 		$this->in['ankunft']		= http_get_var("anmeldung_form_ankunft");
 		$this->in['abfahrt']		= http_get_var("anmeldung_form_abfahrt");
+
+		$this->in['bemerkung']		= strip_tags(http_get_var("anmeldung_form_bemerkung"),'');
+
 	}
 
 	function _validateInput() {
@@ -411,6 +414,10 @@ class HtmlPage_anmeldung extends HtmlPage {
 				#</dd>
 		$ret .= '
 			</dl>
+			<h3>Bemerkung</h3>
+			<p>Hast Du noch eine Bemerkung zur Anmeldung? Kein Problem...</p>
+			<p><textarea name="anmeldung_form_bemerkung">'.$this->in['bemerkung'].'</textarea>
+			</p>
 			<p><input type="submit" name="anmeldung_submit" value="Ich bin dabei!" /></p>
 			</form>
 			</div>
@@ -426,7 +433,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		my_connect();
 		# Ueberpruefung und DB eintrag
 
-		$this->_readInput();
+		//$this->_readInput();
 
 		$kosten			= 45;
 
@@ -484,12 +491,28 @@ class HtmlPage_anmeldung extends HtmlPage {
 			}
 		}
 
-		$anmeldung_sql	= "INSERT INTO event_anmeldung (accountid,lugid,vorname,nachname,strasse,hausnr,plz,ort,landid,email,gebdat,vegetarier,arrival,ankunft,abfahrt) VALUES ";
-		$anmeldung_sql .= "(".$account_id.",".$this->in['lugid'].",'".my_escape_string($this->in['vorname'])."','".my_escape_string($this->in['nachname'])."'";
-		$anmeldung_sql .= ",'".my_escape_string($this->in['strasse'])."','".my_escape_string($this->in['haus'])."','".my_escape_string($this->in['plz'])."'";
-		$anmeldung_sql .= ",'".my_escape_string($this->in['ort'])."','".$this->in['landid']."','".my_escape_string($this->in['email'])."'";
-		$anmeldung_sql .= ",'".$geb."','".$this->in['vegetarier']."','".$this->in['anreise']."'";
-		$anmeldung_sql .= ",'".my_escape_string($this->in['ankunft'])."','".my_escape_string($this->in['abfahrt'])."')";
+		// Liste der Daten zusammenstellen
+		$pairs = Array();
+		if(is_numeric($account_id))
+			array_push($pairs,'accountid='.$account_id);
+		array_push($pairs,'lugid='.$this->in['lugid']);
+		array_push($pairs,"vorname='".my_escape_string($this->in['vorname'])."'");
+		array_push($pairs,"nachname='".my_escape_string($this->in['nachname'])."'");
+		array_push($pairs,"strasse='".my_escape_string($this->in['strasse'])."'");
+		array_push($pairs,"hausnr='".my_escape_string($this->in['haus'])."'");
+		array_push($pairs,"plz='".my_escape_string($this->in['plz'])."'");
+		array_push($pairs,"ort='".my_escape_string($this->in['ort'])."'");
+		array_push($pairs,'landid='.$this->in['landid']);
+		array_push($pairs,"email='".my_escape_string($this->in['email'])."'");
+		array_push($pairs,"gebdat='".$geb."'");
+		array_push($pairs,'vegetarier='.$this->in['vegetarier']);
+		array_push($pairs,'arrival='.$this->in['anreise']);
+		array_push($pairs,"ankunft='".my_escape_string($this->in['ankunft'])."'");
+		array_push($pairs,"abfahrt='".my_escape_string($this->in['abfahrt'])."'");
+		if(strlen($this->in['bemerkung'])!=0)
+			array_push($pairs,"bemerkung='".$this->in['bemerkung']."'");
+
+		$anmeldung_sql = "INSERT INTO event_anmeldung SET ".join(",",$pairs);
 		$anmeldung_query = my_query($anmeldung_sql);
 
 		if(mysql_errno() == 0) {
@@ -499,7 +522,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$code .= $account_id;
 			$msg = "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg .= " klicke bitte auf folgenden Link:\n\n";
-			$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.$_SERVER['PATH_INFO'].'?p=anmeldung&code='.$code;
+			$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.get_script_name().'?p=anmeldung&code='.$code;
 			$msg .= "\n\nDie Kontodaten zur Zahlung werden bald im Loginbereich bekanntgegeben.";
 			$msg .= "\nIm Loginbereich wirst Du Zugriff auf alle Daten der Anmeldung bekommen ";
 			$msg .= "\nund auch die Anmeldungen fuer Addons (LPI,T-Shirts) nachholen koennen.";
@@ -508,6 +531,16 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$msg .= "\n\nWir freuen uns auf Dich\n\ndie Mitglieder der LUG Flensburg";
 			
 			$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($this->in['email']),'Anmeldung LugCamp 2008',$msg);
+
+			if(strlen($this->in['bemerkung'])!=0) {
+				// Da hat einer was Bemerkt
+				$infotxt  = "Moin moin,\n\n";
+				$infotxt .= $this->in['vorname']." ".$this->in['nachname'] . " (".$this->in['nickname'].") hat da was bemerkt...\n\n";
+				$infotxt .= strip_tags($this->in['bemerkung']);
+				my_mailer('anmeldung@lug-camp-2008.de','anmeldung@lug-camp-2008.de','lc2008-Anmeldung: Bemerkungsinfo',$infotxt);
+
+				
+			}
 
 			$ret .= '<p>Account erfolgreich erstellt.</p><p>Du solltest jeden Moment eine Aktivierungs-Mail von uns erhalten.</p>';
 			$ret .= '<p>Teilnehmer, die auf dem Camp noch nicht 18 Jahre Alt sind, m&uuml;ssen eine Einverst&auml;ndniserkl&auml;rung nachweisen. Den Vordruck hierf&uuml;r kannst Du hier <a href="download/einverstaendniserklaerung_2008.pdf">herunterladen</a>.</p>';

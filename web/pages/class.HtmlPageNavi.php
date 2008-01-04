@@ -46,6 +46,9 @@ function HtmlPageNavi() {
 	global $PAGE;
 	
 	$this->current_page = http_get_var('p');
+	if(strlen($this->current_page)==0) {
+		$this->current_page = "start";
+	}
 	
 	
 	foreach($PAGE as $pname=>$pdata) {
