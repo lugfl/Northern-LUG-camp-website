@@ -291,7 +291,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 				<dd>
 					<select id="anmeldung_form_lug" name="anmeldung_form_lug">
 					<option value="0"></option>';
-		$lugs_query = my_query("SELECT * FROM event_lug");
+		$lugs_query = my_query("SELECT * FROM event_lug ORDER BY name");
 		while($lugs_row = mysql_fetch_object($lugs_query))
 		{
 			if($this->in['lugid'] == $lugs_row->lugid) {
