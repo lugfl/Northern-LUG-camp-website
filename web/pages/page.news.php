@@ -1,6 +1,7 @@
 <?php
 
-include_once("inc.connect.php");
+require_once('lib/inc.database.php');
+require_once('lib/func.http_get_var.php');
 
 $PAGE['news']['name'] = "News";
 $PAGE['news']['navilevel'] = 1;
@@ -15,7 +16,7 @@ class HtmlPage_news extends HtmlPage {
 
 	function news_teaser() {
 		$content = "";
-		$limit = $_GET["limit"];
+		$limit = http_get_var("limit");
 		$SQL = "SELECT e.eintragid,e.title,e.catid,e.short,e.txt,DATE_FORMAT(e.crdate,'".WEB_DATEFORMAT."') crdatestr,e.author,c.name AS catname,c.pic AS catpic ";
 		$SQL .= " FROM news_eintrag e LEFT JOIN news_cat c ON e.catid=c.catid ";
 		$SQL .= " ORDER BY e.eintragid DESC";
@@ -28,7 +29,7 @@ class HtmlPage_news extends HtmlPage {
 		{
 			$SQL .= " LIMIT ". WEB_NEWSTEASER_ANZAHL;
 		}
-		$news_query = @mysql_query($SQL);
+		$news_query = my_query($SQL);
 		if($news_query) {
 			while($news_row = mysql_fetch_object($news_query))
 			{
@@ -80,7 +81,7 @@ class HtmlPage_news extends HtmlPage {
 	{
 		$content = '';
 		$SQL = "SELECT e.eintragid,e.title,e.catid,e.short,e.txt,DATE_FORMAT(crdate,'".WEB_DATEFORMAT."') crdatestr,e.author,c.pic AS catpic,c.name AS catname FROM news_eintrag e LEFT JOIN news_cat c ON e.catid=c.catid WHERE e.eintragid='$news_id'";
-		$news_query = mysql_query($SQL);
+		$news_query = my_query($SQL);
 		if($news_query)	
 		{
 			$news_daten = mysql_fetch_array($news_query);
@@ -117,7 +118,7 @@ class HtmlPage_news extends HtmlPage {
 
 
 	function getContent() {
-		$news_id = $_GET["news"];
+		$news_id = http_get_var("news");
 		if($news_id)
 		{
 			$ret = $this->news_lesen($news_id);
