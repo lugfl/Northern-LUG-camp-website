@@ -20,7 +20,7 @@ Das LUG Camp ist ein Treffen von Linux User Groups und Linux-Freunden aus dem ge
 Genaueres erfahrt ihr - war ja klar - in der <a href="http://de.wikipedia.org/wiki/LUG-Camp" target="blank">Wikipedia</a> und im <a href="http://www.lug-camp-howto.de" target="blank">LUG Camp-Howto</a>, einer Zusammenstellung vieler Hinweise, Tips und Erfahrungen der Ausrichter und der Teilnehmer der bisherigen LUG Camps.
 </p>
 
-<p>Wenn ihr immer auf dem Laufenden bleiben wollt, was das aktuelle Camp und auch die Folgenden angeht, meldet euch doch einfach an der <a href="http://lists.lugcamp.org/cgi-bin/mailman/listinfo/teilnehmer">Camp Mailingliste</a> an. Neu ist ab diesem Jahr, das diese Liste nicht nur f&uuml;r 2008 gilt, sondern f&uuml;r die Folgejahre aktiv sein wird.
+<p>Wenn ihr immer auf dem Laufenden bleiben wollt, was das aktuelle Camp und auch die Folgenden angeht, meldet euch doch einfach an der <a href="http://lists.lugcamp.org/cgi-bin/mailman/listinfo/teilnehmer">Camp Mailingliste</a> an. Neu ist ab diesem Jahr, dass diese Liste nicht nur f&uuml;r 2008 gilt, sondern f&uuml;r die Folgejahre aktiv sein wird.
 </p>
 
 <p>
