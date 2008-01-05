@@ -10,6 +10,7 @@ require_once('pages/page.start.php');
 require_once('pages/page.news.php');
 
 require_once('pages/page.lugcamp.php');
+require_once('pages/page.lugcamp_stats.php');
 
 require_once('pages/page.loc.php');
 require_once('pages/page.loc_flensburg.php');
