@@ -14,6 +14,13 @@ $DB['DEFAULT']['pass'] = 'test';
 $DB['DEFAULT']['name'] = 'test';
 $DB['DEFAULT']['host'] = 'localhost';
 
+// Konfiguration fuer MailTX
+$MAILER['localhost'] = 'www.lug-camp-2008.de';
+$MAILER['host'] = 'localhost';
+$MAILER['auth'] = false;
+//$MAILER['username'] = '';
+//$MAILER['password'] = '';
+
 if(is_file('.htconfig.php')) {
 	include_once('.htconfig.php');
 }

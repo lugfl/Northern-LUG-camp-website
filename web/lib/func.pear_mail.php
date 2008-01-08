@@ -2,7 +2,10 @@
 require_once('Mail/mime.php');
 require_once('Mail.php'); 
 
-function my_mailer($from,$to,$subject,$msg) { 
+function my_mailer($from,$to,$subject,$msg) {
+	global $MAILER;
+
+	// Defaultwerte
 	$options = array ( 
 			'localhost' => 'www.lug-camp-2008.de',
 			'host'      => 'localhost', 
@@ -11,6 +14,19 @@ function my_mailer($from,$to,$subject,$msg) {
 			'password'  => '' 
 		   ); 
 
+	if(isset($MAILER)) {
+		if(isset($MAILERR['localhost']))
+			$options['localhost'] = $MAILER['localhost'];
+		if(isset($MAILERR['host']))
+			$options['host'] = $MAILER['host'];
+		if(isset($MAILER['auth']))
+			$options['auth'] = $MAILER['auth'];
+		if(isset($MAILER['username']))
+			$options['username'] = $MAILER['username'];
+		if(isset($MAILER['password']))
+			$options['password'] = $MAILER['password'];
+
+	}
 	$mailer = Mail::factory('smtp',$options); 
 	if (true === PEAR::isError($mailer)) 
 	{ 
