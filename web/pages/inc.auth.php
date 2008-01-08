@@ -27,11 +27,17 @@ $auth_user = http_get_var('auth_user'.$_SESSION['auth_form']);
 $auth_pass = http_get_var('auth_pass'.$_SESSION['auth_form']);
 if($auth_user != '' && $auth_pass != '') {
 	// Formular abgeschickt
-	$SQL = "SELECT acl FROM account WHERE username='".my_escape_string($auth_user)."' AND passwd=MD5('".my_escape_string($auth_pass)."') AND active=1";
+	$SQL = "SELECT accountid,username,acl FROM account WHERE username='".my_escape_string($auth_user)."' AND passwd=MD5('".my_escape_string($auth_pass)."') AND active=1";
 	$res = my_query($SQL);
 	if($res) {
 		if(mysql_num_rows($res)) {
-			$_SESSION['_login_ok'] = 1;
+			$row = mysql_fetch_assoc($res);
+			if($row) {
+				$_SESSION['_login_ok'] = 1;
+				$_SESSION['_accountid'] = $row['accountid'];
+				$_SESSION['_username'] = $row['username'];
+				$_SESSION['_acl'] = $row['acl'];
+			}
 		}
 		mysql_free_result($res);
 	}
