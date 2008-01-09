@@ -32,6 +32,7 @@ require_once('pages/page.prog.php');
 require_once('pages/page.anmeldung.php');
 require_once('pages/page.mycamp.php');
 require_once('pages/page.mycamp_rechnung.php');
+require_once('pages/page.mycamp_passwd.php');
 //require_once('pages/page.mycamp_einverstaendniserklaerung.php');
 
 require_once('pages/page.impressum.php');
