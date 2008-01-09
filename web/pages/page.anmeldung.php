@@ -167,6 +167,14 @@ class HtmlPage_anmeldung extends HtmlPage {
 	}
 
 	function anmeldung_form() {
+		global $CURRENT_EVENT_ID;
+
+		// Feststellen fuer welches Event wir grade anmelden
+		if(!isset($CURRENT_EVENT_ID) || !is_numeric($CURRENT_EVENT_ID))
+			$ceventid = 0;
+		else
+			$ceventid = $CURRENT_EVENT_ID;
+
 		$ret = '';
 		my_connect();
 		# Formular zur Anmeldung ausgeben
@@ -320,25 +328,35 @@ class HtmlPage_anmeldung extends HtmlPage {
 				<dt><label for-id="anmeldung_form_events[]">Veranstaltungen</label></dt>
 				<dd>Ich m&ouml;chte an folgenden Veranstaltungen w&auml;hrend des Lugcamps teilnehmen.</dd>';
 
-		
-		$events_query = my_query("SELECT * FROM event_event");
+		$events_query = my_query("SELECT * FROM event_event WHERE eventid='".$ceventid."' OR parent='".$ceventid."' ORDER BY parent,name");
 		while($events_row = mysql_fetch_object($events_query)) {
-			$ret_quota = '';
+			$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid.'"';
+
+			if($events_row->eventid == $ceventid) {
+				$ret .= ' disabled="disabled" checked="checked"';
+			}
+			elseif(in_array($events_row->eventid,$this->in['events'])) {
+				$ret .= ' checked="checked"';
+			}
+
+			$ret .= ' /> '.$events_row->name.' ';
+
+			if($events_row->charge || $events_row->quota) { $ret .= '('; }
+			if($events_row->charge) {
+				$ret .= number_format($events_row->charge,2,",",".").'&euro;';
+			}
+		
 			if($events_row->quota) {
 				$event_quota_SQL	= "SELECT * FROM event_anmeldung_event WHERE eventid='".$events_row->eventid."'";
 				$event_quota_query	= my_query($event_quota_SQL);
 				$event_member		= mysql_num_rows($event_quota_query);
+				# Ausgebuchte Events werden nicht angezeigt
 				if(($events_row->quota-$event_member) > 0) {
-					$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid;
-					if(in_array($events_row->eventid,$this->in['events'])) { $ret .= ' checked="checked" '; }
-					$ret .= '" /> '.$events_row->name.' (+'.number_format($events_row->charge,2,",",".").'&euro;';
-					$ret .= ' und noch '.($events_row->quota-$event_member).' Pl&auml;tze frei).</dd>';
+					$ret .= ' und noch '.($events_row->quota-$event_member).' Pl&auml;tze frei';
 				}
-			}else{
-					$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid;
-					if(in_array($events_row->eventid,$this->in['events'])) { $ret .= ' checked="checked" '; }
-					$ret .= '" /> '.$events_row->name.' (+'.number_format($events_row->charge,2,",",".").'&euro;).</dd>';
 			}
+			if($events_row->charge || $events_row->quota) { $ret .= ')'; }
+			$ret .= '</dd>';
 		}
 
 		if(isset($this->err['events'])) {
