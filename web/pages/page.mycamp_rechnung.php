@@ -19,7 +19,7 @@ class HtmlPage_rechnung extends HtmlPage {
 
    		$ret = '
 				<h1>Kosten</h1>
-				<p>Auf dieser Seite kannst Du sehen, welche Anmeldunge und Eink&auml;fe Du get&auml;tigt hast und ob diese bereits Bezahlt sind.</p>
+				<p>Auf dieser Seite kannst Du sehen, welche Anmeldunge und Eink&auml;ufe Du get&auml;tigt hast und ob diese bereits Bezahlt sind.</p>
 			';
 		if(is_numeric($_SESSION['_accountid'])) {
 			// Abfragen welche Personen angemeldet sind
