@@ -42,7 +42,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		$this->in['vegetarier']		= http_get_var("anmeldung_form_vegetarier");
 		$this->in['events']		= http_get_var("anmeldung_form_events");
-		if($this->in['events'] == '') { $this->in['events'] = Array(); }
+		if($this->in['events'] == '') { $this->in['events'] = array(); }
 
 		$this->in['anreise']		= http_get_var("anmeldung_form_anreise");
 		$this->in['ankunft']		= http_get_var("anmeldung_form_ankunft");
@@ -326,9 +326,10 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 
 				<dt><label for-id="anmeldung_form_events[]">Veranstaltungen</label></dt>
-				<dd>Ich m&ouml;chte an folgenden Veranstaltungen w&auml;hrend des Lugcamps teilnehmen.</dd>';
+				<dd>Ich m&ouml;chte an folgenden Veranstaltungen teilnehmen.</dd>';
 
 		$events_query = my_query("SELECT * FROM event_event WHERE eventid='".$ceventid."' OR parent='".$ceventid."' ORDER BY parent,name");
+		$ret .= '<input type="hidden" name="anmeldung_form_events[]" value="'.$ceventid.'" />';
 		while($events_row = mysql_fetch_object($events_query)) {
 			$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid.'"';
 
@@ -497,18 +498,6 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$account_query	= my_query($account_sql);
 		$account_id	= my_insert_id();
 
-		if($this->in['events'] != NULL) {
-			foreach($this->in['events'] as $eventid) {
-				$event_anmeldung_sql = "INSERT INTO event_anmeldung_event (anmeldungid,eventid) VALUES ";
-				$event_anmeldung_sql .= "('".$account_id."','".$eventid."')";
-				$event_anmeldung_query = my_query($event_anmeldung_sql);
-				$event_event_sql = "SELECT charge FROM event_event WHERE eventid='".$eventid."'";
-				$event_event_query = my_query($event_event_sql);
-				$event_event_array = mysql_fetch_array($event_event_query);
-				$kosten += $event_event_array['charge'];
-			}
-		}
-
 		// Liste der Daten zusammenstellen
 		$pairs = Array();
 		if(is_numeric($account_id))
@@ -532,6 +521,19 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		$anmeldung_sql = "INSERT INTO event_anmeldung SET ".join(",",$pairs);
 		$anmeldung_query = my_query($anmeldung_sql);
+		$anmeldung_id = my_insert_id();
+
+		if($this->in['events'] != NULL) {
+			foreach($this->in['events'] as $eventid) {
+				$event_anmeldung_sql = "INSERT INTO event_anmeldung_event (anmeldungid,eventid) VALUES ";
+				$event_anmeldung_sql .= "('".$anmeldung_id."','".$eventid."')";
+				$event_anmeldung_query = my_query($event_anmeldung_sql);
+				$event_event_sql = "SELECT charge FROM event_event WHERE eventid='".$eventid."'";
+				$event_event_query = my_query($event_event_sql);
+				$event_event_array = mysql_fetch_array($event_event_query);
+				$kosten += $event_event_array['charge'];
+			}
+		}
 
 		if(mysql_errno() == 0) {
 			$code = md5($this->in['nickname']);
