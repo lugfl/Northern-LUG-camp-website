@@ -85,7 +85,7 @@ function auth_form($pn = 'start') {
 						<dd><input id="auth_form_user" type="text" name="auth_user'.$_SESSION['auth_form'].'"/></dd>
 						
 						<dt><label for-id="auth_form_pass">Passwort:</label></dt>
-						<dd><input id="auth_form_pass" type="text" name="auth_pass'.$_SESSION['auth_form'].'"/></dd>
+						<dd><input id="auth_form_pass" type="password" name="auth_pass'.$_SESSION['auth_form'].'"/></dd>
 					</dl>
 					<input type="submit" value="Login"/>
 				</form>
