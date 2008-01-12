@@ -16,10 +16,18 @@ class HtmlPage_rechnung extends HtmlPage {
 		// Pruefen ob etwas geloescht werden soll
 		$a = http_get_var('a');
 		$accountartikelid = http_get_var('accountartikelid');
+		$eventid = http_get_var('eventid');
+
 		if($a=='d' && is_numeric($accountartikelid)) {
 			$SQLdel = "DELETE FROM event_account_artikel WHERE accountartikelid=".$accountartikelid." AND ";
 			$SQLdel .= " accountid=".$_SESSION['_accountid'];
 			my_query($SQLdel);
+		}else if($a=='d' && is_numeric($eventid)) {
+			$anmeldungid = http_get_var('anmeldungid');
+			if(is_numeric($anmeldungid)) {
+				$SQLdel = "DELETE FROM event_anmeldung_event WHERE eventid=".$eventid." AND anmeldungid=".$anmeldungid;
+				my_query($SQLdel);
+			}
 		}
 
 		// Feststellen fuer welches Event wir grade anmelden
@@ -46,7 +54,9 @@ class HtmlPage_rechnung extends HtmlPage {
 
 
 					// Auflisten, welche Events alle gebucht wurden
-					$SQL2 = "SELECT e.* FROM event_event e ";
+					$SQL2 = "SELECT e.* ";
+					$SQL2 .= " ,IF(e.buchanfang<NOW() AND e.buchende>NOW() AND parent IS NOT NULL,1,0) AS editable ";
+					$SQL2 .= " FROM event_event e ";
 					$SQL2 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
 					$SQL2 .= " WHERE ae.anmeldungid=".$anmeldungid;
 					$res2 = my_query($SQL2);
@@ -67,11 +77,16 @@ class HtmlPage_rechnung extends HtmlPage {
 							while($row2 = mysql_fetch_assoc($res2)) {
 								$bezahlstatus = "-";
 
+								$cmd = '';
+								if($bezahlstatus=='-' && $row2['editable']) {
+									$cmd = '<a href="?p=rechnung&anmeldungid='.$anmeldungid.'&eventid='.$row2['eventid'].'&a=d">abmelden</a>';
+								}
 								$ret .= '
 									<tr>
 										<td>'.$row2['name'].'</td>
 										<td style="text-align:right;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
 										<td style="text-align:center;">'.$bezahlstatus.'</td>
+										<td>'.$cmd.'</td>
 									</tr>
 								';
 							} // while
