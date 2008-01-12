@@ -12,6 +12,16 @@ class HtmlPage_rechnung extends HtmlPage {
 		global $_SESSION;
 		global $CURRENT_EVENT_ID;
 
+
+		// Pruefen ob etwas geloescht werden soll
+		$a = http_get_var('a');
+		$accountartikelid = http_get_var('accountartikelid');
+		if($a=='d' && is_numeric($accountartikelid)) {
+			$SQLdel = "DELETE FROM event_account_artikel WHERE accountartikelid=".$accountartikelid." AND ";
+			$SQLdel .= " accountid=".$_SESSION['_accountid'];
+			my_query($SQLdel);
+		}
+
 		// Feststellen fuer welches Event wir grade anmelden
 		$ceventid = 0;
 		if(isset($CURRENT_EVENT_ID) && is_numeric($CURRENT_EVENT_ID))
@@ -76,7 +86,9 @@ class HtmlPage_rechnung extends HtmlPage {
 
 
 			// Auflisten, welche Artikel gekauft wurden.
-			$SQL2 = "SELECT a.*,aa.groesse,aa.anzahl,(aa.anzahl*a.preis) AS gesamtpreis FROM event_account_artikel aa ";
+			$SQL2 = "SELECT aa.accountartikelid,a.*,aa.groesse,aa.anzahl,(aa.anzahl*a.preis) AS gesamtpreis ";
+			$SQL2 .= " ,IF(a.kaufab<NOW() AND a.kaufbis>NOW(),1,0) AS editable ";
+			$SQL2 .= " FROM event_account_artikel aa ";
 			$SQL2 .= " LEFT JOIN event_artikel a ON aa.artikelid=a.artikelid ";
 			$SQL2 .= " WHERE aa.accountid=".$_SESSION['_accountid'];
 			$res2 = my_query($SQL2);
@@ -93,6 +105,7 @@ class HtmlPage_rechnung extends HtmlPage {
 									<th>Einzelpreis</th>
 									<th>Gesamtpreis</th>
 									<th>Bezahlstatus</th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -102,6 +115,11 @@ class HtmlPage_rechnung extends HtmlPage {
 						$groesse = '-';
 						if(isset($row2['groesse']) && $row2['groesse']!='')
 							$groesse = $row2['groesse'];
+
+						$cmd = '';
+						if($bezahlstatus=='-' && $row2['editable']) {
+							$cmd = '<a href="?p=rechnung&accountartikelid='.$row2['accountartikelid'].'&a=d">l&ouml;schen</a>';
+						}
 						$ret .= '
 							<tr>
 								<td>'.$row2['name'].'</td>
@@ -110,6 +128,7 @@ class HtmlPage_rechnung extends HtmlPage {
 								<td style="text-align:right;">'.number_format($row2['preis'],2,',','.').' &euro;</td>
 								<td style="text-align:right;">'.number_format($row2['gesamtpreis'],2,',','.').' &euro;</td>
 								<td style="text-align:center;">'.$bezahlstatus.'</td>
+								<td>'.$cmd.'</td>
 							</tr>
 						';
 					}
