@@ -19,7 +19,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 	
 	function getContent() {
     		$ret = '';
-		$SQL = "SELECT a.username,a.acl,UNIX_TIMESTAMP(a.crdate) AS crdate,a.active, l.name AS lugname, ";
+		$SQL = "SELECT a.accountid,a.username,a.acl,UNIX_TIMESTAMP(a.crdate) AS crdate,a.active, l.name AS lugname, ";
 		$SQL .= " an.vorname,an.nachname ";
 		$SQL .= " FROM account a LEFT JOIN event_lug l ON a.lugid=l.lugid ";
 		$SQL .= " LEFT JOIN event_anmeldung an ON a.accountid=an.accountid ";
@@ -47,7 +47,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 					$ret .= '
 					<tr>
 						<td>'.$ctr.'</td>
-						<td>'.$row['username'].'</td>
+						<td><a href="?p=account&accountid='.$row['accountid'].'">'.$row['username'].'</a></td>
 						<td>'.$row['vorname'].'</td>
 						<td>'.$row['nachname'].'</td>
 						<td>'.$row['lugname'].'</td>

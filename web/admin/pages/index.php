@@ -11,6 +11,7 @@ require_once('pages/page.start.php');
 require_once('pages/page.news.php');
 
 require_once('pages/page.anmeldungsliste.php');
+require_once('pages/page.account.php');
 require_once('pages/page.lugs.php');
 
 /*

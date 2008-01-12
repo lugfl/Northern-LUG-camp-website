@@ -90,3 +90,17 @@ table {
 #sub-navi a:link {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 #sub-navi a:visited {color:#c0c0c0;text-decoration:none;padding-right:10px;padding-left:10px;}
 #sub-navi a:hover {color:#ffffff;text-decoration:underline overline;padding-right:10px;padding-left:10px;}
+
+table.datatable1 {
+	width:100%;
+}
+
+table.datatable1 th {
+	text-align:right;
+	padding-right:5px;
+	vertical-align:top;
+}
+
+table.datatable1 .head {
+	font-weight:bold;
+}
