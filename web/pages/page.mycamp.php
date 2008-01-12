@@ -5,7 +5,7 @@ $PAGE['mycamp']['navilevel'] = 1;
 $PAGE['mycamp']['login_required'] = 1;
 $PAGE['mycamp']['phpclass'] = 'HtmlPage_mycamp';
 $PAGE['mycamp']['parent'] = 'root';
-$PAGE['mycamp']['hidden'] = 1;
+$PAGE['mycamp']['hidden'] = 0;
 
 class HtmlPage_mycamp extends HtmlPage {
 

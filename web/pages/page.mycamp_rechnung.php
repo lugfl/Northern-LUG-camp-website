@@ -44,19 +44,28 @@ class HtmlPage_rechnung extends HtmlPage {
 						if(mysql_num_rows($res2)>0) {
 							$ret .= '<table class="datatable1">
 							<caption>Anmeldungen</caption>
+							<thead>
+								<tr>
+									<th>Event</th>
+									<th>Einzelpreis</th>
+									<th>Bezahlstatus</th>
+								</tr>
+							</thead>
+							<tbody>
 							';
 
 							while($row2 = mysql_fetch_assoc($res2)) {
-								$bezahlstatus = "?";
+								$bezahlstatus = "-";
+
 								$ret .= '
 									<tr>
 										<td>'.$row2['name'].'</td>
-										<td>'.$row2['charge'].'</td>
-										<td>'.$bezahlstatus.'</td>
+										<td style="text-align:right;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
+										<td style="text-align:center;">'.$bezahlstatus.'</td>
 									</tr>
 								';
 							} // while
-							$ret .= '</table>';
+							$ret .= '</tbody></table>';
 						} // if num_rows
 						mysql_free_result($res2);
 					} // if res2
@@ -67,7 +76,7 @@ class HtmlPage_rechnung extends HtmlPage {
 
 
 			// Auflisten, welche Artikel gekauft wurden.
-			$SQL2 = "SELECT a.* FROM event_account_artikel aa ";
+			$SQL2 = "SELECT a.*,aa.groesse,aa.anzahl,(aa.anzahl*a.preis) AS gesamtpreis FROM event_account_artikel aa ";
 			$SQL2 .= " LEFT JOIN event_artikel a ON aa.artikelid=a.artikelid ";
 			$SQL2 .= " WHERE aa.accountid=".$_SESSION['_accountid'];
 			$res2 = my_query($SQL2);
@@ -76,18 +85,36 @@ class HtmlPage_rechnung extends HtmlPage {
 					$ret .= '
 						<table class="datatable1">
 						<caption>Bestellungen</caption>
+							<thead>
+								<tr>
+									<th>Artikel</th>
+									<th>Gr&ouml;sse</th>
+									<th>Anzahl</th>
+									<th>Einzelpreis</th>
+									<th>Gesamtpreis</th>
+									<th>Bezahlstatus</th>
+								</tr>
+							</thead>
+							<tbody>
 					';
 					while($row2 = mysql_fetch_assoc($res2)) {
-						$bezahlstatus='?';
+						$bezahlstatus='-';
+						$groesse = '-';
+						if(isset($row2['groesse']) && $row2['groesse']!='')
+							$groesse = $row2['groesse'];
 						$ret .= '
 							<tr>
 								<td>'.$row2['name'].'</td>
-								<td>'.$row2['preis'].'</td>
-								<td>'.$bezahlstatus.'</td>
+								<td style="text-align:center;">'.$groesse.'</td>
+								<td style="text-align:center;">'.$row2['anzahl'].'</td>
+								<td style="text-align:right;">'.number_format($row2['preis'],2,',','.').' &euro;</td>
+								<td style="text-align:right;">'.number_format($row2['gesamtpreis'],2,',','.').' &euro;</td>
+								<td style="text-align:center;">'.$bezahlstatus.'</td>
 							</tr>
 						';
 					}
 					$ret .= '
+						</tbody>
 						</table>
 					';
 				} // if num_rows res2
