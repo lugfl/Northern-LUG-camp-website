@@ -79,12 +79,12 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['email'] = '<p>Diese Adresse ist ung&uuml;ltig!</p>';
 		}
 
-		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['vorname'])) {
+		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['vorname'])) {
 			// Fehler im Vornamen
 			$this->err['vorname'] = '<p>Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[[:alpha:]]{3,40}$/i',$this->in['nachname'])) {
+		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['nachname'])) {
 			// Fehler im Nachnamen
 			$this->err['nachname'] = '<p>Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
@@ -556,7 +556,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$msg = "Hallo ".$this->in['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 			$msg .= " klicke bitte auf folgenden Link:\n\n";
 			$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.get_script_name().'?p=anmeldung&code='.$code;
-			$msg .= "\n\nDie Kontodaten zur Zahlung werden bald im Loginbereich bekanntgegeben.";
+			$msg .= "\n\nDie Kontodaten zur Zahlung findest Du im Loginbereich.";
 			$msg .= "\nIm Loginbereich wirst Du Zugriff auf alle Daten der Anmeldung bekommen ";
 			$msg .= "\nund auch die Anmeldungen fuer Addons (LPI,T-Shirts) nachholen koennen.";
 			$msg .= "\n";
