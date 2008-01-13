@@ -61,10 +61,16 @@ class HtmlPage_mycamp_event extends HtmlPage {
 						mysql_free_result($res2);
 					} // if res2
 
-					$SQL3 = "SELECT eventid,name,UNIX_TIMESTAMP(anfang) AS anfang, UNIX_TIMESTAMP(ende) AS ende,charge FROM event_event WHERE parent=".$ceventid;
-					$SQL3 .= " AND buchanfang<NOW() AND buchende>NOW() ";
+					$SQL3 = "SELECT e.eventid,e.name,UNIX_TIMESTAMP(e.anfang) AS anfang, UNIX_TIMESTAMP(e.ende) AS ende,e.charge,e.quota ";
+					$SQL3 .= " , COUNT(ae.anmeldungid) AS teilnehmerzahl ";
+					$SQL3 .= " FROM event_event e ";
+					$SQL3 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
+					$SQL3 .= " WHERE e.parent=".$ceventid;
+					$SQL3 .= " AND e.buchanfang<NOW() AND e.buchende>NOW() ";
 					if(count($gebuchte)>0) 
-						$SQL3 .= " AND eventid NOT IN (".join($gebuchte,',').")";
+						$SQL3 .= " AND e.eventid NOT IN (".join($gebuchte,',').")";
+					$SQL3 .= " GROUP BY e.eventid ";
+					$SQL3 .= " HAVING (e.quota-teilnehmerzahl)>0 ";
 					$res3 = my_query($SQL3);
 					if($res3) {
 						if(mysql_num_rows($res3)>0) {
@@ -84,7 +90,11 @@ class HtmlPage_mycamp_event extends HtmlPage {
 								';
 							} // while fetch_assoc res3
 						} // if num_rows res3
-					}
+					}else{ // if res3
+						// Fehler
+						print "FEHLER";
+						print mysql_error();
+					}	
 				} // while Anmeldungen
 				$ret .= '
 					</table>
