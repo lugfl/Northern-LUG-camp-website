@@ -169,7 +169,7 @@ class HtmlPage_rechnung extends HtmlPage {
 
 			$ret .= '
 			<p>
-				Insgesamt erwarten wir von Dir noch eine &Uuml;berweise in H&ouml;he von <b>'.number_format($zuzahlen,2,',','.').' &euro;</b>. Damit die Anmeldung g&uuml;ltig ist, muss die <b>&Uuml;berweisung bis zum 23.04.08</b> bei uns eingegangen sein.
+				Der Gesamtbetrag, den Du inkl. Deiner Anmeldung und evtl. Zusatzbestellungen zu zahlen hast betr&auml;gt <b>'.number_format($zuzahlen,2,',','.').' &euro;</b>. Damit die Anmeldung g&uuml;ltig ist, muss die <b>&Uuml;berweisung bis zum 23.04.08</b> bei uns eingegangen sein.
 			</p>
 			';
 		} // if is_numeric accountid
@@ -188,7 +188,7 @@ class HtmlPage_rechnung extends HtmlPage {
 			Verwendungszweck: LC 2008 und Nickname
 		</p>
 		<p>
-			F&uuml;r Sammel&uuml;berweisungen einer LUG oder aus dem Ausland setzt Euch bitte mit unserem Finanzmeister in Verbindung, den Ihr per Mail an
+			F&uuml;r Sammel&uuml;berweisungen einer LUG oder aus dem Ausland setzt euch bitte mit unserem Kassenwart in Verbindung, den ihr per Mail an
 			<a href="mailto:kasse@lug-camp-2008.de">kasse@lug-camp-2008.de</a> erreicht.
 		</p>
 		';
