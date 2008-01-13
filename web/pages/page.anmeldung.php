@@ -587,7 +587,6 @@ class HtmlPage_anmeldung extends HtmlPage {
 	}
 
 	function anmeldung_activate() {
-		global $_SESSION;
 		$ret = '';
 		my_connect();
 		$crypt = http_get_var("code");
