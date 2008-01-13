@@ -351,11 +351,13 @@ class HtmlPage_anmeldung extends HtmlPage {
 					$quota_ret = 'noch '.($events_row->quota-$event_member).' Pl&auml;tze frei';
 				# Keine Plätze mehr frei !
 				}else{
-					$ret .= ' disabled="disabled" /> '.$events_row->name.' (leider schon ausgebucht)';
+					$ret .= ' disabled="disabled"';
+					$quota_ret = 'leider schon ausgebucht';
 				}
 			}
 			# Name
 			$ret .= ' /> '.$events_row->name.' ';
+
 			if($events_row->charge || $quota_ret) { $ret .= '('; }
 			# Kosten ?
 			if($events_row->charge) {
