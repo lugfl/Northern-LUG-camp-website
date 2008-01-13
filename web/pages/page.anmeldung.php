@@ -461,7 +461,6 @@ class HtmlPage_anmeldung extends HtmlPage {
 	}
 
 	function anmeldung_schritt2() {
-		global $_SESSION;
 		$ret = '';
 		my_connect();
 		# Ueberpruefung und DB eintrag
@@ -588,24 +587,31 @@ class HtmlPage_anmeldung extends HtmlPage {
 	}
 
 	function anmeldung_activate() {
+		global $_SESSION;
 		$ret = '';
 		my_connect();
 		$crypt = http_get_var("code");
 		$id = intval(substr($crypt,-3));
 		$code = substr($crypt,0,-3);
-		$account_query = my_query("SELECT username,active FROM account WHERE accountid='".$id."'");
+		$account_query = my_query("SELECT username,active,acl FROM account WHERE accountid='".$id."'");
 		$account_array = mysql_fetch_array($account_query);
 		$code_real = md5($account_array[0]);
-		if($account_array[1] == 1) {
-			$ret .= '<p>Dein Account ist bereits aktiviert!</p>';
-		}
-		elseif($code == $code_real)
+		# Passt der Code zur ID / richtiger Code ?
+		if($code == $code_real)
 		{
-			$activation_query = my_query("UPDATE account SET active='1' WHERE accountid='".$id."'");
-			if($activation_query)
-			{
-				$ret .= '<p>Dein Account ist nun aktiviert!</p>';
+			if($account_array[1] == 1) {
+				$ret .= '<p>Dein Account ist bereits aktiviert!</p>';
+			}else{
+				$activation_query = my_query("UPDATE account SET active='1' WHERE accountid='".$id."'");
+				if($activation_query)
+				{
+					$ret .= '<p>Dein Account ist nun aktiviert!</p>';
+				}
 			}
+			$_SESSION['_login_ok'] = 1;
+			$_SESSION['_accountid'] = $id;
+			$_SESSION['_username'] = $account_array[0];
+			$_SESSION['_acl'] = $account_array[2];
 		}
 		else
 		{
