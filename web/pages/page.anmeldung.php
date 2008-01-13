@@ -331,32 +331,44 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$events_query = my_query("SELECT * FROM event_event WHERE eventid='".$ceventid."' OR parent='".$ceventid."' ORDER BY parent,name");
 		$ret .= '<input type="hidden" name="anmeldung_form_events[]" value="'.$ceventid.'" />';
 		while($events_row = mysql_fetch_object($events_query)) {
+			$quota_ret		= '';
 			$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid.'"';
-
+			# Hauptevent ?
 			if($events_row->eventid == $ceventid) {
 				$ret .= ' disabled="disabled" checked="checked"';
 			}
+			# Schonmal angehakt ?
 			elseif(in_array($events_row->eventid,$this->in['events'])) {
 				$ret .= ' checked="checked"';
 			}
-
-			$ret .= ' /> '.$events_row->name.' ';
-
-			if($events_row->charge || $events_row->quota) { $ret .= '('; }
-			if($events_row->charge) {
-				$ret .= number_format($events_row->charge,2,",",".").'&euro;';
-			}
-		
+			# Teilnehmerbegrenzung ?
 			if($events_row->quota) {
 				$event_quota_SQL	= "SELECT * FROM event_anmeldung_event WHERE eventid='".$events_row->eventid."'";
 				$event_quota_query	= my_query($event_quota_SQL);
 				$event_member		= mysql_num_rows($event_quota_query);
-				# Ausgebuchte Events werden nicht angezeigt
+				# noch Plätze frei ?
 				if(($events_row->quota-$event_member) > 0) {
-					$ret .= ' und noch '.($events_row->quota-$event_member).' Pl&auml;tze frei';
+					$quota_ret = 'noch '.($events_row->quota-$event_member).' Pl&auml;tze frei';
+				# Keine Plätze mehr frei !
+				}else{
+					$ret .= ' disabled="disabled" /> '.$events_row->name.' (leider schon ausgebucht)';
 				}
 			}
-			if($events_row->charge || $events_row->quota) { $ret .= ')'; }
+			# Name
+			$ret .= ' /> '.$events_row->name.' ';
+			if($events_row->charge || $quota_ret) { $ret .= '('; }
+			# Kosten ?
+			if($events_row->charge) {
+				$ret .= number_format($events_row->charge,2,",",".").'&euro;';
+				# Wenn Kosten und Quota gesetzt sind wird ein "und" dazwischengesetzt
+				if($quota_ret != '') {
+					$ret .= ' und ';
+				}
+			}
+			# wie viele Plätze sind noch frei ?
+			$ret .= $quota_ret;
+			if($events_row->charge || $quota_ret) { $ret .= ')'; }
+
 			$ret .= '</dd>';
 		}
 
