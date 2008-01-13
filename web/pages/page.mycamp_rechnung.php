@@ -39,6 +39,8 @@ class HtmlPage_rechnung extends HtmlPage {
 				<h1>Kosten</h1>
 				<p>Auf dieser Seite kannst Du sehen, welche Anmeldungen und Eink&auml;ufe Du get&auml;tigt hast und ob diese bereits bezahlt sind.</p>
 			';
+
+		$zuzahlen = 0;
 		if(is_numeric($_SESSION['_accountid'])) {
 			// Abfragen welche Personen angemeldet sind
 			$SQL1 = "SELECT a.* ";
@@ -80,6 +82,11 @@ class HtmlPage_rechnung extends HtmlPage {
 								$cmd = '';
 								if($bezahlstatus=='-' && $row2['editable']) {
 									$cmd = '<a href="?p=rechnung&anmeldungid='.$anmeldungid.'&eventid='.$row2['eventid'].'&a=d">abmelden</a>';
+								}
+
+								if($bezahlstatus = "-") {
+									// wenn noch nicht bezahlt, dann zum gesamtbetrag zurechnen
+									$zuzahlen += $row2['charge'];
 								}
 								$ret .= '
 									<tr>
@@ -135,6 +142,11 @@ class HtmlPage_rechnung extends HtmlPage {
 						if($bezahlstatus=='-' && $row2['editable']) {
 							$cmd = '<a href="?p=rechnung&accountartikelid='.$row2['accountartikelid'].'&a=d">l&ouml;schen</a>';
 						}
+
+						if($bezahlstatus = "-") {
+							// wenn noch nicht bezahlt, dann zum gesamtbetrag zurechnen
+							$zuzahlen += $row2['gesamtpreis'];
+						}
 						$ret .= '
 							<tr>
 								<td>'.$row2['name'].'</td>
@@ -153,9 +165,33 @@ class HtmlPage_rechnung extends HtmlPage {
 					';
 				} // if num_rows res2
 				mysql_free_result($res2);
-			} // if res2
+			} // if res2 (Auflistung der Artikel)
 
+			$ret .= '
+			<p>
+				Insgesamt erwarten wir von Dir noch eine &Uuml;berweise in H&ouml;he von <b>'.number_format($zuzahlen,2,',','.').' &euro;</b>. Damit die Anmeldung g&uuml;ltig ist, muss die <b>&Uuml;berweisung bis zum 23.04.08</b> bei uns eingegangen sein.
+			</p>
+			';
 		} // if is_numeric accountid
+		$ret .= '
+		<h1>Bankverbindung</h1>
+		<p>
+		Bitte &uuml;berweise den noch ausstehenden Betrag auf das folgende Konto:
+		</p>
+		<p>
+			<address>
+			Kontoinhaber: LUG Flensburg e.V.<br/>
+			Bank: Union Bank AG<br/>
+			BLZ: 215 201 00<br/>
+			Kto: 16632<br/>
+			</address>
+			Verwendungszweck: LC 2008 und Nickname
+		</p>
+		<p>
+			F&uuml;r Sammel&uuml;berweisungen einer LUG oder aus dem Ausland setzt Euch bitte mit unserem Finanzmeister in Verbindung, den Ihr per Mail an
+			<a href="mailto:kasse@lug-camp-2008.de">kasse@lug-camp-2008.de</a> erreicht.
+		</p>
+		';
 		return $ret;
 	}
 
