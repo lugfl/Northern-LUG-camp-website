@@ -608,10 +608,6 @@ class HtmlPage_anmeldung extends HtmlPage {
 					$ret .= '<p>Dein Account ist nun aktiviert!</p>';
 				}
 			}
-			$_SESSION['_login_ok'] = 1;
-			$_SESSION['_accountid'] = $id;
-			$_SESSION['_username'] = $account_array[0];
-			$_SESSION['_acl'] = $account_array[2];
 		}
 		else
 		{
