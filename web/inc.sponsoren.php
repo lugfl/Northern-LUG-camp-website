@@ -16,6 +16,9 @@ $SPONSOREN[3]['name'] = "Ford Nehrkorn";
 $SPONSOREN[3]['url'] = "http://www.fordnehrkorn.de/";
 $SPONSOREN[3]['img'] = "./images/logo_nehrkorn.png";
 
+$SPONSOREN[4]['name'] = "Servage Webhosting";
+$SPONSOREN[4]['url'] = "http://www.servage.net/";
+$SPONSOREN[4]['img'] = "./images/servage.png";
 
 function get_sponsoren_image() {
 	global $SPONSOREN;
