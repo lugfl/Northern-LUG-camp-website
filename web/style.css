@@ -116,4 +116,42 @@ body
 #sponsoren a:before{ content:"\00BB"; display:none;}
 #sponsoren a:after{content:"\00AB"; display:none;}
 
+table.datatable1
+{
+/*width: 600px;*/
+border-color: #2f4778;;
+border-style: solid;
+border-width: 1px;
+margin: 0;
+padding: 0;
+}
+
+th
+{
+border-bottom-color: #2f4778;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+margin: 0;
+padding: 0;
+width: 100px;
+}
+.summenpreis
+{
+  border-top-style:double
+  border-top-width:3px;
+  border-top-color:#2f4778;
+  margin:0;
+  padding:0;
+
+}
+
+.artikel
+{
+  width:200px;
+}
+
+.aktion
+{
+  text-align:center;
+}
 
