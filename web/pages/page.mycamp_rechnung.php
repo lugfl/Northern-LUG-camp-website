@@ -68,9 +68,10 @@ class HtmlPage_rechnung extends HtmlPage {
 							<caption>Anmeldungen</caption>
 							<thead>
 								<tr>
-									<th>Event</th>
+									<th class="artikel">Event</th>
 									<th>Einzelpreis</th>
 									<th>Bezahlstatus</th>
+									<th>Aktion</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -93,7 +94,7 @@ class HtmlPage_rechnung extends HtmlPage {
 										<td>'.$row2['name'].'</td>
 										<td style="text-align:right;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
 										<td style="text-align:center;">'.$bezahlstatus.'</td>
-										<td>'.$cmd.'</td>
+										<td class="aktion">'.$cmd.'</td>
 									</tr>
 								';
 							} // while
@@ -127,7 +128,7 @@ class HtmlPage_rechnung extends HtmlPage {
 									<th>Einzelpreis</th>
 									<th>Gesamtpreis</th>
 									<th>Bezahlstatus</th>
-									<th></th>
+									<th>Aktion</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -155,7 +156,7 @@ class HtmlPage_rechnung extends HtmlPage {
 								<td style="text-align:right;">'.number_format($row2['preis'],2,',','.').' &euro;</td>
 								<td style="text-align:right;">'.number_format($row2['gesamtpreis'],2,',','.').' &euro;</td>
 								<td style="text-align:center;">'.$bezahlstatus.'</td>
-								<td>'.$cmd.'</td>
+								<td class="aktion">'.$cmd.'</td>
 							</tr>
 						';
 					}
