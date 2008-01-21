@@ -39,6 +39,7 @@ class HtmlPage_news extends HtmlPage {
 					<div class="news-single">
 					<div class="news-title">'.$news_row->title.'</div>
 				';
+				/*
 				if($news_row->catname != '') {
 					$content .= '
 						<div class="news-cat">
@@ -55,6 +56,7 @@ class HtmlPage_news extends HtmlPage {
 						</div>
 					';
 				} // if catname
+				*/ 
 				if($news_row->short != '') {
 					$content .= '
 						<div class="news-teaser">'.nl2br($news_row->short).'</div>
@@ -89,6 +91,9 @@ class HtmlPage_news extends HtmlPage {
 			$content .= '
 			<div class="news-single">
 				<div class="news-title">'.$news_daten["title"].'</div>
+			';
+			/*
+			$content .= '
 				<div class="news-cat">';
 			if( is_file($news_daten['catpic']) ) {
 				$content .=  '<img src="pics/cat_news/'.$news_daten['catpic'].'" alt="'.$news_daten['catname'].'">';
@@ -96,6 +101,9 @@ class HtmlPage_news extends HtmlPage {
 				$content .=  "Kategorie: ".$news_daten['catname'];
 			}
 			$content .= '</div>
+			';
+			*/
+			$content .= '
 				<div class="news-text">'.nl2br($news_daten["txt"]).'</div>
 				<div class="news-author">News geschrieben am '.$news_daten["crdatestr"].' von '.$news_daten["author"].'</div>
 			</div>';
