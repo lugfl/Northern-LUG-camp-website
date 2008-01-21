@@ -4,7 +4,7 @@ require_once('lib/inc.database.php');
 require_once('lib/func.http_get_var.php');
 
 $PAGE['news']['name'] = "News";
-$PAGE['news']['navilevel'] = 1;
+$PAGE['news']['navilevel'] = 2;
 $PAGE['news']['login_required'] = 0;
 $PAGE['news']['phpclass'] = 'HtmlPage_news';
 $PAGE['news']['parent'] = 'start';
