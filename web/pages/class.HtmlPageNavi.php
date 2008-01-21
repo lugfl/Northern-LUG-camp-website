@@ -82,7 +82,8 @@ function getNaviHtml($parent='root') {
 			}
 		}
 	}
-	if($parent == 'root' && auth_ok()) {
+	if($parent != 'root' && auth_ok()) {
+	//if( auth_ok()) {
 		$l = '<a href="./index.php?p=start&logout=1">Abmelden</a>';
 		array_push($items,$l);
 		
