@@ -61,8 +61,8 @@ class HtmlPage_news extends HtmlPage {
 					';
 				}   
 				$content .= '
-					<div class="news-author">News geschrieben am '.$news_row->crdatestr.' von '.$news_row->author.'</div>
 					<div class="news-more"><a href="?p=news&amp;newsid='.$news_row->eintragid.'">mehr lesen</a></div>
+					<div class="news-author">News geschrieben am '.$news_row->crdatestr.' von '.$news_row->author.'</div>
 				</div>';
 			} // while
 			$content .= '
