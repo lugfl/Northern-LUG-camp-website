@@ -87,7 +87,7 @@ class HtmlPage_news extends HtmlPage {
 		if($news_query) {
 			$news_daten = mysql_fetch_array($news_query);
 			$content .= '
-				<div class="news-single"
+			<div class="news-single">
 				<div class="news-title">'.$news_daten["title"].'</div>
 				<div class="news-cat">';
 			if( is_file($news_daten['catpic']) ) {
