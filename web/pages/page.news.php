@@ -7,8 +7,8 @@ $PAGE['news']['name'] = "News";
 $PAGE['news']['navilevel'] = 1;
 $PAGE['news']['login_required'] = 0;
 $PAGE['news']['phpclass'] = 'HtmlPage_news';
-$PAGE['news']['parent'] = 'root';
-$PAGE['news']['hidden'] = '1';
+$PAGE['news']['parent'] = 'start';
+$PAGE['news']['hidden'] = '0';
 
 
 
