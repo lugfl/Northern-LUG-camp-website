@@ -145,6 +145,35 @@ padding: 0;
 
 }
 
+
+.news-title
+{
+border-bottom-color: #2f4778;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+font-weight:bold;
+}
+
+.news-single
+{
+  padding-top:30px;
+  width: 800px;
+}
+
+.news-author
+{
+  font-style:italic;
+
+border-top-color: #2f4778;
+  border-top-style:dashed;
+border-top-width: 1px;
+  width: 400px;
+}
+
+.news-teaser
+{
+   padding-bottom:10px;
+}
 .artikel
 {
   width:200px;
