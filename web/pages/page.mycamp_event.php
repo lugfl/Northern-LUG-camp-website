@@ -40,14 +40,21 @@ class HtmlPage_mycamp_event extends HtmlPage {
 		$res1 = my_query($SQL1);
 		if($res1) {
 			if(mysql_num_rows($res1)>0) {
-				$ret .= '
-					<table class="datatable1">
-				';
 				while($row1 = mysql_fetch_assoc($res1)) {
-					$ret .= '
-					<tr>
-						<th colspan="4">Anmeldungen f&uuml;r '.$row1['vorname'].' '.$row1['nachname'].'</th>
-					</tr>
+				$ret .= '
+					<h2>
+						Anmeldungen f&uuml;r '.$row1['vorname'].' '.$row1['nachname'].'
+					</h2>
+					<table class="datatable1">
+							<caption>
+								<h3>F&uuml;r die folgenden Veranstaltungen kannst Du Dich noch anmelden:</h3>
+							</caption>
+						<tr>
+							<th>Veranstaltung</th>
+							<th>Zeitraum</th>
+							<th>Preis</th>
+							<th>Aktion</th>
+						</tr>
 					';
 					$SQL2 = "SELECT e.eventid ";
 					$SQL2 .= " FROM event_anmeldung_event ae LEFT JOIN event_event e ON ae.eventid=e.eventid ";
@@ -74,11 +81,6 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$res3 = my_query($SQL3);
 					if($res3) {
 						if(mysql_num_rows($res3)>0) {
-							$ret .= '
-							<tr>
-								<th colspan="4">F&uuml;r die folgenden Veranstaltungen kannst Du Dich noch anmelden:</th>
-							</tr>
-							';
 							while($row3 = mysql_fetch_assoc($res3)) {
 								$ret .= '
 									<tr>
@@ -89,15 +91,23 @@ class HtmlPage_mycamp_event extends HtmlPage {
 									</tr>
 								';
 							} // while fetch_assoc res3
+						}else{
+						$ret .= '
+							<tr>
+								<td colspan="4">Du bist bereits f&uuml;r alle Veranstaltungen angemeldet.</td>
+							</tr>
+						';
 						} // if num_rows res3
 					}else{ // if res3
 						// Fehler
 						print "FEHLER";
 						print mysql_error();
 					}	
+					$ret .= '
+					</table>
+					';
 				} // while Anmeldungen
 				$ret .= '
-					</table>
 					<p>
 					Die Veranstaltungen, f&uuml;r die Du Dich bereits angemeldet hast, kannst Du auf der Seite <a href="?p=rechnung">Rechnung</a> einsehen.
 					</p>

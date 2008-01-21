@@ -81,11 +81,11 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 				<div>
 				<input type="hidden" name="p" value="mycamp_shop"/>
 				<table class="datatable1">
-					<caption>Bestellungen</caption>
+					<caption><h3>Bestellungen</h3></caption>
 					<tr>
 						<th>Artikel</th>
 						<th></th>
-						<th>Beschreibung</th>
+						<!-- <th>Beschreibung</th> -->
 						<th>St&uuml;ckpreis</th>
 						<th>Gr&ouml;sse</th>
 						<th>Anzahl</th>
@@ -105,7 +105,7 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 					$ret .= '
 					<tr>
 						<td>'.$row1['name'].'</td>
-						<td>
+						<td style="text-align:center">
 					';
 					if(isset($row1['pic']) && $row1['pic']!='') {
 						$fileurl = './images/shop/'.$row1['pic'];
@@ -115,9 +115,9 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 					}
 					$ret .= '
 						</td>
-						<td>'.$row1['beschreibung'].'</td>
-						<td>'.$row1['preis'].'</td>
-						<td><select name="kaufe['.$row1['artikelid'].'][groesse]">
+					<!--	<td>'.$row1['beschreibung'].'</td> -->
+						<td style="text-align:center">'.number_format($row1['preis'],2,",",".").' &euro;</td>
+						<td style="text-align:center"><select name="kaufe['.$row1['artikelid'].'][groesse]">
 					';
 
 					$gr = $row1['groessen'] ? $row1['groessen'] : '';
@@ -132,7 +132,7 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 					}
 
 					$ret .= '</select></td>
-						<td><input type="text" size="10" name="kaufe['.$row1['artikelid'].'][anzahl]" value="'.$anzahl.'"/></td>
+						<td style="text-align:center"><input type="text" size="10" name="kaufe['.$row1['artikelid'].'][anzahl]" value="'.$anzahl.'"/></td>
 					</tr>
 					';
 				}

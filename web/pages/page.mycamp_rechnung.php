@@ -65,11 +65,11 @@ class HtmlPage_rechnung extends HtmlPage {
 					if($res2) {
 						if(mysql_num_rows($res2)>0) {
 							$ret .= '<table class="datatable1">
-							<caption>Anmeldungen</caption>
+							<caption><h3>Anmeldungen</h3></caption>
 							<thead>
 								<tr>
-									<th class="artikel">Event</th>
-									<th>Einzelpreis</th>
+									<th>Veranstaltung</th>
+									<th>Preis</th>
 									<th>Bezahlstatus</th>
 									<th>Aktion</th>
 								</tr>
@@ -92,7 +92,7 @@ class HtmlPage_rechnung extends HtmlPage {
 								$ret .= '
 									<tr>
 										<td>'.$row2['name'].'</td>
-										<td style="text-align:right;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
+										<td style="text-align:center;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
 										<td style="text-align:center;">'.$bezahlstatus.'</td>
 										<td class="aktion">'.$cmd.'</td>
 									</tr>
@@ -106,7 +106,7 @@ class HtmlPage_rechnung extends HtmlPage {
 				} // while personen
 				mysql_free_result($res1);
 			} // if res1
-
+			$ret .= '<br/>';
 
 			// Auflisten, welche Artikel gekauft wurden.
 			$SQL2 = "SELECT aa.accountartikelid,a.*,aa.groesse,aa.anzahl,(aa.anzahl*a.preis) AS gesamtpreis ";
@@ -119,7 +119,7 @@ class HtmlPage_rechnung extends HtmlPage {
 				if(mysql_num_rows($res2)>0) {
 					$ret .= '
 						<table class="datatable1">
-						<caption>Bestellungen</caption>
+						<caption><h3>Bestellungen</h3></caption>
 							<thead>
 								<tr>
 									<th>Artikel</th>
