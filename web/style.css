@@ -118,7 +118,7 @@ body
 
 table.datatable1
 {
-/*width: 600px;*/
+width: 880px;
 border-color: #2f4778;;
 border-style: solid;
 border-width: 1px;
@@ -133,7 +133,7 @@ border-bottom-style: solid;
 border-bottom-width: 1px;
 margin: 0;
 padding: 0;
-width: 100px;
+/* width: 100px; */
 }
 .summenpreis
 {
