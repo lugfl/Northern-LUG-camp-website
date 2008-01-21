@@ -168,6 +168,7 @@ border-top-color: #2f4778;
   border-top-style:dashed;
 border-top-width: 1px;
   width: 400px;
+  padding-bottom:30px;
 }
 
 .news-teaser
@@ -177,6 +178,10 @@ border-top-width: 1px;
 .artikel
 {
   width:200px;
+}
+
+.news-navi-link
+{
 }
 
 .aktion
