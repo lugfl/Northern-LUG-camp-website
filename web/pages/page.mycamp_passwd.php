@@ -95,9 +95,16 @@ class HtmlPage_passwd extends HtmlPage {
 	}
 
 	function getContent() {
+
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
 		$this->_readInput();
 
-    $ret = '
+    $ret .= '
 		<h1>Passwort &auml;ndern</h1>
 		';
 		$a = http_get_var('a');

@@ -10,6 +10,13 @@ $PAGE['mycamp']['hidden'] = 0;
 class HtmlPage_mycamp extends HtmlPage {
 
 	function getContent() {
+
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
     		$ret = '
 			<h1>MyCamp</h1>
 			<p>

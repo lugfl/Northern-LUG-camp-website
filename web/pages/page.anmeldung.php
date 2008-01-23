@@ -617,8 +617,15 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 
 	function getContent() {
+
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
 		# Damit die Anmeldung erst ab dem 01.01.2008 0:00:01 Uhr funktioniert
-		$ret = '<h1>Anmeldung</h1>';
+		$ret .= '<h1>Anmeldung</h1>';
 		#if(time() <= mktime(0,0,1,1,1,2008)) # richtiger Timestamp!
 		//if(time() <= mktime(21,31,0,12,31,2007))
 		if(time() <= mktime(00,00,0,01,01,2008))

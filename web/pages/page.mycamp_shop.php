@@ -166,6 +166,12 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 	function getContent() {
 		global $_SESSION;
 
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
     $ret = '
 		<h1>Die Top Fan-Artikel zum Camp</h1>
 		';

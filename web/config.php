@@ -8,6 +8,8 @@ define ('WEB_NEWSTEASER_ANZAHL',3);
 define ('DEBUG',0);
 
 
+// Variable auf true setzen, damit Seiten mit Formularen disabled werden.
+$MAINTENANCE_MODE = false;
 
 $DB['DEFAULT']['user'] = 'test';
 $DB['DEFAULT']['pass'] = 'test';

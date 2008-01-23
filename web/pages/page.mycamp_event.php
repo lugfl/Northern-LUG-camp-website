@@ -13,6 +13,12 @@ class HtmlPage_mycamp_event extends HtmlPage {
 		global $CURRENT_EVENT_ID;
 		global $_SESSION;
 
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
 		my_connect();
 
 		$a = http_get_var('a');

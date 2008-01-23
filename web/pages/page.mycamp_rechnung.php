@@ -12,6 +12,12 @@ class HtmlPage_rechnung extends HtmlPage {
 		global $_SESSION;
 		global $CURRENT_EVENT_ID;
 
+		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
+		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
+		$ret = $this->checkMaintenance();
+		if($ret!='')
+			return $ret;
+
 
 		// Pruefen ob etwas geloescht werden soll
 		$a = http_get_var('a');
