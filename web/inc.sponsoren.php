@@ -20,6 +20,10 @@ $SPONSOREN[4]['name'] = "Servage Webhosting";
 $SPONSOREN[4]['url'] = "http://www.servage.net/";
 $SPONSOREN[4]['img'] = "./images/servage.png";
 
+$SPONSOREN[5]['name'] = "SecAdm - Secure for sure";
+$SPONSOREN[5]['url'] = "http://www.secadm.de/";
+$SPONSOREN[5]['img'] = "./images/logo_secadm.png";
+
 function get_sponsoren_image() {
 	global $SPONSOREN;
 	$ret = '';
