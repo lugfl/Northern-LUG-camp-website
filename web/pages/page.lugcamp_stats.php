@@ -27,7 +27,6 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 	}
 
 	function _stats_luganmeldungen() {
-		$ret = '<h2>Von welchen LUGs kommen die Teilnehmer</h2>';
 
 		$SQL = "SELECT l.name,l.url,COUNT(a.anmeldungid) AS anmeldungen ";
 		$SQL .= " FROM event_anmeldung a ";
@@ -39,7 +38,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 		$res1 = my_query($SQL);
 		if($res1 && mysql_num_rows($res1)>0) {
 			$ret .= '<table class="datatable1">
-				<caption>&Uuml;bersicht der LUGs</caption>
+				<caption><h3>Von welchen LUGs kommen die Teilnehmer</h3></caption>
 				<thead>
 					<th>LUG</th>
 					<th>Homepage</th>
@@ -74,7 +73,6 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 
 	function _stats_eventanmeldungen() {
 		$ret .= '
-			<h2>Wie viele Anmeldungen haben wir zu den einzelnen Veranstaltungen</h2>
 		';
 		$SQL = "SELECT e.name,COUNT(ea.anmeldungid) AS anmeldungen ";
 		$SQL .= " FROM event_anmeldung_event ea ";
@@ -85,7 +83,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 		$res1 = my_query($SQL);
 		if($res1 && mysql_num_rows($res1)>0) {
 			$ret .= '<table class="datatable1">
-				<caption>&Uuml;bersicht der LUGs</caption>
+			<caption><h3>Wie viele Anmeldungen haben wir zu den einzelnen Veranstaltungen?</h3></caption>
 				<thead>
 					<th>Veranstaltung</th>
 					<th>Anzahl Anmeldungen</th>
