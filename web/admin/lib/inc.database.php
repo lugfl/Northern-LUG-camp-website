@@ -51,7 +51,12 @@ function my_query($SQL,$db='DEFAULT') {
 
 function my_escape_string($str,$db='DEFAULT') {
 	global $DB;
-	return mysql_real_escape_string($str,$DB[$db]['conn']);
+	$ret = '';
+	//if(get_magic_quotes_gpc())
+		$ret = stripslashes($str);
+	//else
+		//$ret = $str;
+	return mysql_real_escape_string($ret,$DB[$db]['conn']);
 }
 
 ?>
