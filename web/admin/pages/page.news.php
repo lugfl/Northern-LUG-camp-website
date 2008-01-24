@@ -210,13 +210,13 @@ class HtmlPage_news extends HtmlPage {
 
 			<dl class="news_form">
 				<dt>Titel</dt>
-				<dd><input type="text" name="title" value="'.$title.'" class="news_text""/></dd>
+				<dd><input type="text" name="title" value="'.$title.'" class="news_text" size="50" /></dd>
 
 				<dt>Schlagzeile (Teaser)</dt>
-				<dd><textarea name="short" class="news_textarea">'.$short.'</textarea></dd>
+				<dd><textarea name="short" class="news_textarea" rows="5" cols="70">'.$short.'</textarea></dd>
 
 				<dt>Text</dt>
-				<dd><textarea name="txt" class="news_textarea">'.$txt.'</textarea></dd>
+				<dd><textarea name="txt" class="news_textarea" rows="15" cols="70">'.$txt.'</textarea></dd>
 			</dl>
 			<input type="submit" value="speichern" class="button"/>
 			
