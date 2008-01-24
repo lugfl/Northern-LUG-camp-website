@@ -20,7 +20,7 @@ class HtmlPage_mycamp extends HtmlPage {
     		$ret = '
 			<h1>MyCamp</h1>
 			<p>
-			Hier geht zu Deinen pers&ouml;nlichen Campdaten. Nat&uuml;rlich nur, wenn Du dich vorher angemeldet hast und das geht bekanntlich erst ab dem 01.01.2008.
+			In diesem Bereich kannst Du Deine Anmeldedaten &uuml;berarbeiten, also T-Shirt-Bestellung, Anmeldung f&uuml;r Besichtigungen, f&uuml;r\'s Schwimmen, und so weiter.  
 			</p>
 		';
 		return $ret;
