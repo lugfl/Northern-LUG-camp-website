@@ -506,7 +506,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$geb = date("Y-m-d H:i:s",mktime(0,0,0,$this->in['geb_m'],$this->in['geb_d'],$this->in['geb_y']));
 
 		$account_sql	= "INSERT INTO account (username,passwd,email,crdate,lugid) VALUES ";
-		$account_sql	.= "('".my_escape_string($this->in['nickname'])."','".md5(my_escape_string($this->in['passwort']))."','".my_escape_string($this->in['email']);
+		$account_sql	.= "('".my_escape_string($this->in['nickname'])."','MD5(".my_escape_string($this->in['passwort']).")','".my_escape_string($this->in['email']);
 		$account_sql	.= "',NOW(),".$this->in['lugid'].");";
 		$account_query	= my_query($account_sql);
 		$account_id	= my_insert_id();
