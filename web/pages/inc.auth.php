@@ -77,6 +77,7 @@ function auth_form($pn = 'start') {
 			}
 			// Formular anzeigen
 			$ret .= '
+			<h1>Login</h1>
 			<div id="authbox">
 				<form action="./index.php" method="post">
 					<input type="hidden" name="p" value="'.$pn.'"/>
@@ -88,6 +89,7 @@ function auth_form($pn = 'start') {
 						<dd><input id="auth_form_pass" type="password" name="auth_pass'.$_SESSION['auth_form'].'"/></dd>
 					</dl>
 					<input type="submit" value="Login"/>
+					<p><a href="?p=newpw">Passwort vergessen?</a></p>
 				</form>
 			</div>
 			';
