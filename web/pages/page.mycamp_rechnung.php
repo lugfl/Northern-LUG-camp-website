@@ -57,9 +57,8 @@ class HtmlPage_rechnung extends HtmlPage {
 			if($res1) {
 				while($row1 = mysql_fetch_assoc($res1) ) { // alle Personen durchgehen
 					$anmeldungid = $row1['anmeldungid'];
-
+	
 					$ret .= '<h2>'.$row1['vorname']." " . $row1['nachname'].'</h2>';
-
 
 					// Auflisten, welche Events alle gebucht wurden
 					$SQL2 = "SELECT e.* ";
@@ -179,26 +178,38 @@ class HtmlPage_rechnung extends HtmlPage {
 				Der Gesamtbetrag, den Du inkl. Deiner Anmeldung und evtl. Zusatzbestellungen zu zahlen hast betr&auml;gt <b>'.number_format($zuzahlen,2,',','.').' &euro;</b>. Damit die Anmeldung g&uuml;ltig ist, muss die <b>&Uuml;berweisung bis zum 23.04.08</b> bei uns eingegangen sein.
 			</p>
 			';
+			// hab das mal mit in die if-clause genommen, ist ja unsinnig, dass das ausgegeben wird wenn keine accountid gesetzt ist - stefan
+			$SQL3 = "SELECT username FROM account WHERE accountid=".$_SESSION['_accountid'];
+			$res3 = my_query($SQL3);
+			if($res3) {
+				if(mysql_num_rows($res3)>0) {
+					while($row3 = mysql_fetch_assoc($res3)) {
+						$nickname = $row3['username'];
+						$ret .= '
+						<h1>Bankverbindung</h1>
+						<p>
+						Bitte &uuml;berweise den noch ausstehenden Betrag auf das folgende Konto:
+						</p>
+						<p>
+							<address>
+							Kontoinhaber: LUG Flensburg e.V.<br/>
+							Bank: Union Bank AG<br/>
+							BLZ: 215 201 00<br/>
+							Kto: 16632<br/>
+							</address>
+							Verwendungszweck: LC 2008 '.$nickname.'
+						</p>
+						<p>
+							F&uuml;r Sammel&uuml;berweisungen einer LUG oder aus dem Ausland setzt euch bitte mit unserem Kassenwart in Verbindung, den ihr per Mail an
+							<a href="mailto:kasse@lug-camp-2008.de">kasse@lug-camp-2008.de</a> erreicht.
+						</p>
+						';
+					}
+				}
+				mysql_free_result($res3);
+			}
 		} // if is_numeric accountid
-		$ret .= '
-		<h1>Bankverbindung</h1>
-		<p>
-		Bitte &uuml;berweise den noch ausstehenden Betrag auf das folgende Konto:
-		</p>
-		<p>
-			<address>
-			Kontoinhaber: LUG Flensburg e.V.<br/>
-			Bank: Union Bank AG<br/>
-			BLZ: 215 201 00<br/>
-			Kto: 16632<br/>
-			</address>
-			Verwendungszweck: LC 2008 und Nickname
-		</p>
-		<p>
-			F&uuml;r Sammel&uuml;berweisungen einer LUG oder aus dem Ausland setzt euch bitte mit unserem Kassenwart in Verbindung, den ihr per Mail an
-			<a href="mailto:kasse@lug-camp-2008.de">kasse@lug-camp-2008.de</a> erreicht.
-		</p>
-		';
+
 		return $ret;
 	}
 
