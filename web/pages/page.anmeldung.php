@@ -148,24 +148,6 @@ class HtmlPage_anmeldung extends HtmlPage {
 		if($this->in['vegetarier'] != 1) { $this->in['vegetarier'] = 0; }
 	}
 
-
-	function user_angemeldet() { # $user
-		my_connect();
-		# in der DB prüfen ob benutzer bereits angemeldet ist
-		$ret = 0;
-		#$user_query = my_query("SELECT * FROM account WHERE nickname = '$user'");
-		return $ret;
-	}
-
-	# durch $user kann die Funktion auch für eine Übersicht verwendet werden
-	function anmeldung_status() { # $user
-		$ret = '';
-		my_connect();
-		# welchen Status hat die anmeldung ? (Alles OK, noch nicht bezahlt, Anmeldung unvollständig, Einverständnis fehlt)
-		$ret .= '<p>Status:</p>';
-		return $ret;
-	}
-
 	function anmeldung_form() {
 		global $CURRENT_EVENT_ID;
 
