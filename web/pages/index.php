@@ -37,6 +37,8 @@ require_once('pages/page.mycamp_event.php');
 require_once('pages/page.mycamp_passwd.php');
 //require_once('pages/page.mycamp_einverstaendniserklaerung.php');
 
+require_once('pages/page.newpw.php');
+
 require_once('pages/page.impressum.php');
 
 // Authentifizierungscheck
