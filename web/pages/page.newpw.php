@@ -17,6 +17,7 @@ class HtmlPage_newpw extends HtmlPage {
 		$content = "qwertzupasdfghkyxcvbnm";
 		$content .= "123456789";
 		srand((double)microtime()*1000000);
+		$rand_password = '';
 		for($i = 0; $i < 8; $i++)
 		{
 			$rand_password .= substr($content,(rand()%(strlen ($content))), 1);
