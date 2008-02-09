@@ -56,64 +56,64 @@ class HtmlPage_anmeldung extends HtmlPage {
 	
 		if(!preg_match('/^[a-z0-9-_.@!?:;,]{3,30}$/i',$this->in['nickname'])) {
 			// Fehler im Nickname
-			$this->err['nickname'] = '<p>Dieser Nickname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-30 Zeichen)</p>';
+			$this->err['nickname'] = '<p class="error">Dieser Nickname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-30 Zeichen)</p>';
 		}
 		$nickname_query	= my_query("SELECT accountid FROM account WHERE username='".my_escape_string($this->in['nickname'])."';");
 		if(mysql_num_rows($nickname_query) != 0) {
-			$this->err['nickname'] = '<p>Dieser Nickname ist bereits vergeben!</p>';
+			$this->err['nickname'] = '<p class="error">Dieser Nickname ist bereits vergeben!</p>';
 		}
 		
 		if($this->in['passwort'] == '') {
-			$this->err['passwort'] = '<p>Du hast kein Passwort angegeben!</p>';
+			$this->err['passwort'] = '<p class="error">Du hast kein Passwort angegeben!</p>';
 		}elseif($this->in['passwort'] != $this->in['passwort2']) {
-			$this->err['passwort'] = '<p>Deine Passw&ouml;rter stimmen nicht &uuml;berein!</p>';
+			$this->err['passwort'] = '<p class="error">Deine Passw&ouml;rter stimmen nicht &uuml;berein!</p>';
 		}
 
 		if(!preg_match('/^[a-z0-9-_.@äöüß]{8,50}$/i',$this->in['email'])) {
 			// Fehler in der Mailadresse
-			$this->err['email'] = '<p>Diese Adresse enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (8-50 Zeichen)</p>';
+			$this->err['email'] = '<p class="error">Diese Adresse enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (8-50 Zeichen)</p>';
 		}
 
 		$mrfc822 = new Mail_RFC822();
 		if($mrfc822->isValidInetAddress($this->in['email']) == FALSE) {
-			$this->err['email'] = '<p>Diese Adresse ist ung&uuml;ltig!</p>';
+			$this->err['email'] = '<p class="error">Diese Adresse ist ung&uuml;ltig!</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['vorname'])) {
 			// Fehler im Vornamen
-			$this->err['vorname'] = '<p>Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+			$this->err['vorname'] = '<p class="error">Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['nachname'])) {
 			// Fehler im Nachnamen
-			$this->err['nachname'] = '<p>Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+			$this->err['nachname'] = '<p class="error">Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:]. -]{3,40}$/i',$this->in['strasse'])) {
 			// Fehler in der Strasse
-			$this->err['strasse'] = '<p>Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+			$this->err['strasse'] = '<p class="error">Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:] a-z0-9]{1,5}$/i',$this->in['haus'])) {
 			// Fehler in der Hausnummer
-			$this->err['haus'] = '<p>Diese Hausnummer enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (1-5 Zeichen)</p>';
+			$this->err['haus'] = '<p class="error">Diese Hausnummer enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (1-5 Zeichen)</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:]0-9.: -]{3,10}$/i',$this->in['plz'])) {
 			// Fehler in der PLZ
-			$this->err['plz'] = '<p>Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-10 Zeichen)</p>';
+			$this->err['plz'] = '<p class="error">Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-10 Zeichen)</p>';
 		}
 
 		if(!preg_match('/^[[:alpha:]0-9 -]{3,40}$/i',$this->in['ort'])) {
 			// Fehler im Ort
-			$this->err['ort'] = '<p>Dieser Ort enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+			$this->err['ort'] = '<p class="error">Dieser Ort enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
 		if($this->in['landid'] == 0)
 		{
 			if(!preg_match('/^[[:alpha:].:,; -]{3,50}$/i',$this->in['landnew'])) {
 				// Fehler im neu angegebenen Land
-				$this->err['land'] = '<p>Du hast kein Land angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+				$this->err['land'] = '<p class="error">Du hast kein Land angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 			}
 			// Wenn der Name bereits in der DB existiert wird später einfach die existierende ID übernommen, die Überprüfung dafür erfolgt in schritt2
 		}else{
@@ -123,13 +123,13 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		$geb_err = '';
 		if(!preg_match('/^[0-9]{1,2}$/i',$this->in['geb_d']) || $this->in['geb_d'] > 31 || $this->in['geb_d'] < 1 ) {
-			$geb_err .= '<p>Der Tag ist nicht richtig angegeben.</p>';
+			$geb_err .= '<p class="error">Der Tag ist nicht richtig angegeben.</p>';
 		}
 		if(!preg_match('/^[0-9]{1,2}$/i',$this->in['geb_m']) || $this->in['geb_m'] > 12 || $this->in['geb_m'] < 1 ) {
-			$geb_err .= '<p>Der Monat ist nicht richtig angegeben.</p>';
+			$geb_err .= '<p class="error">Der Monat ist nicht richtig angegeben.</p>';
 		}
 		if(!preg_match('/^[0-9]{4}$/i',$this->in['geb_y']) || $this->in['geb_y'] > 2000 || $this->in['geb_y'] < 1900 ) {
-			$geb_err .= '<p>Das Jahr ist nicht richtig angegeben.</p>';
+			$geb_err .= '<p class="error">Das Jahr ist nicht richtig angegeben.</p>';
 		}
 		if($geb_err != '') { $this->err['geb'] = $geb_err; }
 
@@ -137,7 +137,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		{
 			if(!preg_match('/^[[:alpha:]0-9.:,; -]{3,50}$/i',$this->in['lugnew'])) {
 				// Fehler in der neu angegebenen Lug
-				$this->err['lug'] = '<p>Du hast keine LUG angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
+				$this->err['lug'] = '<p class="error">Du hast keine LUG angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 			}
 			// Wenn der Name bereits in der DB existiert wird später einfach die existierende ID übernommen, die Überprüfung dafür erfolgt in schritt2
 		}else{

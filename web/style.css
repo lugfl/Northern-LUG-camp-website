@@ -116,6 +116,11 @@ body
 #sponsoren a:before{ content:"\00BB"; display:none;}
 #sponsoren a:after{content:"\00AB"; display:none;}
 
+.error {
+		color: red;
+		font-weight: bold;
+}
+
 table.datatable1
 {
 width: 880px;
