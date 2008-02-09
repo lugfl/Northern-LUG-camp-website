@@ -94,7 +94,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['strasse'] = '<p>Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)</p>';
 		}
 
-		if(!preg_match('/^[[:alpha:]0-9]{1,5}$/i',$this->in['haus'])) {
+		if(!preg_match('/^[[:alpha:] a-z0-9]{1,5}$/i',$this->in['haus'])) {
 			// Fehler in der Hausnummer
 			$this->err['haus'] = '<p>Diese Hausnummer enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (1-5 Zeichen)</p>';
 		}
