@@ -23,6 +23,12 @@ $MAILER['auth'] = false;
 //$MAILER['username'] = '';
 //$MAILER['password'] = '';
 
+// ID des Events, mit dem die zwei Euro verbucht werden
+$EVENT_SCHWIMMEN['abzeichen_event_id'] = 0;
+
+// ID des Events, mit dem die Hallenbuchung und Quota geregelt wird.
+$EVENT_SCHWIMMEN['schwimmhalle_event_id'] = 0;
+
 if(is_file('.htconfig.php')) {
 	include_once('.htconfig.php');
 }
