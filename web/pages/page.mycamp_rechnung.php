@@ -85,6 +85,9 @@ class HtmlPage_rechnung extends HtmlPage {
 
 							while($row2 = mysql_fetch_assoc($res2)) {
 								$bezahlstatus = "-";
+								if($row2['hidden'] == 1) {
+									$row2['editable'] = 0;
+								}
 
 								$cmd = '';
 								if($bezahlstatus=='-' && $row2['editable']) {
