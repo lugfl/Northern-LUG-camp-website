@@ -116,6 +116,12 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 						my_query($SQLins);
 
 					}
+					$halle = $this->checkSchwimmhalleAnmeldung($anmeldungid);
+					if($halle==0) {
+						// Schwimmanmeldung wurde nicht durchgefuehrt. Also ebenfalls eintragen
+						$SQLins = 'INSERT INTO event_anmeldung_event SET anmeldungid='.$anmeldungid.',eventid='.$EVENT_SCHWIMMEN['schwimmhalle_event_id'];
+						my_query($SQLins);
+					}
 				}
 				break;
 			case 'd':
