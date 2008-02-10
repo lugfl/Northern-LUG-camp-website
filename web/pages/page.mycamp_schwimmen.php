@@ -77,9 +77,12 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 
 		$ret = Array();
 
-		$SQL = "SELECT e.*,COUNT(ae.anmeldungid) AS teilnehmerzahl FROM event_event e LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
+		$SQL = "SELECT e.*,COUNT(ae.anmeldungid) AS teilnehmerzahl ";
+		$SQL .= " ,IF(e.buchanfang<NOW() AND e.buchende>NOW() AND parent IS NOT NULL,1,0) AS editable ";
+		$SQL .= " FROM event_event e LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
 		$SQL .= " WHERE e.parent=".$EVENT_SCHWIMMEN['abzeichen_event_id'];
 		$SQL .= " GROUP BY e.eventid ";
+		$SQL .= " ORDER BY e.sort";
 		$res = my_query($SQL);
 		while($row = mysql_fetch_assoc($res)) {
 			if($row['teilnehmerzahl'] <= $row['quota']) {
@@ -209,21 +212,25 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 
 							}
 							$action = "-";
-							if(in_array($abzeichen['eventid'],$cur_anmeldungen)) {
-								// abmelden
-								$action = '<a href="?p=mycamp_schwimmen&a=d&eventid='.$abzeichen['eventid'].'&anmeldungid='.$anmeldung['anmeldungid'].'">abmelden</a>';
-							}else{
-								// anmelden
-									if($abzeichen['onlythisingroup'] == 1 ) {
-										
-										if( $notalwaysallowedinthisgroup==0) {
+							if($abzeichen['editable'] == 1) {
+								if(in_array($abzeichen['eventid'],$cur_anmeldungen)) {
+									// abmelden
+									$action = '<a href="?p=mycamp_schwimmen&a=d&eventid='.$abzeichen['eventid'].'&anmeldungid='.$anmeldung['anmeldungid'].'">abmelden</a>';
+								}else{
+									// anmelden
+									if($frei>0) {
+										if($abzeichen['onlythisingroup'] == 1 ) {
+											
+											if( $notalwaysallowedinthisgroup==0) {
+												$action = '<a href="?p=mycamp_schwimmen&a=a&eventid='.$abzeichen['eventid'].'&anmeldungid='.$anmeldung['anmeldungid'].'">anmelden</a>';
+											}
+										}else{
+											if(!$onlythisingroup_gebucht || $abzeichen['alwaysallowedinthisgroup'])
 											$action = '<a href="?p=mycamp_schwimmen&a=a&eventid='.$abzeichen['eventid'].'&anmeldungid='.$anmeldung['anmeldungid'].'">anmelden</a>';
 										}
-									}else{
-										if(!$onlythisingroup_gebucht || $abzeichen['alwaysallowedinthisgroup'])
-										$action = '<a href="?p=mycamp_schwimmen&a=a&eventid='.$abzeichen['eventid'].'&anmeldungid='.$anmeldung['anmeldungid'].'">anmelden</a>';
-									}
-							}
+									} // if frei
+								}
+							} // if editable
 							$ret .= '
 							<tr>
 								<td style="vertical-align:top;">'.$abzeichen['name'].'</td>
@@ -258,8 +265,8 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 		if($ret!='')
 			return $ret;
 
-		$this->tuxe = $this->getTuxEvents();
 		$this->doActions();
+		$this->tuxe = $this->getTuxEvents();
 		$ret .= $this->getEventListContent();
 		return $ret;
 	}
