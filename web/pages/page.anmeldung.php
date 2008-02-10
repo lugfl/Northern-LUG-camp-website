@@ -310,7 +310,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 				<dt><label for-id="anmeldung_form_events[]">Veranstaltungen</label></dt>
 				<dd>Ich m&ouml;chte an folgenden Veranstaltungen teilnehmen.</dd>';
 
-		$events_query = my_query("SELECT * FROM event_event WHERE eventid='".$ceventid."' OR parent='".$ceventid."' ORDER BY parent,name");
+		$events_query = my_query("SELECT * FROM event_event WHERE hidden=0 AND (eventid='".$ceventid."' OR parent='".$ceventid."') ORDER BY parent,name");
 		$ret .= '<input type="hidden" name="anmeldung_form_events[]" value="'.$ceventid.'" />';
 		while($events_row = mysql_fetch_object($events_query)) {
 			$quota_ret		= '';

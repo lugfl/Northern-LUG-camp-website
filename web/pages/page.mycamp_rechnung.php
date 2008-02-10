@@ -66,6 +66,7 @@ class HtmlPage_rechnung extends HtmlPage {
 					$SQL2 .= " FROM event_event e ";
 					$SQL2 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
 					$SQL2 .= " WHERE ae.anmeldungid=".$anmeldungid;
+					$SQL2 .= " AND ( e.parent=".$ceventid." OR e.eventid=".$ceventid.")";
 					$res2 = my_query($SQL2);
 					if($res2) {
 						if(mysql_num_rows($res2)>0) {

@@ -79,6 +79,7 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$SQL3 .= " FROM event_event e ";
 					$SQL3 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
 					$SQL3 .= " WHERE e.parent=".$ceventid;
+					$SQL3 .= " AND e.hidden=0 ";
 					$SQL3 .= " AND e.buchanfang<NOW() AND e.buchende>NOW() ";
 					if(count($gebuchte)>0) 
 						$SQL3 .= " AND e.eventid NOT IN (".join($gebuchte,',').")";
