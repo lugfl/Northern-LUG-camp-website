@@ -11,6 +11,7 @@ class HtmlPage_rechnung extends HtmlPage {
 	function getContent() {
 		global $_SESSION;
 		global $CURRENT_EVENT_ID;
+		global $EVENT_SCHWIMMEN;
 
 		// Checken, ob die Seite wegen Wartungsarbeiten ausgeschaltet werden soll.
 		// Funktion checkMaintenance() kommt aus class.HtmlPage.php
@@ -31,6 +32,24 @@ class HtmlPage_rechnung extends HtmlPage {
 		}else if($a=='d' && is_numeric($eventid)) {
 			$anmeldungid = http_get_var('anmeldungid');
 			if(is_numeric($anmeldungid)) {
+				if($eventid == $EVENT_SCHWIMMEN['schwimmhalle_event_id']) {
+					// Wenn die Anmeldung zum Schwimmen im Hallenbad geloscht werden soll,
+					// muessen gleichzeitig auch die pruefungsanmeldungen raus.
+					$sa = $EVENT_SCHWIMMEN['abzeichen_event_id'];
+					$SQL = "SELECT eventid FROM event_event WHERE eventid=".$sa." OR parent=".$sa;
+
+					$res = my_query($SQL);
+					$sch = Array();
+					while($row = mysql_fetch_assoc($res)) {
+						array_push($sch,$row['eventid']);
+					}
+					mysql_free_result($res);
+					if(count($sch)>0) {
+						$SQL = "DELETE FROM event_anmeldung_event WHERE eventid IN (".join($sch,",").")";
+
+						my_query($SQL);
+					}
+				}
 				$SQLdel = "DELETE FROM event_anmeldung_event WHERE eventid=".$eventid." AND anmeldungid=".$anmeldungid;
 				my_query($SQLdel);
 			}
