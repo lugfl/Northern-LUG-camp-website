@@ -87,8 +87,13 @@ class HtmlPage_account extends HtmlPage {
 						';
 						foreach($anmeldung['events'] as $eventid=>$event) {
 							$ret .= '
-							<li>'.$event['name'].' (Preis: '.number_format($event['charge'],2,',','.').')</li>
-							';
+							<li>'.$event['name'].' (Preis: '.number_format($event['charge'],2,',','.').')';
+							if($event['bezahlt']) {
+								$ret .= ' <input type="checkbox" name="bezahlt" checked="checked" /> bezahlt';
+							} else {
+								$ret .= ' noch nicht bezahlt';
+							}
+							$ret .='</li>';
 						}
 						$ret .= '
 							</ul>
@@ -101,8 +106,13 @@ class HtmlPage_account extends HtmlPage {
 						';
 						foreach($daten['artikel'] as $accountartikelid=>$kauf) {
 							$ret .= '
-							<li>'.$kauf['name'].', '.$kauf['groesse'].', '.$kauf['anzahl'].' (Gesamtpreis: '.number_format($kauf['gesamtpreis'],2,',','.').')</li>
-							';
+							<li>'.$kauf['name'].', '.$kauf['groesse'].', '.$kauf['anzahl'].' (Gesamtpreis: '.number_format($kauf['gesamtpreis'],2,',','.').')';
+							if($kauf['bezahlt']) {
+								$ret .= ' <input type="checkbox" name="bezahlt" checked="checked" /> bezahlt';
+							} else {
+								$ret .= ' noch nicht bezahlt';
+							}
+							$ret .= '</li>';
 						}
 						$ret .= '
 						</ul>
@@ -180,7 +190,7 @@ class HtmlPage_account extends HtmlPage {
 					$ret['anmeldung'][$row2['anmeldungid']] = $row2;
 
 					// Events fuer diese Anmeldung
-					$SQL3 = "SELECT e.eventid,e.name,e.charge ";
+					$SQL3 = "SELECT e.eventid,e.name,e.charge,ae.bezahlt ";
 					$SQL3 .= " FROM event_anmeldung_event ae LEFT JOIN event_event e ON ae.eventid=e.eventid ";
 					$SQL3 .= " WHERE ae.anmeldungid=".$row2['anmeldungid'];
 					$res3 = my_query($SQL3);
@@ -193,7 +203,7 @@ class HtmlPage_account extends HtmlPage {
 				} // while fetch_assoc Anmeldungen
 				mysql_free_result($res2);
 
-				$SQL4 = "SELECT aa.accountartikelid,a.name,a.preis,a.pic,aa.anzahl,aa.groesse,(aa.anzahl*a.preis) AS gesamtpreis ";
+				$SQL4 = "SELECT aa.accountartikelid,a.name,a.preis,a.pic,aa.anzahl,aa.groesse,aa.bezahlt,(aa.anzahl*a.preis) AS gesamtpreis ";
 				$SQL4 .= " FROM event_account_artikel aa ";
 				$SQL4 .= " LEFT JOIN event_artikel a ON aa.artikelid=a.artikelid ";
 				$SQL4 .= " WHERE aa.accountid=".$accountid;
