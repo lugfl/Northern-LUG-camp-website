@@ -77,7 +77,10 @@ class HtmlPage_account extends HtmlPage {
 						'.$anmeldung['email'].'<br/>
 						'.($anmeldung['vegetarier']?'Vegetarier':'kein Vegetarier').'<br/>
 						'.($anmeldung['bemerkung']?'<span class="head">Bemerkung</span>: '.nl2br($anmeldung['bemerkung']).'<br/>':'').'
-
+					<form action="?p=kasse" method="post">
+					<input type="hidden" name="action" value="pay" />
+					<input type="hidden" name="accountid" value="'.$daten['accountid'].'" />
+					<input type="hidden" name="anmeldungid" value="'.$anmeldungid.'" />
 					';
 					if(isset($anmeldung['events'])) {
 						
@@ -89,9 +92,9 @@ class HtmlPage_account extends HtmlPage {
 							$ret .= '
 							<li>'.$event['name'].' (Preis: '.number_format($event['charge'],2,',','.').')';
 							if($event['bezahlt']) {
-								$ret .= ' <input type="checkbox" name="bezahlt" checked="checked" /> bezahlt';
+								$ret .= ' <input type="checkbox" name="events_bezahlt['.$eventid.']" checked="checked" /> bezahlt ('.$anmeldung['events'][$eventid]['bezahlt'].')';
 							} else {
-								$ret .= ' noch nicht bezahlt';
+								$ret .= ' <input type="checkbox" name="events_bezahlt['.$eventid.']" /> bezahlt';
 							}
 							$ret .='</li>';
 						}
@@ -108,9 +111,9 @@ class HtmlPage_account extends HtmlPage {
 							$ret .= '
 							<li>'.$kauf['name'].', '.$kauf['groesse'].', '.$kauf['anzahl'].' (Gesamtpreis: '.number_format($kauf['gesamtpreis'],2,',','.').')';
 							if($kauf['bezahlt']) {
-								$ret .= ' <input type="checkbox" name="bezahlt" checked="checked" /> bezahlt';
+								$ret .= ' <input type="checkbox" name="artikel_bezahlt['.$accountartikelid.']" checked="checked" /> bezahlt ('.$daten['artikel'][$accountartikelid]['bezahlt'].')';
 							} else {
-								$ret .= ' noch nicht bezahlt';
+								$ret .= ' <input type="checkbox" name="artikel_bezahlt['.$accountartikelid.']" /> bezahlt';
 							}
 							$ret .= '</li>';
 						}
@@ -119,10 +122,12 @@ class HtmlPage_account extends HtmlPage {
 						';
 					} // if artikel
 					$ret .= '
+					<input type="submit" value=" Zahlungen übernehmen " />
+					</form>
 					</p>
 					</li>';
-				}
-				$ret .= '</ul>
+					}
+				$ret .= '	</ul>
 					</td>
 				</tr>
 			</table>
