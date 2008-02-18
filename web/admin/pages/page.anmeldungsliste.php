@@ -43,7 +43,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 				$ctr = 1;
 				while($row = mysql_fetch_assoc($res)) {
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
-					$act = ($row['active'] ? 'aktiv': '-');
+					$act = ($row['active'] ? 'aktiv': '- <a href="?p=remail&a='.$row['accountid'].'">Aktivierungsmail senden</a>');
 					$ret .= '
 					<tr>
 						<td>'.$ctr.'</td>

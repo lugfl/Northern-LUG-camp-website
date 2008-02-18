@@ -62,9 +62,14 @@ class HtmlPage_account extends HtmlPage {
 					<td>'.$daten['acl'].'</td>
 				</tr>
 				<tr>
-					<th>Aktiv</th>
-					<td>'.$daten['active'].'</td>
-				</tr>
+					<th>Aktiv</th>';
+			
+			if($daten['active'] == 1) {
+				$ret .= '<td>'.$daten['active'].'</td>';
+			} else {
+				$ret .= '<td>Noch nicht aktiviert ! - <a href="?p=remail&a='.$daten['accountid'].'">Aktivierungsmail senden</a></td>';
+			}
+			$ret .='</tr>
 				<tr>
 					<th>Anmeldungen</th>
 					<td><ul>
