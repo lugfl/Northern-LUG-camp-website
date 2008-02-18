@@ -36,7 +36,7 @@ if($auth_user != '' && $auth_pass != '') {
 				$_SESSION['_login_ok'] = 1;
 				$_SESSION['_accountid'] = $row['accountid'];
 				$_SESSION['_username'] = $row['username'];
-				$_SESSION['_acl'] = $row['acl'];
+
 			}
 		}
 		mysql_free_result($res);
