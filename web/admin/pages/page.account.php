@@ -22,15 +22,26 @@ class HtmlPage_account extends HtmlPage {
 
 	function HtmlPage_account() {
 	}
-	
+
+	function updateAdminBemerkung($anmeldungid,$bemerkung) {
+		$SQL = "UPDATE event_anmeldung SET admin_bemerkung = '".$bemerkung."' WHERE anmeldungid = '".$anmeldungid."'";
+		$res = my_query($SQL);
+		return '<p>Admin-Bemerkung geändert !</p>';
+	}
+
 	function _readInput() {
 		$this->p = http_get_var('p');
 		$this->a = http_get_var('a');
+		$this->an = http_get_var('an');
+		$this->action = http_get_Var('action');
+		$this->abemerkung = http_get_var('admin_bemerkung');
 
 		if($this->p=='account') {
 			$tmp = http_get_var('accountid');
 			if(is_numeric($tmp))
 				$this->accountid = $tmp;
+			if($this->action == 'abemerkung')
+				$this->messages = $this->updateAdminBemerkung($this->an,$this->abemerkung);
 		}
 	}
 
@@ -42,8 +53,12 @@ class HtmlPage_account extends HtmlPage {
 		}
 	}
 
-	function getAccountContent($daten) {
-		$ret = '
+	function getAccountContent($daten) {	
+		$ret = '';
+		if($this->messages) {
+			$ret = $this->messages;
+		}
+		$ret .= '
 			<table class="datatable1">
 				<tr>
 					<th>Benutzername</th>
@@ -127,11 +142,21 @@ class HtmlPage_account extends HtmlPage {
 						';
 					} // if artikel
 					$ret .= '
-					<input type="submit" value=" Zahlungen übernehmen " />
+					</p>
+					<p><dd><input type="submit" value=" Zahlungen übernehmen " /></dd></p>
 					</form>
+					<p>
+						<form method="post" action="?p=account&action=abemerkung">
+						<input type="hidden" name="accountid" value="'.$daten['accountid'].'" />
+						<input type="hidden" name="an" value="'.$anmeldungid.'" />
+						<div class="head">Admin-Bemerkung (f&uuml;r User nicht sichtbar)</div>
+						<dd><textarea name="admin_bemerkung" rows="4" cols="45">'.$anmeldung['admin_bemerkung'].'</textarea></dd>
+						<dd><input type="submit" value="&Uuml;bernehmen" /></dd>
+						</form>
 					</p>
 					</li>';
-					}
+				}
+				
 				$ret .= '	</ul>
 					</td>
 				</tr>
@@ -189,7 +214,7 @@ class HtmlPage_account extends HtmlPage {
 				mysql_free_result($res1);
 			}
 
-			$SQL2 = "SELECT a.anmeldungid,a.vorname,a.nachname,a.strasse,a.hausnr,a.plz,a.ort,a.land,a.email,a.vegetarier,a.arrival,a.ankunft,a.abfahrt,a.bemerkung, ";
+			$SQL2 = "SELECT a.anmeldungid,a.vorname,a.nachname,a.strasse,a.hausnr,a.plz,a.ort,a.land,a.email,a.vegetarier,a.arrival,a.ankunft,a.abfahrt,a.bemerkung,a.admin_bemerkung, ";
 			$SQL2 .= " l.name AS lugname, la.name as landname ";
 			$SQL2 .= " FROM event_anmeldung a LEFT JOIN event_lug l ON a.lugid=l.lugid ";
 			$SQL2 .= " LEFT JOIN event_land la ON a.landid=la.landid";
