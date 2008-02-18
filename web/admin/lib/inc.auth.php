@@ -25,7 +25,7 @@ $auth_user = http_get_var('auth_user'.$_SESSION['auth_form']);
 $auth_pass = http_get_var('auth_pass'.$_SESSION['auth_form']);
 if($auth_user != '' && $auth_pass != '') {
 	// Formular abgeschickt
-	$SQL = "SELECT username,email FROM account WHERE username='";
+	$SQL = "SELECT accountid,username,email,acl FROM account WHERE username='";
 	$SQL .= my_escape_string($auth_user)."' AND passwd=MD5('";
 	$SQL .= my_escape_string($auth_pass)."')";
 	$SQL .= " AND FIND_IN_SET('admin',acl)";
@@ -36,7 +36,9 @@ if($auth_user != '' && $auth_pass != '') {
 		$au->email = $row['email'];
 		$au->username = $row['username'];
 		$_SESSION['_login_ok'] = 1;
-		$_SESSION['USER'] = $au;
+		$_SESSION['_accountid'] = $row['accountid'];
+		$_SESSION['_username'] = $au;
+		$_SESSION['_acl'] = $row['acl'];
 	}
 }
 $auth_user = '';
