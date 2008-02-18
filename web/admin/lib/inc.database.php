@@ -59,4 +59,22 @@ function my_escape_string($str,$db='DEFAULT') {
 	return mysql_real_escape_string($ret,$DB[$db]['conn']);
 }
 
+function my_affected_rows($db='DEFAULT') {
+	global $DB;
+	global $DEBUG;
+
+	$ret = false;
+	if(is_resource($DB[$db]['conn'])) {
+		$ret = @mysql_affected_rows($DB[$db]['conn']);
+		if(mysql_errno() != 0) {
+			if( isset($DEBUG) && $DEBUG==1 ) {
+				trigger_error('Database Error: '.mysql_error().' ('.$SQL.')',E_USER_ERROR);
+			}else{
+				trigger_error('Database Problem',E_USER_ERROR);
+			}
+			$ret = false;
+		}
+	}
+	return $ret;
+}
 ?>
