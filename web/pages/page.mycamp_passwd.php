@@ -48,7 +48,7 @@ class HtmlPage_passwd extends HtmlPage {
 
 	function getPasswordForm() {
 		$ret = '
-		<p>Hier kannst Du Dein Passwort &auml;ndern. Die &Auml;nderung wird sofort wirksam. Bitte gebe zur Kontrolle Dein altes Passwort an.</p>
+		<p>Hier kannst Du Dein Passwort &auml;ndern. Die &Auml;nderung wird sofort wirksam. Bitte gib zur Kontrolle Dein altes Passwort an.</p>
 		<form action="?" method="post">
 			<input type="hidden" name="p" value="passwd"/>
 			<input type="hidden" name="a" value="1"/>
