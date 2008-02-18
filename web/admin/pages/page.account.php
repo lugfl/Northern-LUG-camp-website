@@ -84,7 +84,19 @@ class HtmlPage_account extends HtmlPage {
 			} else {
 				$ret .= '<td>Noch nicht aktiviert ! - <a href="?p=remail&a='.$daten['accountid'].'">Aktivierungsmail senden</a></td>';
 			}
+			
+			$llogin_SQL = "SELECT * FROM logins WHERE accountid='".$daten['accountid']."' ORDER BY logintime DESC";
+			$llogin_res = my_query($llogin_SQL);
+			if (my_affected_rows() != 0) {
+				$llogin_row = mysql_fetch_assoc($llogin_res);
+				$logintime = $llogin_row['logintime'];
+			}
+			
 			$ret .='</tr>
+				<tr>
+					<th>Letzter Login</th>
+					<td>'.$logintime.'</td>
+				</tr>
 				<tr>
 					<th>Anmeldungen</th>
 					<td><ul>
