@@ -35,6 +35,7 @@ require_once('pages/page.mycamp_rechnung.php');
 require_once('pages/page.mycamp_shop.php');
 require_once('pages/page.mycamp_event.php');
 require_once('pages/page.mycamp_schwimmen.php');
+require_once('pages/page.mycamp_bemerkung.php');
 require_once('pages/page.mycamp_passwd.php');
 //require_once('pages/page.mycamp_einverstaendniserklaerung.php');
 
