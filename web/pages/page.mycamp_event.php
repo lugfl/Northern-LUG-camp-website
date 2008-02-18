@@ -85,6 +85,7 @@ class HtmlPage_mycamp_event extends HtmlPage {
 						$SQL3 .= " AND e.eventid NOT IN (".join($gebuchte,',').")";
 					$SQL3 .= " GROUP BY e.eventid ";
 					$SQL3 .= " HAVING (e.quota-teilnehmerzahl)>0 ";
+					$SQL3 .= " ORDER BY sort ";
 					$res3 = my_query($SQL3);
 					$barzahlhinweis = 0;
 					if($res3) {
