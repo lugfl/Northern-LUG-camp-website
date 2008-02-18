@@ -6,6 +6,11 @@ if(!defined('WEB_INSIDE'))
 require_once('global.php');
 require_once('lib/inc.database.php');
 
+function loglogin($accountid) {
+	$SQL = "INSERT INTO logins (accountid,logintime) VALUES (".$accountid.",NOW())";
+	$res = my_query($SQL);
+}
+
 // Nur zur DB-Connecten, wenn nicht bereits anderweitig erfolgt
 if( !isset($DB['DEFAULT'])  || !isset($DB['DEFAULT']['conn']) || !is_resource($DB['DEFAULT']['conn']) )
 	my_connect();
@@ -36,7 +41,7 @@ if($auth_user != '' && $auth_pass != '') {
 				$_SESSION['_login_ok'] = 1;
 				$_SESSION['_accountid'] = $row['accountid'];
 				$_SESSION['_username'] = $row['username'];
-
+				loglogin($row['accountid']);
 			}
 		}
 		mysql_free_result($res);
