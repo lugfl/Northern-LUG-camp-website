@@ -66,6 +66,7 @@ class HtmlPage_rechnung extends HtmlPage {
 			';
 
 		$zuzahlen = 0;
+		$barzuzahlen = 0;
 		if(is_numeric($_SESSION['_accountid'])) {
 			// Abfragen welche Personen angemeldet sind
 			$SQL1 = "SELECT a.* ";
@@ -102,7 +103,7 @@ class HtmlPage_rechnung extends HtmlPage {
 							</thead>
 							<tbody>
 							';
-
+							$barzahlhinweis=0;
 							while($row2 = mysql_fetch_assoc($res2)) {
 								$bezahlstatus = "-";
 								if($row2['hidden'] == 1) {
@@ -116,18 +117,30 @@ class HtmlPage_rechnung extends HtmlPage {
 
 								if($bezahlstatus = "-") {
 									// wenn noch nicht bezahlt, dann zum gesamtbetrag zurechnen
-									$zuzahlen += $row2['charge'];
+									if($row2['barzahlung']==0) {
+										$zuzahlen += $row2['charge'];
+									}
+								}
+								$betrag = number_format($row2['charge'],2,',','.') . " &euro;";
+								if($row2['barzahlung']==1) {
+									$barzahlhinweis = 1;
+									$betrag = "*";
 								}
 								$ret .= '
 									<tr>
 										<td>'.$row2['name'].'</td>
-										<td style="text-align:center;">'.number_format($row2['charge'],2,',','.').' &euro;</td>
+										<td style="text-align:center;">'.$betrag.'</td>
 										<td style="text-align:center;">'.$bezahlstatus.'</td>
 										<td class="aktion">'.$cmd.'</td>
 									</tr>
 								';
 							} // while
 							$ret .= '</tbody></table>';
+							if($barzahlhinweis) {
+								$ret .= '
+								<p><b>*</b> f&uuml;r die LPI-Pr&uuml;fungen mu&szlig;t Du dich noch auf <a href="http://lpievent.lpice.eu/">lpievent.lpice.eu</a> anmelden. Die Pr&uuml;fungsgeb&uuml;hren m&uuml;ssen direkt beim Pr&uuml;fer bezahlt werden. &Uuml;ber die H&ouml;he der Geb&uuml;hren kannst Du Dich auf unserer <a href="?p=prog_lpi">LPI-Seite</a> informieren.</p>
+								';
+							}
 						} // if num_rows
 						mysql_free_result($res2);
 					} // if res2

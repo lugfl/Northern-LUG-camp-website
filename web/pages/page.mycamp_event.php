@@ -74,7 +74,7 @@ class HtmlPage_mycamp_event extends HtmlPage {
 						mysql_free_result($res2);
 					} // if res2
 
-					$SQL3 = "SELECT e.eventid,e.name,UNIX_TIMESTAMP(e.anfang) AS anfang, UNIX_TIMESTAMP(e.ende) AS ende,e.charge,e.quota ";
+					$SQL3 = "SELECT e.eventid,e.name,UNIX_TIMESTAMP(e.anfang) AS anfang, UNIX_TIMESTAMP(e.ende) AS ende,e.charge,e.quota,e.barzahlung ";
 					$SQL3 .= " , COUNT(ae.anmeldungid) AS teilnehmerzahl ";
 					$SQL3 .= " FROM event_event e ";
 					$SQL3 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
@@ -86,14 +86,20 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$SQL3 .= " GROUP BY e.eventid ";
 					$SQL3 .= " HAVING (e.quota-teilnehmerzahl)>0 ";
 					$res3 = my_query($SQL3);
+					$barzahlhinweis = 0;
 					if($res3) {
 						if(mysql_num_rows($res3)>0) {
 							while($row3 = mysql_fetch_assoc($res3)) {
+								$betrag = number_format($row3['charge'],2,',','.')." &euro;";
+								if($row3['barzahlung']==1) {
+									$barzahlhinweis = 1;
+									$betrag = "*";
+								}
 								$ret .= '
 									<tr>
 										<td>'.$row3['name'].'</td>
 										<td>'.date("d.m.y H:i",$row3['anfang']).' - '.date("d.m.y H:i",$row3['ende']).'</td>
-										<td>'.number_format($row3['charge'],2,',','.').' &euro;</td>
+										<td>'.$betrag.'</td>
 										<td><a href="?p=mycamp_event&a=a&anmeldungid='.$row1['anmeldungid'].'&eventid='.$row3['eventid'].'">anmelden</a></td>
 									</tr>
 								';
@@ -113,6 +119,11 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$ret .= '
 					</table>
 					';
+					if($barzahlhinweis) {
+						$ret .= '
+						<p><b>*</b> f&uuml;r die LPI-Pr&uuml;fungen mu&szlig;t Du dich noch auf <a href="http://lpievent.lpice.eu/">lpievent.lpice.eu</a> anmelden. Die Pr&uuml;fungsgeb&uuml;hren m&uuml;ssen direkt beim Pr&uuml;fer bezahlt werden. &Uuml;ber die H&ouml;he der Geb&uuml;hren kannst Du Dich auf unserer <a href="?p=prog_lpi">LPI-Seite</a> informieren.</p>
+						';
+					}
 				} // while Anmeldungen
 				$ret .= '
 					<p>
