@@ -122,7 +122,7 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					';
 					if($barzahlhinweis) {
 						$ret .= '
-						<p><b>*</b> f&uuml;r die LPI-Pr&uuml;fungen mu&szlig;t Du dich noch auf <a href="http://lpievent.lpi-german.de/">lpievent.lpi-german.de</a> anmelden. Die Pr&uuml;fungsgeb&uuml;hren m&uuml;ssen direkt beim Pr&uuml;fer bezahlt werden. &Uuml;ber die H&ouml;he der Geb&uuml;hren kannst Du Dich auf unserer <a href="?p=prog_lpi">LPI-Seite</a> informieren.</p>
+						<p><b>*</b> F&uuml;r die LPI-Pr&uuml;fungen mu&szlig;t Du dich noch auf <a href="http://lpievent.lpi-german.de/">lpievent.lpi-german.de</a> anmelden. Die Pr&uuml;fungsgeb&uuml;hren m&uuml;ssen direkt beim Pr&uuml;fer bezahlt werden. &Uuml;ber die H&ouml;he der Geb&uuml;hren kannst Du Dich auf unserer <a href="?p=prog_lpi">LPI-Seite</a> informieren.</p>
 						';
 					}
 				} // while Anmeldungen
