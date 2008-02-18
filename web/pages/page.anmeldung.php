@@ -409,29 +409,11 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$ret .= '
 				</dd>';
 
-				# kommt später - brauchen noch Bilder, wer kauft schon die Katze im Sack
-				#<dt><label for-id="anmeldung_form_veranstaltungen[]">Veranstaltungen</label></dt>
-				#<dd>
-				#	<input id="anmeldung_form_veranstaltungen[]" type="checkbox" name="anmeldung_form_veranstaltungen[]" value="tux" /> 
-				#	Ich m&ouml;chte Freitag das Tux-Schwimmabzeichen machen. (+??&euro;) 
-				#</dd>
-				#<dd>
-				#	<input id="anmeldung_form_veranstaltungen[]" type="checkbox" name="anmeldung_form_veranstaltungen[]" value="flens" /> 
-				#	Ich m&ouml;chte die Flensburger Brauerei besichtigen. (+??&euro;) 
-				#</dd>
-
-				#<dt><label for-id="anmeldung_form_merchandising[]">Merchandising</label></dt>
-				#<dd>
-				#	<input id="anmeldung_form_merchandising[]" type="checkbox" name="anmeldung_form_merchandising[]" value="tshirt" /> 
-				#	Ich will das Lug-Camp 2008 T-Shirt in Gr&ouml;&szlig;e 
-				#	<select id="anmeldung_form_tshirt" name="anmeldung_form_tshirt">
-				#	<option></option><option>S</option><option>M</option><option>L</option><option>XL</option></select>
-				#</dd>
 		$ret .= '
 			</dl>
 			<h3>Bemerkung</h3>
 			<p>Hast Du noch eine Bemerkung zur Anmeldung? Kein Problem...</p>
-			<p><textarea name="anmeldung_form_bemerkung">'.$this->in['bemerkung'].'</textarea>
+			<p><textarea name="anmeldung_form_bemerkung" rows="5" cols="70">'.$this->in['bemerkung'].'</textarea>
 			</p>
 			<p><input type="submit" name="anmeldung_submit" value="Ich bin dabei!" /></p>
 			</form>
