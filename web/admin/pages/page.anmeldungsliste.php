@@ -79,6 +79,12 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						}
 					}
 					
+					if($topay-$payed == 0) {
+						$paystatus = 'Alles bezahlt';
+					} else {
+						$paystatus = ($topay-$payed).'&euro; zu zahlen';
+					}
+					
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
 					$act = ($row['active'] ? 'aktiv': '- <a href="?p=remail&a='.$row['accountid'].'">Aktivierungsmail senden</a>');
 					$ret .= '
@@ -90,7 +96,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						<td>'.$row['lugname'].'</td>
 						<td>'.$crdate.'</td>
 						<td>'.$act.'</td>
-						<td>'.($topay-$payed).'&euro; zu zahlen</td>
+						<td>'.$paystatus.'</td>
 					</tr>
 					';
 					$ctr++;
