@@ -81,7 +81,7 @@ class HtmlPage_rechnung extends HtmlPage {
 					$ret .= '<h2>'.$row1['vorname']." " . $row1['nachname'].'</h2>';
 
 					// Auflisten, welche Events alle gebucht wurden
-					$SQL2 = "SELECT e.* ";
+					$SQL2 = "SELECT e.*,UNIX_TIMESTAMP(ae.bezahlt) AS bezahlt ";
 					$SQL2 .= " ,IF(e.buchanfang<NOW() AND e.buchende>NOW() AND parent IS NOT NULL,1,0) AS editable ";
 					$SQL2 .= " FROM event_event e ";
 					$SQL2 .= " LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
@@ -106,6 +106,9 @@ class HtmlPage_rechnung extends HtmlPage {
 							$barzahlhinweis=0;
 							while($row2 = mysql_fetch_assoc($res2)) {
 								$bezahlstatus = "-";
+								if(isset($row2['bezahlt']) && $row2['bezahlt'] != 0) {
+									$bezahlstatus = "ja";
+								}
 								if($row2['hidden'] == 1) {
 									$row2['editable'] = 0;
 								}
@@ -115,7 +118,7 @@ class HtmlPage_rechnung extends HtmlPage {
 									$cmd = '<a href="?p=rechnung&anmeldungid='.$anmeldungid.'&eventid='.$row2['eventid'].'&a=d">abmelden</a>';
 								}
 
-								if($bezahlstatus = "-") {
+								if($bezahlstatus == "-") {
 									// wenn noch nicht bezahlt, dann zum gesamtbetrag zurechnen
 									if($row2['barzahlung']==0) {
 										$zuzahlen += $row2['charge'];
@@ -152,6 +155,7 @@ class HtmlPage_rechnung extends HtmlPage {
 
 			// Auflisten, welche Artikel gekauft wurden.
 			$SQL2 = "SELECT aa.accountartikelid,a.*,aa.groesse,aa.anzahl,(aa.anzahl*a.preis) AS gesamtpreis ";
+			$SQL2 .= " ,UNIX_TIMESTAMP(aa.bezahlt) AS bezahlt ";
 			$SQL2 .= " ,IF(a.kaufab<NOW() AND a.kaufbis>NOW(),1,0) AS editable ";
 			$SQL2 .= " FROM event_account_artikel aa ";
 			$SQL2 .= " LEFT JOIN event_artikel a ON aa.artikelid=a.artikelid ";
@@ -177,6 +181,9 @@ class HtmlPage_rechnung extends HtmlPage {
 					';
 					while($row2 = mysql_fetch_assoc($res2)) {
 						$bezahlstatus='-';
+						if(isset($row2['bezahlt']) && $row2['bezahlt'] != 0) {
+							$bezahlstatus = "ja";
+						}
 						$groesse = '-';
 						if(isset($row2['groesse']) && $row2['groesse']!='')
 							$groesse = $row2['groesse'];
@@ -186,7 +193,7 @@ class HtmlPage_rechnung extends HtmlPage {
 							$cmd = '<a href="?p=rechnung&accountartikelid='.$row2['accountartikelid'].'&a=d">l&ouml;schen</a>';
 						}
 
-						if($bezahlstatus = "-") {
+						if($bezahlstatus == "-") {
 							// wenn noch nicht bezahlt, dann zum gesamtbetrag zurechnen
 							$zuzahlen += $row2['gesamtpreis'];
 						}
