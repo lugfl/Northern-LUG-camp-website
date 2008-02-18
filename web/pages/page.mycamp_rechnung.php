@@ -45,7 +45,7 @@ class HtmlPage_rechnung extends HtmlPage {
 					}
 					mysql_free_result($res);
 					if(count($sch)>0) {
-						$SQL = "DELETE FROM event_anmeldung_event WHERE eventid IN (".join($sch,",").")";
+						$SQL = "DELETE FROM event_anmeldung_event WHERE anmeldungid=".$anmeldungid." AND eventid IN (".join($sch,",").")";
 
 						my_query($SQL);
 					}
