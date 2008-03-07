@@ -104,3 +104,13 @@ table.datatable1 th {
 table.datatable1 .head {
 	font-weight:bold;
 }
+
+.zuzahlen {
+	color: red;
+	font-weight: bold;
+}
+
+.bezahlt {
+	color: green;
+	font-weight: bold;
+}
