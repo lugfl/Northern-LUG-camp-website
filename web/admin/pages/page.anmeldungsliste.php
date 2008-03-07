@@ -80,9 +80,9 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 					}
 					
 					if($topay-$payed == 0) {
-						$paystatus = 'Alles bezahlt';
+						$paystatus = '<div class="bezahlt">Alles bezahlt</div>';
 					} else {
-						$paystatus = ($topay-$payed).'&euro; zu zahlen';
+						$paystatus = '<div class="zuzahlen">'.($topay-$payed).'&euro; zu zahlen</div>';
 					}
 					
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
