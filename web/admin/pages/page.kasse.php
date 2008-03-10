@@ -27,7 +27,7 @@ class HtmlPage_kasse extends HtmlPage {
 			if($events_bezahlt) {
 				foreach($events_bezahlt as $eventid=>$event_bezahlt) {
 					if($event_bezahlt == 'on') {
-						$SQL = "UPDATE event_anmeldung_event SET bezahlt = NOW()";
+						$SQL = "UPDATE event_anmeldung_event SET bezahlt = NOW() ";
 						$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$eventid."'";
 						$res = my_query($SQL);
 						$ret .= '<p>Event #'.$eventid.' als bezahlt markiert!</p>';
@@ -37,8 +37,9 @@ class HtmlPage_kasse extends HtmlPage {
 			if($artikel_bezahlt) {
 				foreach($artikel_bezahlt as $artikelid=>$artikelbezahlt) {
 					if($artikelbezahlt == 'on') {
-						$SQL = "UPDATE event_account_artikel SET bezahlt = NOW()";
-						$SQL .= "WHERE accountid = '".$accountid."' AND artikelid='".$artikelid."'";
+						$SQL = "UPDATE event_account_artikel SET bezahlt = NOW() ";
+						$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$artikelid."'";
+						print $SQL;
 						$res = my_query($SQL);
 						$ret .= '<p>Artikel #'.$artikelid.' als bezahlt markiert!</p>';
 					}

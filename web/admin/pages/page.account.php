@@ -125,7 +125,7 @@ class HtmlPage_account extends HtmlPage {
 							$ret .= '
 							<li>'.$event['name'].' (Preis: '.number_format($event['charge'],2,',','.').')';
 							if($event['bezahlt']) {
-								$ret .= ' <input type="checkbox" name="events_bezahlt['.$eventid.']" value="on"checked="checked" /> bezahlt ('.$anmeldung['events'][$eventid]['bezahlt'].')';
+								$ret .= ' <input type="checkbox" name="events_bezahlt['.$eventid.']" value="on" checked="checked" /> bezahlt ('.$anmeldung['events'][$eventid]['bezahlt'].')';
 							} else {
 								$ret .= ' <input type="checkbox" name="events_bezahlt['.$eventid.']" value="on" /> bezahlt';
 								$zuzahlen += $event['charge'];
