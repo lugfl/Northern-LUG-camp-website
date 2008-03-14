@@ -1,31 +1,29 @@
 <?php
 
-$PAGE['anmeldungsliste']['name'] = "Anmeldungen";
-$PAGE['anmeldungsliste']['navilevel'] = 1;
-$PAGE['anmeldungsliste']['login_required'] = 1;
-$PAGE['anmeldungsliste']['phpclass'] = 'HtmlPage_anmeldungsliste';
-$PAGE['anmeldungsliste']['parent'] = 'root';
+$PAGE['vegetarier']['name'] = "Vegetarier";
+$PAGE['vegetarier']['navilevel'] = 1;
+$PAGE['vegetarier']['login_required'] = 1;
+$PAGE['vegetarier']['phpclass'] = 'HtmlPage_vegetarier';
+$PAGE['vegetarier']['parent'] = 'root';
 
 require_once('lib/inc.database.php');
 
-class HtmlPage_anmeldungsliste extends HtmlPage {
+class HtmlPage_vegetarier extends HtmlPage {
 
-	var $name = "Anmeldungen";
+	var $name = "Vegetarier";
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_anmeldungsliste() {
+	function HtmlPage_vegetarier() {
 	}
 	
 	function getContent() {
-		$sort = http_get_var('s');
-		if($sort == '') { $sort = "crdate"; }
     		$ret = '';
 		$SQL = "SELECT a.accountid,a.username,a.acl,UNIX_TIMESTAMP(a.crdate) AS crdate,a.active, l.name AS lugname, ";
 		$SQL .= " an.anmeldungid,an.vorname,an.nachname ";
 		$SQL .= " FROM account a LEFT JOIN event_lug l ON a.lugid=l.lugid ";
 		$SQL .= " LEFT JOIN event_anmeldung an ON a.accountid=an.accountid ";
-		$SQL .= " ORDER BY ".my_escape_string($sort);
+		$SQL .= " WHERE an.vegetarier = 1";
 		$res = my_query($SQL);
 		
 		if($res) {

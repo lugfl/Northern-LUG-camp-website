@@ -43,7 +43,7 @@ class HtmlPage_newpw extends HtmlPage {
 			$query = my_query($SQL2);
 			if ($query) {
 				$array = mysql_fetch_array($query);
-				if ($array['email'] == $email) {
+				if ($array['email'] == $email && $array['username'] == $user) {
 					$newpw = $this->new_password($user,$email);
 					$message = "Hallo ".$user."!\n\nDu hast auf www.lug-camp-2008.de ein neues Passwort angefordert! Dieses lautet wie folgt.\n\n\tPasswort: $newpw\n\ndie Mitglieder der LUG Flensburg";
 					my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($email),'Lugcamp 2008 - Neues Passwort für MyCamp',$message);
