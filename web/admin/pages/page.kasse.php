@@ -39,7 +39,6 @@ class HtmlPage_kasse extends HtmlPage {
 					if($artikelbezahlt == 'on') {
 						$SQL = "UPDATE event_account_artikel SET bezahlt = NOW() ";
 						$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$artikelid."'";
-						print $SQL;
 						$res = my_query($SQL);
 						$ret .= '<p>Artikel #'.$artikelid.' als bezahlt markiert!</p>';
 					}
