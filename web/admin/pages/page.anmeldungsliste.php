@@ -72,12 +72,12 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						}
 					}
 					
-					$a_SQL = "SELECT artikelid,bezahlt FROM event_account_artikel WHERE accountid = '".$row['accountid']."'";
+					$a_SQL = "SELECT artikelid,anzahl,bezahlt FROM event_account_artikel WHERE accountid = '".$row['accountid']."'";
 					$a_res = my_query($a_SQL);
 					while($a_row = mysql_fetch_assoc($a_res)) {
-						$topay += $artikel_array[$a_row['artikelid']];
+						$topay += $a_row['anzahl']*$artikel_array[$a_row['artikelid']];
 						if($a_row['bezahlt'] != 0) {
-							$payed += $artikel_array[$a_row['artikelid']];
+							$payed +=  $a_row['anzahl']*$artikel_array[$a_row['artikelid']];
 						}
 					}
 					

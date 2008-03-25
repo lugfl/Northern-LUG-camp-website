@@ -21,28 +21,73 @@ class HtmlPage_kasse extends HtmlPage {
 		if($action == 'pay') {
 			$type			= http_get_var('type');
 			$accountid		= http_get_Var('accountid');
-			$anmeldungid	= http_get_var('anmeldungid');
-			$events_bezahlt	= http_get_var('events_bezahlt');
+			$anmeldungid		= http_get_var('anmeldungid');
+			$events_bezahlt		= http_get_var('events_bezahlt');
 			$artikel_bezahlt	= http_get_var('artikel_bezahlt');
-			if($events_bezahlt) {
-				foreach($events_bezahlt as $eventid=>$event_bezahlt) {
-					if($event_bezahlt == 'on') {
-						$SQL = "UPDATE event_anmeldung_event SET bezahlt = NOW() ";
-						$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$eventid."'";
-						$res = my_query($SQL);
-						$ret .= '<p>Event #'.$eventid.' als bezahlt markiert!</p>';
-					}
+			$uSQL = "SELECT username,email FROM account WHERE accountid = '".$accountid."'";
+			$uquery = my_query($uSQL);
+			$uarray = mysql_fetch_array($uquery);
+			$username = $uarray['username'];
+			$email = $uarray['email'];
+
+			$msg = 'Hallo '.$username.',\n\n';
+			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du f¸r das LugCamp 2008 gebucht hast als bezahlt markiert:\n\n';
+			
+			$nomsg = $msg;
+
+			$eSQL = "SELECT eventid,bezahlt FROM event_anmeldung_event ";
+			$eSQL .= "WHERE anmeldungid = '".$anmeldungid."'";
+			$eres = my_query($eSQL);
+			while($row = mysql_fetch_object($eres)) {
+				if($row->bezahlt == NULL && $events_bezahlt[$row->eventid] == 'on') {
+					$SQL = "UPDATE event_anmeldung_event SET bezahlt = NOW() ";
+					$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$row->eventid."'";
+					$res = my_query($SQL);
+					$ret .= '<p>Event #'.$row->eventid.' als bezahlt markiert!</p>';
+					
+					$iSQL = "SELECT * FROM event_event WHERE eventid='".$row->eventid."'";
+					$ires = my_query($iSQL);
+					$iarray = mysql_fetch_array($ires);
+					
+					$msg .= $iarray['name'].'\n';
+				} elseif($row->bezahlt != NULL && !$events_bezahlt[$row->eventid]) {
+					$SQL = "UPDATE event_anmeldung_event SET bezahlt = NULL ";
+					$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$row->eventid."'";
+					$res = my_query($SQL);
+					$ret .= '<p>Event #'.$row->eventid.' NICHT MEHR als bezahlt markiert!</p>';	
 				}
 			}
-			if($artikel_bezahlt) {
-				foreach($artikel_bezahlt as $artikelid=>$artikelbezahlt) {
-					if($artikelbezahlt == 'on') {
-						$SQL = "UPDATE event_account_artikel SET bezahlt = NOW() ";
-						$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$artikelid."'";
-						$res = my_query($SQL);
-						$ret .= '<p>Artikel #'.$artikelid.' als bezahlt markiert!</p>';
-					}
+			
+			$aSQL = "SELECT * FROM event_account_artikel ";
+			$aSQL .= "WHERE accountid = '".$accountid."'";
+			$ares = my_query($aSQL);
+			while($row = mysql_fetch_object($ares)) {
+				if($row->bezahlt == NULL && $artikel_bezahlt[$row->accountartikelid] == 'on') {
+					$SQL = "UPDATE event_account_artikel SET bezahlt = NOW() ";
+					$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$row->accountartikelid."'";
+					$res = my_query($SQL);
+					$ret .= '<p>Artikel #'.$row->accountartikelid.' als bezahlt markiert!</p>';
+					
+					$iSQL = "SELECT * FROM event_artikel WHERE artikelid='".$row->artikelid."'";
+					$ires = my_query($iSQL);
+					$iarray = mysql_fetch_array($ires);
+					
+					if($row->groesse) {
+						$groesse = ' Grˆﬂe '.$row->groesse.' ';
+					} else { $groesse = ''; }
+										
+					$msg .= $row->anzahl.'x '.$iarray['name'].$groesse.'\n';					
+				} elseif($row->bezahlt != NULL && !$artikel_bezahlt[$row->accountartikelid]) {
+					$SQL = "UPDATE event_account_artikel SET bezahlt = NULL ";
+					$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$row->accountartikelid."'";
+					$res = my_query($SQL);
+					$ret .= '<p>Artikel #'.$row->accountartikelid.' NICHT MEHR als bezahlt markiert!</p>';
 				}
+			}
+
+			if($nomsg != $msg) {
+				$msg .= '\nGruﬂ\nJan Boysen\nKassenwart Lug Flensburg';
+				$send_mail = my_mailer('kasse@lug-camp-2008.de',$email,'Geldeingang LugCamp 2008',$msg);
 			}
 		} else {
 			if($nickname) {
@@ -95,9 +140,9 @@ class HtmlPage_kasse extends HtmlPage {
 				$ret = '
 				<h1>Kasse</h1>
 				<p class="bezahlt">Anmeldungen: '.$anmeldungen.'</p>
-				<p class="bezahlt">Gesamtsumme zu zahlen: '.$topay.' &euro;</p>
-				<p class="bezahlt">Gesamtsumme als bezahlt verbucht: '.$payed.' &euro;</p>
-				<p class="zuzahlen">Defizit: '.($topay-$payed).' &euro;</p>
+				<p class="bezahlt">Gesamtsumme zu zahlen: '.number_format($topay,2,',','.').' &euro;</p>
+				<p class="bezahlt">Gesamtsumme als bezahlt verbucht: '.number_format($payed,2,',','.').' &euro;</p>
+				<p class="zuzahlen">Defizit: '.number_format(($topay-$payed),2,',','.').' &euro;</p>
 				<p>Hier kann Jan eintragen wer schon wof&uuml;r bezahlt hat.</p>
 				<form action="?p=kasse" method="post">
 				Nickname: <input type="text" name="nickname" />
