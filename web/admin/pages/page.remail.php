@@ -31,7 +31,7 @@ class HtmlPage_remail extends HtmlPage {
 		$code .= $accountid;
 		$msg = "Hallo ".$row['vorname'].",\n\n"."Damit deine Anmeldung zum LugCamp 2008 erfolgreich abgeschlossen werden kann,";
 		$msg .= " klicke bitte auf folgenden Link:\n\n";
-		$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.get_script_name().'?p=anmeldung&code='.$code;
+		$msg .= 'http://'.$_SERVER['SERVER_NAME'].'/'.str_replace('admin/','',get_script_name()).'?p=anmeldung&code='.$code;
 		$msg .= "\n\nDie Kontodaten zur Zahlung findest Du im Loginbereich.";
 		$msg .= "\nIm Loginbereich wirst Du Zugriff auf alle Daten der Anmeldung bekommen ";
 		$msg .= "\nund auch die Anmeldungen fuer Addons (LPI,T-Shirts) nachholen koennen.";
@@ -41,7 +41,7 @@ class HtmlPage_remail extends HtmlPage {
 		$msg .= "\n\nWir freuen uns auf Dich\n\ndie Mitglieder der LUG Flensburg";
 		
 		$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($row['email']),'Anmeldung LugCamp 2008',$msg);
-
+		
 		$ret .= '<p></p>';
 
 		return $ret;
