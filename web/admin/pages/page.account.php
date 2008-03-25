@@ -28,6 +28,12 @@ class HtmlPage_account extends HtmlPage {
 		$res = my_query($SQL);
 		return '<p>Admin-Bemerkung geändert !</p>';
 	}
+	
+	function editAccount($accountid,$email) {
+		$SQL = "UPDATE account SET email = '".$email."' WHERE accountid = '".$accountid."'";
+		$res = my_query($SQL);
+		return '<p>Email-Adresse geändert !</p>';
+	}
 
 	function _readInput() {
 		$this->p = http_get_var('p');
@@ -35,13 +41,17 @@ class HtmlPage_account extends HtmlPage {
 		$this->an = http_get_var('an');
 		$this->action = http_get_Var('action');
 		$this->abemerkung = http_get_var('admin_bemerkung');
+		$this->e_email = http_get_var('e_email');
 
 		if($this->p=='account') {
 			$tmp = http_get_var('accountid');
 			if(is_numeric($tmp))
 				$this->accountid = $tmp;
-			if($this->action == 'abemerkung')
+			if($this->action == 'abemerkung') {
 				$this->messages = $this->updateAdminBemerkung($this->an,$this->abemerkung);
+			} elseif ($this->action == 'edit') {
+				$this->messages = $this->editAccount($this->accountid,$this->e_email);
+			}
 		}
 	}
 
@@ -60,13 +70,14 @@ class HtmlPage_account extends HtmlPage {
 		}
 		$ret .= '
 			<table class="datatable1">
+				<form method="post" action="'.get_script_name().'?p=account&accountid='.$daten['accountid'].'&action=edit">
 				<tr>
 					<th>Benutzername</th>
 					<td>'.$daten['username'].'</td>
 				</tr>
 				<tr>
 					<th>EMail</th>
-					<td>'.$daten['email'].'</td>
+					<td><input type="text" size="40" name="e_email" value="'.$daten['email'].'" /></td>
 				</tr>
 				<tr>
 					<th>LUG</th>
@@ -97,6 +108,11 @@ class HtmlPage_account extends HtmlPage {
 					<th>Letzter Login</th>
 					<td>'.$logintime.'</td>
 				</tr>
+				<tr>
+					<th></th>
+					<td><input type="submit" value="Änderungen übernehmen" /></td>
+				</tr>
+				</form>
 				<tr>
 					<th>Anmeldungen</th>
 					<td><ul>
