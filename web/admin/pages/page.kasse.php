@@ -55,8 +55,49 @@ class HtmlPage_kasse extends HtmlPage {
 					}
 				}
 			} else {
+				$anmeldungen = 0;
+				$topay = 0;
+				$payed = 0;
+				
+				$eSQL = "SELECT eventid,charge FROM event_event";
+				$equery = my_query($eSQL);
+				$earray = array();
+				while($row = mysql_fetch_assoc($equery)) {
+					$earray[$row['eventid']] = $row['charge'];
+				}
+				
+				$aSQL = "SELECT artikelid,preis FROM event_artikel";
+				$aquery = my_query($aSQL);
+				$aarray = array();
+				while($row = mysql_fetch_assoc($aquery)) {
+					$aarray[$row['artikelid']] = $row['preis'];
+				}
+				
+				$SQL = "SELECT * FROM event_anmeldung_event";
+				$query = my_query($SQL);
+				while($row = mysql_fetch_object($query)) {
+					$anmeldungen++;
+					$topay = $topay+$earray[$row->eventid];
+					if($row->bezahlt != NULL)  {
+						$payed = $payed+$earray[$row->eventid];
+					}
+				}
+				
+				$SQL = "SELECT * FROM event_account_artikel";
+				$query = my_query($SQL);
+				while($row = mysql_fetch_object($query)) {
+					$topay = $topay+$aarray[$row->artikelid]*$row->anzahl;
+					if($row->bezahlt != NULL)  {
+						$payed = $payed+$aarray[$row->artikelid]*$row->anzahl;
+					}
+				}
+				
 				$ret = '
 				<h1>Kasse</h1>
+				<p class="bezahlt">Anmeldungen: '.$anmeldungen.'</p>
+				<p class="bezahlt">Gesamtsumme zu zahlen: '.$topay.' &euro;</p>
+				<p class="bezahlt">Gesamtsumme als bezahlt verbucht: '.$payed.' &euro;</p>
+				<p class="zuzahlen">Defizit: '.($topay-$payed).' &euro;</p>
 				<p>Hier kann Jan eintragen wer schon wof&uuml;r bezahlt hat.</p>
 				<form action="?p=kasse" method="post">
 				Nickname: <input type="text" name="nickname" />
