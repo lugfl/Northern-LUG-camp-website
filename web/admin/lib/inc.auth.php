@@ -37,7 +37,7 @@ if($auth_user != '' && $auth_pass != '') {
 		$au->username = $row['username'];
 		$_SESSION['_login_ok'] = 1;
 		$_SESSION['_accountid'] = $row['accountid'];
-		$_SESSION['_username'] = $au;
+		$_SESSION['_username'] = $au->username;
 		$_SESSION['_acl'] = $row['acl'];
 	}
 }
