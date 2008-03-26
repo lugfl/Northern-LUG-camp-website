@@ -34,26 +34,26 @@ class HtmlPage_passwd extends HtmlPage {
 				$row1 = mysql_fetch_assoc($res1);
 				mysql_free_result($res1);
 				if($row1 && $row1['accountid'] = $accountid) {
-					// success
+					if(strlen($this->data['neu1'])<6)
+						$this->errors['tooshort'] = 'Das neue Passwort ist zu kurz. Bitte w&auml;hle ein Passwort mit mindestens 6 Zeichen.';
 				}else{
 					$this->errors['alt'] = 'Passwort falsch eingegeben.';
 				}
 			}
-		} else {
+		} elseif($this->data['alt'] == '' && $this->data['neu1'] == '') {
 			$SQL2 = "SELECT email FROM account WHERE accountid='".my_escape_string($accountid)."'";
 			$res2 = my_query($SQL2);
 			$email_array = mysql_fetch_Array($res2);
 			if($email_array['email'] == $this->data['email']) {
 				$this->errors['notchanged'] = 'Die Email-Adresse hat sich nicht ge�ndert.';
 			}
+		} else {
+			$this->errors['password'] = 'Du hast dein altes Passwort nicht eingegeben.';
 		}
 
 		if($this->data['neu1'] != $this->data['neu2']) {
 			$this->errors['missmatch'] = 'Passw&ouml;rter stimmen nicht &uuml;berein.';
 		}
-
-		if(strlen($this->data['neu1'])<6 && $this->data['neu1'] != '')
-			$this->errors['tooshort'] = 'Das neue Passwort ist zu kurz. Bitte w&auml;hle ein Passwort mit mindestens 6 Zeichen.';
 
 		if(!preg_match('/^[a-z0-9-_.@äöüß]{8,50}$/i',$this->data['email'])) 
 			$this->errors['email'] = 'Die eingegebene Email-Adresse ist ung�ltig.';
