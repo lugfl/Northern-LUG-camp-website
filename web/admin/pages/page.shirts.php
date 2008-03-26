@@ -36,8 +36,8 @@ class HtmlPage_shirts extends HtmlPage {
 			$groesse = '';
 			$eintrag = '';
 			$SQL = "SELECT * FROM event_account_artikel WHERE artikelid = '".$row->artikelid."' ORDER BY groesse";
-			$res = my_query($SQL);
-			while($brow = mysql_fetch_object($res)) {
+			$res2 = my_query($SQL);
+			while($brow = mysql_fetch_object($res2)) {
 				if($groesse != $brow->groesse && $groesse != '') {
 					$ret .= '<tr><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
 					$anzahl = $brow->anzahl;
@@ -48,7 +48,6 @@ class HtmlPage_shirts extends HtmlPage {
 			}
 			$ret .= '<tr><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
 		}
-
 		$ret .= '
 		</table>
 		';
