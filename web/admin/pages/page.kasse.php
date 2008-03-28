@@ -100,6 +100,7 @@ class HtmlPage_kasse extends HtmlPage {
 					}
 				}
 			} else {
+				$teilnehmer = 0;
 				$anmeldungen = 0;
 				$topay = 0;
 				$payed = 0;
@@ -122,8 +123,9 @@ class HtmlPage_kasse extends HtmlPage {
 				$query = my_query($SQL);
 				while($row = mysql_fetch_object($query)) {
 					if($row->eventid == 1) {
-						$anmeldungen++;
+						$teilnehmer++;
 					}
+					$anmeldungen++;
 					$topay = $topay+$earray[$row->eventid];
 					if($row->bezahlt != NULL)  {
 						$payed = $payed+$earray[$row->eventid];
@@ -141,6 +143,7 @@ class HtmlPage_kasse extends HtmlPage {
 				
 				$ret = '
 				<h1>Kasse</h1>
+				<p class="bezahlt">Teilnehmer: '.$teilnehmer.'</p>
 				<p class="bezahlt">Anmeldungen: '.$anmeldungen.'</p>
 				<p class="bezahlt">Gesamtsumme zu zahlen: '.number_format($topay,2,',','.').' &euro;</p>
 				<p class="bezahlt">Gesamtsumme als bezahlt verbucht: '.number_format($payed,2,',','.').' &euro;</p>
