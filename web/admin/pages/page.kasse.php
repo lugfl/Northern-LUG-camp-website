@@ -121,7 +121,9 @@ class HtmlPage_kasse extends HtmlPage {
 				$SQL = "SELECT * FROM event_anmeldung_event";
 				$query = my_query($SQL);
 				while($row = mysql_fetch_object($query)) {
-					$anmeldungen++;
+					if($row->eventid == 1) {
+						$anmeldungen++;
+					}
 					$topay = $topay+$earray[$row->eventid];
 					if($row->bezahlt != NULL)  {
 						$payed = $payed+$earray[$row->eventid];
