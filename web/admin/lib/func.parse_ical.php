@@ -391,7 +391,10 @@ while (!feof($fp))
 				case 'STATUS':
 				$cal[$event]['status'] = $data;
 				break;
-				
+			
+				case 'CATEGORIES':
+				$cal[$event]['categories'] = $data;
+				break;	
 				
 				/********** ALARM INFO ***********/
 		
