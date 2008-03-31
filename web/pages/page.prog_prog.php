@@ -71,6 +71,9 @@ class HtmlPage_prog_prog extends HtmlPage {
 			</p>
 			';
 		}
+		$ret .= '
+<p>Wenn ihr selber Vortr&auml;ge halten wollt, mailt bitte eine kurze Zusammenfassung an <b>call4paper (at) lug-camp-2008.de</b>, damit wir den Vortrag ins Programm einbauen k&ouml;nnen.</p>
+		';
 		return $ret;
 	}
 
