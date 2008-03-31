@@ -283,7 +283,7 @@ while (!feof($fp))
 				$data = str_replace("\\n", '<br />', $data);
 				$data = str_replace("\\r", '<br />', $data);
 				$data = stripslashes($data);
-				$data = htmlentities($data);
+				//$data = htmlentities($data);
 				$cal[$event]['summary'] = $data;
 				break;
 				
@@ -293,7 +293,7 @@ while (!feof($fp))
 				$data = str_replace("\\n", '<br />', $data);
 				$data = str_replace("\\r", '<br />', $data);
 				$data = stripslashes($data);
-				$data = htmlentities($data);
+				//$data = htmlentities($data);
 				if ($flag_valarm == false) 
 					{
 					$cal[$event]['description'] = $data;
