@@ -1,6 +1,6 @@
 <?php
 
-require_once('lib/func.parse_ical.php');
+require_once('./func.parse_ical.php');
 
 function parse_ical_utf8($name) {
 	$filename = $name . ".ics";
