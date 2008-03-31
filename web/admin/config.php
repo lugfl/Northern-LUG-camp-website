@@ -6,6 +6,7 @@ $DB_pass = 'test';
 $DB_name = 'test';
 $DB_host = "localhost";
 
+$CURRENT_EVENT_ID = 0;
 
 $DB['DEFAULT']['user'] = $DB_user;
 $DB['DEFAULT']['pass'] = $DB_pass;

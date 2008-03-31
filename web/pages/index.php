@@ -29,6 +29,7 @@ require_once('pages/page.camp_essen.php');
 require_once('pages/page.camp_np.php');
 
 require_once('pages/page.prog.php');
+require_once('pages/page.prog_prog.php');
 require_once('pages/page.prog_lpi.php');
 
 require_once('pages/page.anmeldung.php');
