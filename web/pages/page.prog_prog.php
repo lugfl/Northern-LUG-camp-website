@@ -30,6 +30,12 @@ class HtmlPage_prog_prog extends HtmlPage {
 		if(mysql_num_rows($res)>0) {
 			$ret .= '
 				<table class="datatable1">
+				<colgroup>
+					<col width="80px"/>
+					<col width="100px"/>
+					<col/>
+					<col/>
+				</colgroup>
 			';
 			$letztertag = "";
 			while($row = mysql_fetch_assoc($res)) {
