@@ -75,6 +75,7 @@ class HtmlPage_programm extends HtmlPage {
 	}
 
 	function import() {
+		my_query("SET time_zone='Europe/Berlin'");
 		if($this->action == "import") {
 			if(isset($_FILES['programm_file'])) {
 				if($_FILES['programm_file']['type'] != 'text/calendar') {
