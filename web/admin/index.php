@@ -37,7 +37,7 @@ $page = new $pclass;
     
     <div id="haupt-navi">
 <?php
-	if(auth_ok() && is_object($navi)) {
+	if(auth_ok() && is_object($navi) && substr_count($_SESSION['_acl'],'admin') == 1) {
 		print $navi->getNaviHtml('root',1);
 	}
 ?>
@@ -66,7 +66,11 @@ $page = new $pclass;
 		$display_content = 1;
 	}
 	if($display_content && is_object($page)) {
-		print $page->getContent();
+		if(substr_count($_SESSION['_acl'],'admin') == 1) {
+			print $page->getContent();
+		} else {
+			print '<p class="error">Du hast hier keinen Zugriff!</p>';
+		}
 	}
 	
     ?>
