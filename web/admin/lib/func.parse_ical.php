@@ -230,7 +230,11 @@ while (!feof($fp))
 					$cal[$event]['all_day'] = 0;
 					$cal[$event]['start_date'] = $date[1].$date[2].$date[3];
 					$cal[$event]['start_time'] = $date[4].$date[5];
-					$cal[$event]['start_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					if(preg_match('/Z$/',$data)) {
+						$cal[$event]['start_unix'] = gmmktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}else{
+						$cal[$event]['start_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}
 					}
 				break;
 				
@@ -252,7 +256,11 @@ while (!feof($fp))
 					
 				$cal[$event]['end_date'] = $date[1].$date[2].$date[3];
 				$cal[$event]['end_time'] = $date[4].$date[5];
-				$cal[$event]['end_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					if(preg_match('/Z$/',$data)) {
+						$cal[$event]['end_unix'] = gmmktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}else{
+						$cal[$event]['end_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}
 				break;
 				
 				
@@ -274,7 +282,11 @@ while (!feof($fp))
 					
 				$cal[$event]['stamp_date'] = $date[1].$date[2].$date[3];
 				$cal[$event]['stamp_time'] = $date[4].$date[5];
-				$cal[$event]['stamp_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					if(preg_match('/Z$/',$data)) {
+						$cal[$event]['stamp_unix'] = gmmktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}else{
+						$cal[$event]['stamp_unix'] = mktime($date[4], $date[5], $date[6], $date[2],$date[3], $date[1]);
+					}
 				break;
 				
 				
