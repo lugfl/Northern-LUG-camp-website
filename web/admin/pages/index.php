@@ -15,6 +15,7 @@ require_once('pages/page.kasse.php');
 require_once('pages/page.lugs.php');
 require_once('pages/page.shirts.php');
 require_once('pages/page.vegetarier.php');
+require_once('pages/page.kommentare.php');
 require_once('pages/page.programm.php');
 
 require_once('pages/page.remail.php');
