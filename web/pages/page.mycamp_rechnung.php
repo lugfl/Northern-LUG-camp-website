@@ -234,13 +234,20 @@ class HtmlPage_rechnung extends HtmlPage {
 						<p>
 						Bitte &uuml;berweise den noch ausstehenden Betrag auf das folgende Konto:
 						</p>
-						<p>
 							<address>
 							Kontoinhaber: LUG Flensburg e.V.<br/>
 							Bank: Union Bank AG<br/>
 							BLZ: 215 201 00<br/>
-							Kto: 16632<br/>
+							Kto: 16632
 							</address>
+						<p>
+							Oder f&uuml;r internationale &Uuml;berweisungen:
+						</p>
+							<address>
+							BIC: UNBNDE21XXX<br/>
+							IBAN: DE37 2152 0100 0000 0166 32<br/>
+							</address>
+						<p>
 							Verwendungszweck: LC 2008 '.$nickname.'
 						</p>
 						<p>
