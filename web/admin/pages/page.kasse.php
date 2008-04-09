@@ -30,8 +30,8 @@ class HtmlPage_kasse extends HtmlPage {
 			$username = $uarray['username'];
 			$email = $uarray['email'];
 
-			$msg = 'Hallo '.$username.',\n\n';
-			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du f¸r das LugCamp 2008 gebucht hast als bezahlt markiert:\n\n';
+			$msg = 'Hallo '.$username.",\n\n";
+			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du f¸r das LugCamp 2008 gebucht hast als bezahlt markiert:'."\n\n";
 			
 			$nomsg = $msg;
 
@@ -49,7 +49,7 @@ class HtmlPage_kasse extends HtmlPage {
 					$ires = my_query($iSQL);
 					$iarray = mysql_fetch_array($ires);
 					
-					$msg .= $iarray['name'].'\n';
+					$msg .= $iarray['name']."\n";
 				} elseif($row->bezahlt != NULL && !$events_bezahlt[$row->eventid]) {
 					$SQL = "UPDATE event_anmeldung_event SET bezahlt = NULL ";
 					$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$row->eventid."'";
@@ -76,7 +76,7 @@ class HtmlPage_kasse extends HtmlPage {
 						$groesse = ' Grˆﬂe '.$row->groesse.' ';
 					} else { $groesse = ''; }
 										
-					$msg .= $row->anzahl.'x '.$iarray['name'].$groesse.'\n';					
+					$msg .= $row->anzahl.'x '.$iarray['name'].$groesse."\n";					
 				} elseif($row->bezahlt != NULL && !$artikel_bezahlt[$row->accountartikelid]) {
 					$SQL = "UPDATE event_account_artikel SET bezahlt = NULL ";
 					$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$row->accountartikelid."'";
@@ -86,7 +86,7 @@ class HtmlPage_kasse extends HtmlPage {
 			}
 
 			if($nomsg != $msg) {
-				$msg .= '\nGruﬂ\nJan Boysen\nKassenwart Lug Flensburg';
+				$msg .= "\nGruﬂ\nJan Boysen\nKassenwart Lug Flensburg";
 				$send_mail = my_mailer('kasse@lug-camp-2008.de',$email,'Geldeingang LugCamp 2008',$msg);
 			}
 		} else {
