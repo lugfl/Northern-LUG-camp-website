@@ -13,7 +13,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 	var $name = "Anmeldungen";
 	var $navilevel = 1;
 	var $login_required = 1;
-
+	var $barcodeupdates = 0;
 	function HtmlPage_anmeldungsliste() {
 	}
 	
@@ -40,6 +40,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 	}
 	
 	function getContent() {
+		$this->barcodeupdate();
 		$sort = http_get_var('s');
 		if($sort == '') { $sort = "crdate"; }
     		$ret = '';
@@ -155,6 +156,14 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 		return $ret;
 	}
 
+	function barcodeupdate() {
+		$SQL = "UPDATE event_anmeldung SET barcode=CONCAT('C08',IF(CHAR_LENGTH(HEX(anmeldungid))=1,CONCAT('0',HEX(anmeldungid)),HEX(anmeldungid))) WHERE barcode IS NULL";
+		my_query($SQL);
+		$updates = my_affected_rows();
+		if($updates!=0) {
+			$this->barcodeupdates = $updates;	// Merken das ein Barcodeupdate gemacht wurde
+		}
+	} // function barcodeupdate
 }
 
 
