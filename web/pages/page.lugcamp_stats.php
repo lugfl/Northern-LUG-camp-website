@@ -62,7 +62,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 			}
 			$ret .= '</table>
 			<p>
-				Somit haben wir insgesamt <span class="bold">'.$ges.' +Nick</span> Anmeldungen zum Camp.
+				Somit haben wir insgesamt <span class="bold">'.$ges.'</span> Anmeldungen zum Camp.
 			</p>
 			';
 			mysql_free_result($res1);
