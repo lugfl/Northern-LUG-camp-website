@@ -389,7 +389,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 				<dd>
 					<input id="anmeldung_form_ankunft" type="text" name="anmeldung_form_ankunft" value="'.$this->in['ankunft'].'" /> 
 					falls du keinen genauen Zeitpunkt festlegen kannst, oder der Zug mal wieder Versp&auml;tung hat, 
-					informiere uns einfach rechtzeitig &uuml;ber das Orga-Telefon (0171 - 233 85 96).
+					informiere uns einfach rechtzeitig &uuml;ber das Orga-Telefon (0151-21020311).
 		';
 		if(isset($this->err['ankunft'])) {
 			$ret .= '<p class="error">'.$this->err['ankunft'].'</p>';
@@ -401,7 +401,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 				<dd>
 					<input id="anmeldung_form_abfahrt" type="text" name="anmeldung_form_abfahrt" value="'.$this->in['abfahrt'].'" /> 
 					falls du keinen genauen Zeitpunkt festlegen kannst, informiere einfach einen von uns rechtzeitig auf dem Camp 
-					oder &uuml;ber das Orga-Telefon (0171 - 233 85 96).
+					oder &uuml;ber das Orga-Telefon (0151-21020311).
 		';
 		if(isset($this->err['abfahrt'])) {
 			$ret .= '<p class="error">'.$this->err['abfahrt'].'</p>';
