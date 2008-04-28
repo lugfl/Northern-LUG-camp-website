@@ -52,7 +52,7 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 		
 		if($array['urkunde']) { $array['abzeichen'] .= ' ('.$array['urkunde'].')'; }
 						
-		$a_SQL = "SELECT artikelid,anzahl,bezahlt,groesse FROM event_account_artikel WHERE accountid = '".$accountid."'";
+		$a_SQL = "SELECT artikelid,anzahl,bezahlt,groesse,crdate FROM event_account_artikel WHERE accountid = '".$accountid."'";
 		$a_res = my_query($a_SQL);
 		while($a_row = mysql_fetch_assoc($a_res)) {
 			$array['shirts'] .= $a_row['anzahl']."x ".$artikel_array[$a_row['artikelid']]['name']." ".$a_row['groesse'];
@@ -63,6 +63,9 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 				$array['shirts'] .= ' (bezahlt)';
 			} else {
 				$array['shirts'] .= ' (NICHT bezahlt)';
+			}
+			if ($a_row['artikelid'] > 3 && $a_row['artikelid'] < 7) {
+				$array['shirts'] .= ' ('.$a_row['crdate'].')';
 			}
 			$array['shirts'] .= ", ";
 		}
