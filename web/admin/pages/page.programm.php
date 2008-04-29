@@ -107,7 +107,7 @@ class HtmlPage_programm extends HtmlPage {
 								array_push($p,"titel='".my_escape_string($d['summary'])."'");
 								array_push($p,"beschreibung='".my_escape_string($d['description'])."'");
 								array_push($p,"start=FROM_UNIXTIME(".$d['start_unix'].")");
-								array_push($p,"ende=FROM_UNIXTIME(".$d['end_unix'].")");
+								if(is_numeric($d['end_unix'])) array_push($p,"ende=FROM_UNIXTIME(".$d['end_unix'].")");
 								array_push($p,"kategorie='".my_escape_string($d['categories'])."'");
 								if(count($p)>0) {
 									$SQL = "INSERT INTO event_programm SET ".join(", ",$p);
