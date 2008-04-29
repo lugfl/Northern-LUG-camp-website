@@ -28,12 +28,11 @@ class HtmlPage_shirts_csv extends HtmlPage {
 		
 		if($res) {
 			if(mysql_num_rows($res) >0) {
-				$csv = '"LfdNr";"Name";"Farbe";"Größe";"Anzahl";"bezahlt";"ausgegeben"'."\n";
+				$csv = '"LfdNr";"Name";"Farbe";"Größe";"Anzahl";"Bestelldatum";"bezahlt";"ausgegeben"'."\n";
 				$ctr = 1;
 			
 				while($row = mysql_fetch_assoc($res)) {
-					$crdate = date("d.m.Y G:i:s",$row['crdate']);
-					$csv .= $ctr.';"'.$row['username'].'";"'.$row['artikelname'].'";"'.$row['groesse'].'";"'.$row['anzahl'].'";"'.($row['bezahlt'] ? "     X" : "").'";""';
+					$csv .= $ctr.';"'.$row['username'].'";"'.$row['artikelname'].'";"'.$row['groesse'].'";"'.$row['anzahl'].'";"'.$row['crdate'].'";"'.($row['bezahlt'] ? "     X" : "").'";""';
 					$csv .= "\n";
 					$ctr++;
 				}
