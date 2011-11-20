@@ -1,0 +1,13 @@
++ Ein kleines Beispiel 
+* Wiki ist 
+ # schnell 
+ # einfach 
+ 
+**Bilder** einzubinden geht 
+@@+++ schnell und einfach @@: 
+ 
+http://pear.php.net/gifs/pearsmall.gif 
+ 
+||Eine Tabelle || kann || 
+|| auch || schnell || 
+||||gebaut werden, ohne HTML zu beherrschen ||
