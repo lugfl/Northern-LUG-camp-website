@@ -9,3 +9,6 @@ DROP TABLE IF EXISTS event_zahlung;
 
 DROP TABLE IF EXISTS news_cat;
 DROP TABLE IF EXISTS news_eintrag;
+
+DROP TABLE IF EXISTS sponsoren;
+

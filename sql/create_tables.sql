@@ -100,3 +100,12 @@ CREATE TABLE news_eintrag (
 	PRIMARY KEY pk_news_eintrag(eintragid)
 );
 
+CREATE TABLE sponsoren (
+  sponsorenid BIGINT UNSIGNED NOT NULL auto_increment,
+  name VARCHAR(255) NOT NULL,
+  url VARCHAR(255),
+  img VARCHAR(255),
+  crdate DATETIME NOT NULL,
+  PRIMARY KEY pk_sponsoren(sponsorenid)
+);
+
