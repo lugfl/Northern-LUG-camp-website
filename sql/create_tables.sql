@@ -8,6 +8,8 @@ CREATE TABLE account (
 	email		VARCHAR(255) NOT NULL,
 	crdate		DATETIME NOT NULL,
 	lugid		BIGINT UNSIGNED,
+  acl VARCHAR(255) default 'client',
+  active TINYINT(1) default NULL,
 	PRIMARY KEY pk_account(accountid)
 );
 
@@ -20,11 +22,18 @@ CREATE TABLE event_event (
 	buchanfang	DATETIME NOT NULL,
 	buchende	DATETIME NOT NULL,
 	quota		INTEGER DEFAULT NULL,
+  charge float default NULL,
+  parent bigint(20) unsigned default NULL,
+  onlythisingroup tinyint(4) NOT NULL default '0',
+  hidden tinyint(4) NOT NULL default '0',
+  alwaysallowedinthisgroup tinyint(4) NOT NULL default '0',
+  sort int(11) NOT NULL default '0',
+  barzahlung tinyint(4) NOT NULL default '0',
 	PRIMARY KEY pk_event (eventid)
 );
 
 CREATE TABLE event_anmeldung (
-	anmeldungid	BIGINT UNSIGNED NOT NULL auto_increment,
+	anmeldungid	BIGINT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
 	accountid	BIGINT UNSIGNED NOT NULL,
 	lugid		BIGINT UNSIGNED NOT NULL,
 	vorname		VARCHAR(30) NOT NULL,
@@ -35,7 +44,14 @@ CREATE TABLE event_anmeldung (
 	land		CHAR(2) NOT NULL DEFAULT 'DE',
 	email		VARCHAR(255) NOT NULL,
 	gebdat		DATE NOT NULL,
-	PRIMARY KEY pk_anmeldung (anmeldungid)
+  landid tinyint(2) unsigned NOT NULL default '0',
+  vegetarier tinyint(1) unsigned NOT NULL default '0',
+  arrival tinyint(2) unsigned NOT NULL default '0',
+  ankunft varchar(255) NOT NULL default '',
+  abfahrt varchar(255) NOT NULL default '',
+  bemerkung text,
+  admin_bemerkung text,
+  barcode varchar(20) default NULL
 );
 
 CREATE TABLE event_artikel (
@@ -46,15 +62,19 @@ CREATE TABLE event_artikel (
 	kaufbis		DATETIME DEFAULT NULL,
 	preis		NUMERIC(5,2) DEFAULT NULL,
 	pic		VARCHAR(255) DEFAULT NULL,	-- Bild
+  groessen varchar(255) default NULL,
 	PRIMARY KEY pk_artikel(artikelid)
 );
 
 CREATE TABLE event_account_artikel (
+  accountartikelid BIGINT(20) unsigned NOT NULL auto_increment,
 	accountid	BIGINT UNSIGNED NOT NULL,
 	artikelid	BIGINT UNSIGNED NOT NULL,
 	anzahl		INTEGER NOT NULL,
 	crdate		DATETIME,
-	PRIMARY KEY pk_account_artikel(accountid,artikelid,anzahl)
+  groesse VARCHAR(10) default NULL,
+  bezahlt datetime default NULL,
+	PRIMARY KEY pk_account_artikel(accountartikelid)
 );
 
 CREATE TABLE event_lug (
@@ -69,6 +89,8 @@ CREATE TABLE event_lug (
 CREATE TABLE event_anmeldung_event (
 	anmeldungid	BIGINT UNSIGNED NOT NULL,
 	eventid		BIGINT UNSIGNED NOT NULL,
+  accountid BIGINT unsigned default NULL,
+  bezahlt datetime default NULL,
 	PRIMARY KEY pk_anmeldung_event(anmeldungid,eventid)
 );
 
