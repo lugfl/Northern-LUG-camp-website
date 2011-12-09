@@ -13,5 +13,6 @@ PEAR-Modules
 ------------
 
 - Net_SMTP
+- Mail
 - Mail_Mime
 
