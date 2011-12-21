@@ -50,6 +50,11 @@ $DB_SCHEMA['event_lug']['cols']['abk']['name'] = 'Abk.';
 $DB_SCHEMA['event_lug']['cols']['url']['name'] = 'URL';
 $DB_SCHEMA['event_lug']['cols']['crdate']['name'] = 'Erstellt am';
 
+$DB_SCHEMA['sponsoren']['cols']['name']['name'] = 'Name';
+$DB_SCHEMA['sponsoren']['cols']['img']['name'] = 'Bild';
+$DB_SCHEMA['sponsoren']['cols']['url']['name'] = 'URL';
+$DB_SCHEMA['sponsoren']['cols']['crdate']['name'] = 'Erstellt am';
+
 if( is_file('.htconfig.php') ) {
 	include_once('.htconfig.php');
 }
