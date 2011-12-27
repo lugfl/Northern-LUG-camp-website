@@ -1,83 +1,73 @@
 <?php
   session_start();
   require_once('global.php');
+	require_once('lib/func.http_get_var.php');
+	require_once(WEB_ROOT.'/lib/class.Site.php');
+  require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
-
-  require_once('pages/index.php');
-
-// Navigation
-$navi = new HtmlPageNavi();
-
-// Content
-$p = http_get_var('p');
-if(!isset($PAGE[$p])) {
-	$p = "start";
+// connect to Database
+$pdo = null;
+try {
+	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']}";
+	$pdo = new PDO($dsn,$DB['DEFAULT']['user'],$DB['DEFAULT']['pass']);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+} catch (PDOException $e) {
+	print 'Error! :' . $e->getMessage();
+	exit();
 }
-$pclass = $PAGE[$p]['phpclass'];
-$page = new $pclass;
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
- "http://www.w3.org/TR/xhtml1/DTD/Strict.dtd">
-<html>
-  <head>
-    <title> LUG-CAMP 2008 Flensburg - Germany</title>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-    <meta http-equiv="Content-Style-Type" content="text/css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    
-    <link rev="copyright" title="Impressum" href="./index.php?p=impressum">
-    <link rev="start" title="Startseite" href="./index.php?p=start">
-    <link rev="bookmark" title="www.lugfl.de" href="http://www.lugfl.de">
-  </head>
-  <body>
-  <div id="page">
-    <div id="banner"><img src="bilder/banner.png"/></div>
-    
-    <div id="haupt-navi">
-<?php
-	if(is_object($navi)) {
-		print $navi->getNaviHtml();
+$site = new Site($pdo);
+
+$p = http_get_var('p');
+$domaininfo = $site->getDomain();
+$page = $site->getPage($p);
+
+$content = $site->getPageContent($p);
+
+$rootpath = $site->getRootPath($p);
+
+// Create Naviline 1
+$navi1 = '';
+$navi1arr = array();
+$n1 = $site->getNavigation(); // Hauptnavi
+foreach( $n1 as $nav1) {
+	$l = '<a href="./index.php?p='.$nav1['pageid'].'"';
+	if($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath) ) {
+		$l .= ' class="akktiv"';
 	}
-?>
-    </div>
-    <div id="sub-navi">
-<?php
+	$l .= '>'.$nav1['title'].'</a>';
+	$navi1arr[]=$l;
+}
+$navi1 = '' . implode('|',$navi1arr) . '';
 
-	$rootPath = $navi->getRootPath();
-	if(isset($rootPath[1])) {
-		print $navi->getNaviHtml( $rootPath[1]['_self'] );
-	}
 
-?>
-    </div>
-    <div id="content">
-    <div id="sponsoren"><?php print get_sponsoren_image(); ?></div>
-    <?php
-    	$display_content = 0;
-    	if(htmlpage_login_required($p)) {
-		$content = auth_form($p);
-		if($content != '') {
-			print $content;
-		}else{
-			$display_content = 1;
+// Create Naviline 2
+$navi2 = null;
+$navi2arr = array();
+$searchNaviRoot = $p;
+if( is_numeric($page['parentpageid']) ) {
+	$searchNaviRoot = $page['parentpageid'];
+}
+$n2 = $site->getNavigation($searchNaviRoot);
+if( is_array($n2) ) {
+	foreach( $n2 as $nav2) {
+		$l = '<a href="./index.php?p='.$nav2['pageid'].'"';
+		if($p == $nav2['pageid']) {
+			$l .= ' class="akktiv"';
 		}
-	}else{
-		$display_content = 1;
+		$l .= '>'.$nav2['title'].'</a>';
+		$navi2arr[]=$l;
 	}
-	if($display_content && is_object($page)) {
-		print $page->getContent();
-	}
-	
-    ?>
-    </div>
-  </div>
-<?php
-	if(DEBUG == 1) {
-		print '<pre>';
-		var_dump($_SESSION);
-		print '</pre>';
-	}
+	$navi2 = '' . implode('|',$navi2arr) . '';
+}
+
+$tmpl = new smarty();
+$tmpl->template_dir = TEMPLATE_DIR;
+$tmpl->assign('TITLE',$page['title']);
+$tmpl->assign('NAVI',$navi1);
+$tmpl->assign('SUBNAVI',$navi2);
+$tmpl->assign('CONTENT',$content);
+$tmpl->assign('SPONSOREN',get_sponsoren_image());
+$tmpl->display(TEMPLATE_STYLE . '/page.default.html') ;
+
 ?>
-  </body>
-</html>
