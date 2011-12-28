@@ -47,6 +47,9 @@ $template = TEMPLATE_STYLE . '/page.default.html';
 
 $tmpl->assign('TEMPLATE_STYLE',TEMPLATE_STYLE);
 
+// no editor per default, but define var to prevent notices
+$tmpl->assign('ENABLE_EDITOR', false);
+
 $plugin = null;
 
 // 1.) load Plugin for Page
@@ -57,6 +60,8 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_TEXT_HTML:
 		$plugin = new Plugin_Text_Html($pdo,$page);
+		//FIXME: if(admin)
+		$plugin->enableEditing();
 		break;
 	case Site::PAGETYPE_TEXT_WIKI:
 		break;

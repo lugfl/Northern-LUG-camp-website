@@ -5,6 +5,7 @@ setlocale (LC_ALL, 'de_DE');
 define('WEB_INSIDE',1);
 define('WEB_ROOT',dirname($_SERVER["SCRIPT_FILENAME"]));
 define('SMARTY_DIR',WEB_ROOT.'/lib/smarty/libs/');
+define('XINHA_WEBROOT', '/lib/xinha/');
 
 define('TEMPLATE_DIR',WEB_ROOT . '/templates/');
 if( is_dir(WEB_ROOT . '/templates/' . $_SERVER['SERVER_NAME']) ) {
