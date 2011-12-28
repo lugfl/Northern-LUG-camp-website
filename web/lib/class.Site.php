@@ -5,9 +5,11 @@ class Site {
 
 	const PAGETYPE_TEXT_HTML = 1;
 	const PAGETYPE_TEXT_WIKI = 2;
+	const PAGETYPE_PLUGIN_LOGIN = 3;
 
   protected $pdo = null;
 	protected $domain = null;
+	private $pageCache = array();
 
   function __construct($pdo) {
 		$this->pdo = $pdo;
@@ -35,6 +37,10 @@ class Site {
 	
 	public function getPage($pageid=null) {
 
+		if( $pageid != null && isset($this->pageCache[$pageid]) ) {
+			return $this->pageCache[$pageid];
+		}
+
 	  $ret = null;
 	  $SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl FROM content_page ";
 	  $st = null;
@@ -49,6 +55,7 @@ class Site {
   	}
 		if( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
   	  $ret = $row;
+			$this->pageCache[$row['pageid']] = $row;
 	  }
 		if($st != null) {
 			$st->closeCursor();
@@ -95,12 +102,20 @@ class Site {
 				case Site::PAGETYPE_TEXT_WIKI:
 					// @todo Implement Wiki-Syntaxparser
 					$ret = '<pre>' . $page['content'] . '</pre>';
+				case Site::PAGETYPE_PLUGIN_LOGIN:
+					
+					break;
 				default:
 					$ret = '404er';
 					break;
 			} // switch pagetypeid
 		}
 		return $ret;
+	}
+
+	public function getPageType($pageid) {
+		$page = $this->getPage($pageid);
+		return $page['pagetypeid'];
 	}
 
 	function getRootPath($pageid) {
@@ -122,6 +137,20 @@ class Site {
 		}
 		return $ret;
 	}
+
+
+	/**
+	 * Pruefen, ob der aktuelle User eingelogt ist oder nicht
+	 */
+	public function auth_ok() {
+		global $_SESSION;
+		$ret = false;
+		if(isset($_SESSION['_login_ok']) && $_SESSION['_login_ok'] == 1) {
+			$ret = true;
+		}
+		return $ret;
+	}
+
 }
 
 ?>
