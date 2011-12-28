@@ -14,6 +14,9 @@ class Plugin_Login {
 			$logout = http_get_var('logout');
 			if($logout) {
 				unset($_SESSION['_login_ok']);
+				unset($_SESSION['_acl']);
+				unset($_SESSION['_accountid']);
+				unset($_SESSION['_username']);
 			}
 		}
 	}
@@ -44,7 +47,9 @@ class Plugin_Login {
 							$_SESSION['_login_ok'] = 1;
 							$_SESSION['_accountid'] = $row['accountid'];
 							$_SESSION['_username'] = $row['username'];
-							$_SESSION['_acl'] = $row['acl'];
+							$arry = explode(",",$row['acl']);
+							$arry[]= 'user'; // every authentificated User is in Role "user"
+							$_SESSION['_acl'] = join(',',$arry);
 							$this->loglogin($row['accountid']);
 							$ret = TRUE;
 						}
