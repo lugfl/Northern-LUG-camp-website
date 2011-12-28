@@ -1,19 +1,19 @@
 <?php
-  session_start();
-  require_once('global.php');
-	require_once('lib/func.http_get_var.php');
-	require_once(WEB_ROOT.'/lib/class.Site.php');
-	require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
-  require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
+session_start();
+require_once('global.php');
+require_once('lib/func.http_get_var.php');
+require_once(WEB_ROOT.'/lib/class.Site.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
+require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
 $pdo = null;
 try {
 	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']}";
 	$pdo = new PDO($dsn,$DB['DEFAULT']['user'],$DB['DEFAULT']['pass']);
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 	$pdo->exec('SET names utf8');
 	$pdo->exec('SET character set utf8');
+	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 } catch (PDOException $e) {
 	print 'Error! :' . $e->getMessage();
 	exit();
