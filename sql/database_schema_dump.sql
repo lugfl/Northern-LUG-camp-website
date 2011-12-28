@@ -4,6 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	4.1.11-Debian_4sarge7-log
 
+CREATE DATABASE lc2012_dev;
 
 --
 -- Table structure for table `account`
