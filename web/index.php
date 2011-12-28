@@ -13,6 +13,11 @@ try {
 	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']};charset=utf8";
 	$pdo = new PDO($dsn,$DB['DEFAULT']['user'],$DB['DEFAULT']['pass']);
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+	// required for PHP < 5.3.6 as workaround for charset
+  // see http://www.php.net/manual/en/ref.pdo-mysql.connection.php
+	$pdo->exec('SET names utf8');
+	$pdo->exec('SET character set utf8');
 } catch (PDOException $e) {
 	print 'Error! :' . $e->getMessage();
 	exit();
