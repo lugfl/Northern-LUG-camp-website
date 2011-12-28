@@ -3,6 +3,7 @@
   require_once('global.php');
 	require_once('lib/func.http_get_var.php');
 	require_once(WEB_ROOT.'/lib/class.Site.php');
+	require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
   require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
@@ -20,9 +21,9 @@ $site = new Site($pdo);
 
 $p = http_get_var('p');
 $domaininfo = $site->getDomain();
+
 $page = $site->getPage($p);
 
-$content = $site->getPageContent($p);
 
 $rootpath = $site->getRootPath($p);
 
@@ -61,13 +62,45 @@ if( is_array($n2) ) {
 	$navi2 = '' . implode('|',$navi2arr) . '';
 }
 
+// Every Template setup
 $tmpl = new smarty();
 $tmpl->template_dir = TEMPLATE_DIR;
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('NAVI',$navi1);
 $tmpl->assign('SUBNAVI',$navi2);
-$tmpl->assign('CONTENT',$content);
 $tmpl->assign('SPONSOREN',get_sponsoren_image());
-$tmpl->display(TEMPLATE_STYLE . '/page.default.html') ;
+
+// regular pages with database content
+$content = '';
+$pagetype = $site->getPageType($p);
+$template = TEMPLATE_STYLE . '/page.default.html';
+$tmpl->assign('TEMPLATE_STYLE',TEMPLATE_STYLE);
+switch( $pagetype ) {
+	case Site::PAGETYPE_PLUGIN_LOGIN:
+		$login = new Plugin_Login($pdo);
+		$rc = $site->auth_ok();
+		if( ! $rc ) {
+			$rc = $login->checkAuth();
+		}
+		$newpw = http_get_var('newpw');
+		$tmpl->assign('newpw',$newpw);
+		$tmpl->assign('auth_ok',$rc);
+		$error = '';
+		$tmpl->assign('error',$error);
+		$tmpl->assign('loginpage',$p);
+		$template = TEMPLATE_STYLE . '/page.login.html';
+		break;
+	case Site::PAGETYPE_TEXT_HTML:
+		$content = $site->getPageContent($p);
+		break;
+	case Site::PAGETYPE_TEXT_WIKI:
+		break;
+	default:
+		break;
+}
+$tmpl->assign('CONTENT',$content);
+$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
+$tmpl->display($template) ;
+
 
 ?>
