@@ -12,6 +12,8 @@ try {
 	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']}";
 	$pdo = new PDO($dsn,$DB['DEFAULT']['user'],$DB['DEFAULT']['pass']);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+	$pdo->exec('SET names utf8');
+	$pdo->exec('SET character set utf8');
 } catch (PDOException $e) {
 	print 'Error! :' . $e->getMessage();
 	exit();
