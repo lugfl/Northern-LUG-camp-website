@@ -32,12 +32,14 @@ $navi1 = '';
 $navi1arr = array();
 $n1 = $site->getNavigation(); // Hauptnavi
 foreach( $n1 as $nav1) {
-	$l = '<a href="./index.php?p='.$nav1['pageid'].'"';
-	if($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath) ) {
-		$l .= ' class="akktiv"';
+	if( $site->isInRole($nav1['acl']) ) {
+		$l = '<a href="./index.php?p='.$nav1['pageid'].'"';
+		if($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath) ) {
+			$l .= ' class="akktiv"';
+		}
+		$l .= '>'.$nav1['title'].'</a>';
+		$navi1arr[]=$l;
 	}
-	$l .= '>'.$nav1['title'].'</a>';
-	$navi1arr[]=$l;
 }
 $navi1 = '' . implode('|',$navi1arr) . '';
 
@@ -54,12 +56,14 @@ if( is_numeric($page['parentpageid']) ) {
 $n2 = $site->getNavigation($searchNaviRoot);
 if( is_array($n2) ) {
 	foreach( $n2 as $nav2) {
-		$l = '<a href="./index.php?p='.$nav2['pageid'].'"';
-		if($p == $nav2['pageid']) {
-			$l .= ' class="akktiv"';
+		if( $site->isInRole($nav2['acl']) ) {
+			$l = '<a href="./index.php?p='.$nav2['pageid'].'"';
+			if($p == $nav2['pageid']) {
+				$l .= ' class="akktiv"';
+			}
+			$l .= '>'.$nav2['title'].'</a>';
+			$navi2arr[]=$l;
 		}
-		$l .= '>'.$nav2['title'].'</a>';
-		$navi2arr[]=$l;
 	}
 	$navi2 = '' . implode('|',$navi2arr) . '';
 }
