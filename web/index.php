@@ -9,10 +9,8 @@ require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 // connect to Database
 $pdo = null;
 try {
-	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']}";
+	$dsn = "mysql:host={$DB['DEFAULT']['host']};dbname={$DB['DEFAULT']['name']};charset=utf8";
 	$pdo = new PDO($dsn,$DB['DEFAULT']['user'],$DB['DEFAULT']['pass']);
-	$pdo->exec('SET names utf8');
-	$pdo->exec('SET character set utf8');
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 } catch (PDOException $e) {
 	print 'Error! :' . $e->getMessage();
