@@ -1,27 +1,43 @@
 <?php
 
 require_once('lib/func.http_get_var.php');
+require_once('lib/class.Plugin.php');
 
-class Plugin_Login {
+class Plugin_Login extends Plugin {
 
 	private $pdo = null;
+	private $page = null;
+	private $input_logout = FALSE;
+	private $input_auth_user = '';
+	private $input_auth_pass = '';
+	private $input_email = '';
+	private $input_newpw = 0;
+	private $smarty_assign = array();
+	private $auth_ok = FALSE;
+	private $error = '';
+	private $loginpageid = 0;
 
-	function __construct($pdo) {
+	function __construct($pdo,&$page) {
 		$this->pdo = $pdo;
+		$this->page = $page;
+	}
 
-		// AutoLogout
+	public function readInput() {
+		$tmp = http_get_var('logout','f');
+		if( $tmp != 'f' ) {
+			$this->input_logout = TRUE;
+		}
+		$this->input_auth_user = http_get_var('auth_user');
+		$this->input_auth_pass = http_get_var('auth_pass');
+		$this->input_newpw = http_get_var('newpw',0);
+		$this->input_email = http_get_var('email');
+
 		if(isset($_SESSION['_login_ok']) && $_SESSION['_login_ok'] == 1) {
-			$logout = http_get_var('logout');
-			if($logout) {
-				unset($_SESSION['_login_ok']);
-				unset($_SESSION['_acl']);
-				unset($_SESSION['_accountid']);
-				unset($_SESSION['_username']);
-			}
+			$this->auth_ok = TRUE;
 		}
 	}
-	
- protected  function loglogin($accountid) {
+
+	protected  function loglogin($accountid) {
 		$SQL = "INSERT INTO logins (accountid,logintime) VALUES (".$accountid.",NOW())";
 		try {
 			$st = $this->pdo->prepare($SQL);
@@ -31,17 +47,25 @@ class Plugin_Login {
 		}
 	}
 
-	public function checkAuth() {
-		global $_SESSION;
+	public function processInput() {
+		// AutoLogout
+		if( $this->auth_ok ) {
+			if($this->input_logout == TRUE) {
+				unset($_SESSION['_login_ok']);
+				unset($_SESSION['_acl']);
+				unset($_SESSION['_accountid']);
+				unset($_SESSION['_username']);
+				$this->auth_ok = FALSE;
+			}
+		}
+
 		$ret = FALSE;
-		$auth_user = http_get_var('auth_user');
-		$auth_pass = http_get_var('auth_pass');
-		if($auth_user != '' && $auth_pass != '') {
+		if($this->input_auth_user != '' && $this->input_auth_pass != '') {
 			// Formular abgeschickt
 			try {
 				$SQL = "SELECT accountid,username,acl FROM account WHERE username=? AND passwd=MD5(?) AND active=1";
 				$st = $this->pdo->prepare($SQL);
-				$st->execute(array($auth_user,$auth_pass));
+				$st->execute(array($this->input_auth_user,$this->input_auth_pass));
 				if($row = $st->fetch(PDO::FETCH_ASSOC)) {
 						if($row) {
 							$_SESSION['_login_ok'] = 1;
@@ -59,24 +83,43 @@ class Plugin_Login {
 				print $e;
 			}
 		}
-		$auth_user = '';
-		$auth_pass = '';
+		$this->smarty_assign['newpw'] = $this->input_newpw;
+		$this->smarty_assign['auth_ok'] = $this->auth_ok;
+		$this->smarty_assign['error'] = $this->error;
+		$this->smarty_assign['loginpage'] = $this->loginpageid;
+
 		return $ret;
 	}
 
 	public function checkNewPw() {
-		$newpw = http_get_var('newpw',0);
-		$user = http_get_var('user');
-		$email = http_get_var('email');
-		
-		if( $newpw == 1 ) {
+		if( $this->input_newpw == 1 ) {
 			// show form
 			// TODO
 		}
 	}
 
-	public function getContent() {
-		
+	public function getOutputMethod() {
+		return Plugin::OUTPUT_METHOD_SMARTY;
+	}
+
+	/**
+	 * @return Filename of Smarty-Template.
+	 */
+	public function getSmartyTemplate() {
+		return 'page.login.html';
+	}
+
+	/**
+	 * @return Data for Smarty::assign()
+	 */
+	public function getSmartyVariables() {
+		return $this->smarty_assign;
+	}
+
+	public function setLoginPage($pageid) {
+		if( is_numeric($pageid) ) {
+			$this->loginpageid = $pageid;
+		}
 	}
 
 	protected function new_password($user, $email)
