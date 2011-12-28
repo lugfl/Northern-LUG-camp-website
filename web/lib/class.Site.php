@@ -16,6 +16,9 @@ class Site {
 		$this->searchMyDomain();
   }
 
+	/**
+	 * Search for matching domain configuration
+	 */
 	protected function searchMyDomain() {
 		$ret = FALSE;
 		$SQL = "SELECT domainid,name FROM content_domain WHERE name=?";
@@ -31,10 +34,16 @@ class Site {
 		return $ret;
 	}
 
+	/**
+	 * Get the current domain configuration
+   */
 	public function getDomain() {
 		return $this->domain;
 	}
 	
+	/**
+   * Get the Configuration of a specific page
+   */
 	public function getPage($pageid=null) {
 
 		if( $pageid != null && isset($this->pageCache[$pageid]) ) {
@@ -63,6 +72,11 @@ class Site {
   	return $ret;
 	}
 
+	/**
+   * Get the navigation elements for the specified parentpage.
+   *
+   * @param int parentpageid, may be null for query root-Level navigation
+   */
 	public function getNavigation($parentpageid = null) {
 	  $ret = null;
 	  $SQL = "SELECT pageid,domainid,parentpageid,title,navorder,acl FROM content_page ";
@@ -103,7 +117,7 @@ class Site {
 					// @todo Implement Wiki-Syntaxparser
 					$ret = '<pre>' . $page['content'] . '</pre>';
 				case Site::PAGETYPE_PLUGIN_LOGIN:
-					
+					// TODO
 					break;
 				default:
 					$ret = '404er';
@@ -113,11 +127,17 @@ class Site {
 		return $ret;
 	}
 
+	/**
+	 * Get the pagetype for the specified page
+   */
 	public function getPageType($pageid) {
 		$page = $this->getPage($pageid);
 		return $page['pagetypeid'];
 	}
 
+	/**
+	 * Get the navigation-path from specified page to root-level
+   */
 	function getRootPath($pageid) {
 		$ret = array();
 
@@ -140,13 +160,36 @@ class Site {
 
 
 	/**
-	 * Pruefen, ob der aktuelle User eingelogt ist oder nicht
+	 * Check if current user is authentificated
 	 */
 	public function auth_ok() {
 		global $_SESSION;
 		$ret = false;
 		if(isset($_SESSION['_login_ok']) && $_SESSION['_login_ok'] == 1) {
 			$ret = true;
+		}
+		return $ret;
+	}
+
+	/**
+	 * Check if the current user is member of the specified role
+	 */
+	public function isInRole($rolename) {
+		global $_SESSION;
+		$ret = FALSE;
+
+		if( $rolename == null || $rolename == '') {
+			// used for anonymous browsing.
+			// Database-Values of null or '' means "every user"
+			return TRUE;
+		}
+
+		$arry = array();
+		if( isset( $_SESSION['_acl'] ) ) {
+			$arry = explode(",",$_SESSION['_acl']);
+		}
+		if( in_array($rolename,$arry) ) {
+			$ret = TRUE;
 		}
 		return $ret;
 	}
