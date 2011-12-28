@@ -1,5 +1,7 @@
 <?php
 
+require_once('lib/func.pear_mail.php');
+require_once('Mail/RFC822.php');
 require_once('lib/func.http_get_var.php');
 require_once('lib/class.Plugin.php');
 
