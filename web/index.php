@@ -60,13 +60,14 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_TEXT_HTML:
 		$plugin = new Plugin_Text_Html($pdo,$page);
-		//FIXME: if(admin)
-		$plugin->enableEditing();
+		if( $site->isInRole('admin') ) {
+			$plugin->enableEditing();
+		}
 		break;
 	case Site::PAGETYPE_TEXT_WIKI:
 		break;
 	default:
-		warn('Unknown Pagetype');
+		exit('Unknown Pagetype');
 		break;
 }
 
