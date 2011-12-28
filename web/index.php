@@ -48,6 +48,8 @@ $navi2arr = array();
 $searchNaviRoot = $p;
 if( is_numeric($page['parentpageid']) ) {
 	$searchNaviRoot = $page['parentpageid'];
+}else {
+	$searchNaviRoot = $page['pageid'];
 }
 $n2 = $site->getNavigation($searchNaviRoot);
 if( is_array($n2) ) {
