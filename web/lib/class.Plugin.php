@@ -21,6 +21,15 @@ abstract class Plugin {
    * currently only buildin with getOutput() or Smarty-based
 	 */
 	abstract public function getOutputMethod();
+
+	protected function checkMaintenance() {
+		global $MAINTENANCE_MODE;
+		$ret = FALSE;
+		if(isset($MAINTENANCE_MODE) && $MAINTENANCE_MODE) {
+			$ret = TRUE;
+		}
+		return $ret;
+	}
 }
 
 ?>
