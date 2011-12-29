@@ -116,6 +116,7 @@ class Plugin_Events extends Plugin {
 		// Dispplay Event Form
 		$this->smarty_assign['lugs'] = $this->lugs->getLugs();
 		$this->smarty_assign['countries'] = $this->countries->getCountries();
+		$this->smarty_assign['events_list'] = $this->events->getEvents($this->domain['domainid']);
 		$this->smarty_assign['events_block'] = 'events_form';
 		$this->smarty_assign['p'] = $this->p;
 		foreach( $this->ALLOWED_FORM_FIELDS as $f) {
