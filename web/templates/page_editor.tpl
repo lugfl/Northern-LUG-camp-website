@@ -4,6 +4,7 @@
 	_editor_lang = "en";
 	_editor_skin = "silva";
 	_editor_icons = "classic";
+	var css_path = "/templates/{$TEMPLATE_STYLE}/style.css";
 {literal}
 	function editor_show()
 	{

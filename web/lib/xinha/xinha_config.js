@@ -13,6 +13,7 @@ xinha_init = xinha_init ? xinha_init : function()
 xinha_plugins = xinha_plugins ? xinha_plugins :
   [
    'ImageManager',
+   'WysiwygWrap',
    'ContextMenu',
    'ListType',
    'Linker',
@@ -41,8 +42,9 @@ xinha_config.toolbar =
    ["separator","htmlmode","showhelp","about"]
 ];
 
-// xinha_config.pageStyleSheets = [ "/templates/camp.mm.loc/style.css" ];
-
+// wrap xinhas content preview so it simulates our content box and include our css file (defined in template via JS)
+xinha_config.WysiwygWrap = { elements: ['div#content'] };
+xinha_config.pageStyleSheets = [ css_path ];
 
 xinha_editors   = Xinha.makeEditors(xinha_editors, xinha_config, xinha_plugins);
 Xinha.startEditors(xinha_editors);
