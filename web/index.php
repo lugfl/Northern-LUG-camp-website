@@ -1,9 +1,11 @@
 <?php
+//require_once('lib/inc.debug.php');
 session_start();
 require_once('global.php');
 require_once('lib/func.http_get_var.php');
 require_once(WEB_ROOT.'/lib/class.Site.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_Events.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
 require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
@@ -70,6 +72,9 @@ switch( $pagetype ) {
 		if( $site->isInRole('admin') ) {
 			$plugin->enableEditing();
 		}
+		break;
+	case Site::PAGETYPE_PLUGIN_EVENTS:
+		$plugin = new Plugin_Events($pdo,$page,$domaininfo,$site);
 		break;
 	default:
 		exit('Unknown Pagetype');
@@ -138,7 +143,7 @@ $tmpl->assign('SUBNAVI',$navi2);
 
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
-$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
+//$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
 $tmpl->display($template) ;
 
 

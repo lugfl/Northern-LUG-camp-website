@@ -7,6 +7,7 @@ class Site {
 	const PAGETYPE_TEXT_HTML = 1;
 	const PAGETYPE_TEXT_WIKI = 2;
 	const PAGETYPE_PLUGIN_LOGIN = 3;
+	const PAGETYPE_PLUGIN_EVENTS = 4;
 
 	protected $pdo = null;
 	protected $domain = null;
