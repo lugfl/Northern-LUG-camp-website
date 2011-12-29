@@ -8,6 +8,7 @@ class Plugin_Text_Html extends Plugin {
 	private $pdo = null;
 	private $page = null;
 	private $enable_edit = false;
+	private $edited_content = null;
 
 	function __construct($pdo,$page) {
 		$this->pdo = $pdo;
@@ -20,13 +21,28 @@ class Plugin_Text_Html extends Plugin {
 	}
 
 	public function readInput() {
-		// static content. No Input needed
-		return TRUE;
+		// get the edited content from the browser
+		if(http_get_var('editor') == 1)
+			$this->edited_content = http_get_var('codeeditor');
 	}
 
 	public function processInput() {
-		// static content. No processing needed.
-		return TRUE;
+		// do nothing if we are not in edit mode..
+		if(!$this->enable_edit || !isset($this->edited_content))
+			return;
+
+		// only save if content has been altered..
+		if($this->edited_content != $this->page['content'])
+		{
+			$SQL = "UPDATE `content_page` SET `content`=? WHERE `pageid`=?";
+			$st = $this->pdo->prepare($SQL);
+			$res = $st->execute( ARRAY($this->edited_content, $this->page['pageid']) );
+			if(!$res)
+				throw new Exception("Could not update pagecontent..");
+
+			// update content we are going to display..
+			$this->page['content'] = $this->edited_content;
+		}
 	}
 
 	public function getOutputMethod()

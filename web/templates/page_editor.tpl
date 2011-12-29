@@ -35,6 +35,7 @@
 	<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
 	<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
 	<form id="editor_form" method="POST">
+	<input type="hidden" name="editor" value="1">
 	<textarea id="codeeditor" name="codeeditor" rows="30" cols="50" style="width: 900px">{$CONTENT}</textarea>
 	</form>
 	<span class="editor_buttons"><button onclick="editor_save();">save</button><button onclick="editor_discard();">discard</button></span>
