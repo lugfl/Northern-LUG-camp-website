@@ -104,7 +104,8 @@ class Site {
 
 	/**
 	 * Read Page-Content from Database by using the right plugin
-	 * TODO Why this ? Aren't we using the Plugins getOutput()-Method/Smarty in index.php ?
+	 * 
+	 * @deprecated
 	 */
 	public function getPageContent($pageid) {
 		$ret = null;
