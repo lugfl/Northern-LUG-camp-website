@@ -33,7 +33,7 @@ class Files
 	 * @param boolean $unique create unique destination file if true.
 	 * @return string the new copied filename, else error if anything goes bad.
 	 */
-	function copyFile($source, $destination_dir, $destination_file, $unique=true) 
+	public static function copyFile($source, $destination_dir, $destination_file, $unique=true) 
 	{
 		if(!is_uploaded_file($source) && !(file_exists($source) && is_file($source))) 
 			return FILE_ERROR_NO_SOURCE;
@@ -77,7 +77,7 @@ class Files
 	 * @param string $newFolder specifiy the full path of the new folder.
 	 * @return boolean true if the new folder is created, false otherwise.
 	 */
-	function createFolder($newFolder) 
+	public static function createFolder($newFolder) 
 	{
 		mkdir ($newFolder, 0777);
 		return chmod($newFolder, 0777);
@@ -90,7 +90,7 @@ class Files
 	 * @param string $filename the orginal filename
 	 * @return string the escaped safe filename
 	 */
-	function escape($filename)
+	public static function escape($filename)
 	{
 		Return preg_replace('/[^\w\._]/', '_', $filename);
 	}
@@ -100,7 +100,7 @@ class Files
 	 * @param string $file file to be deleted
 	 * @return boolean true if deleted, false otherwise.
 	 */
-	function delFile($file) 
+	public static function delFile($file) 
 	{
 		if(is_file($file)) 
 			Return unlink($file);
@@ -116,7 +116,7 @@ class Files
 	 * error if the directory is not empty.
 	 * @return boolean true if deleted.
 	 */
-	function delFolder($folder, $recursive=false) 
+	public static function delFolder($folder, $recursive=false) 
 	{
 		$deleted = true;
 		if($recursive) 
@@ -158,7 +158,7 @@ class Files
 	 * @param string $path the path
 	 * @return string path with trailing /
 	 */
-	function fixPath($path) 
+	public static function fixPath($path) 
 	{
 		//append a slash to the path if it doesn't exists.
 		if(!(substr($path,-1) == '/'))
@@ -172,7 +172,7 @@ class Files
 	 * @param string $pathB path two
 	 * @return string a trailing slash combinded path.
 	 */
-	function makePath($pathA, $pathB) 
+	public static function makePath($pathA, $pathB) 
 	{
 		$pathA = Files::fixPath($pathA);
 		if(substr($pathB,0,1)=='/')
@@ -187,7 +187,7 @@ class Files
 	 * @param string $pathB the ending path with file
 	 * @return string combined file path.
 	 */
-	function makeFile($pathA, $pathB) 
+	public static function makeFile($pathA, $pathB) 
 	{		
 		$pathA = Files::fixPath($pathA);
 		if(substr($pathB,0,1)=='/')
@@ -202,7 +202,7 @@ class Files
 	 * @param int $size the raw filesize
 	 * @return string formated file size.
 	 */
-	function formatSize($size) 
+	public static function formatSize($size) 
 	{
 		if($size < 1024) 
 			return $size.' bytes';	
@@ -218,7 +218,7 @@ class Files
 	 * @param string dir path
 	 * @return int
 	 */
-	function dirSize($dirName = '.')
+	public static function dirSize($dirName = '.')
 	{
 		$dir  = dir($dirName);
 		$size = 0;
@@ -246,7 +246,7 @@ class Files
 	 * @param string new filename (just the name, without path or extension)
 	 * @author Krzysztof Kotowicz <koto@webworkers.pl>
 	 */
-	function renameFile($oldPath, $newName) {
+	public static function renameFile($oldPath, $newName) {
 
 		if(!(file_exists($oldPath) && is_file($oldPath)))
 			return FILE_ERROR_NO_SOURCE;
@@ -265,7 +265,7 @@ class Files
 
 	}
 	
-	function rename ($oldPath,$newPath)
+	public static function rename ($oldPath,$newPath)
 	{
 		if(!(is_dir($oldPath) || is_file($oldPath)))
 			return FILE_ERROR_NO_SOURCE;
@@ -290,7 +290,7 @@ class Files
 	 *  
 	 * @return mixed bool true on pass, number on fail
 	 */
-  	function copyDir($basePath, $source, $dest, $overwrite = false)
+  	public static function copyDir($basePath, $source, $dest, $overwrite = false)
 	{
 		if(!is_dir($basePath . $dest))
 		{

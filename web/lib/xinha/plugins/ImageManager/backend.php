@@ -30,6 +30,8 @@
 */
 
 // Strip slashes if MQGPC is on
+if(PHP_VERSION_ID < 50300)
+{
 set_magic_quotes_runtime(0);
 if(get_magic_quotes_gpc())
 {
@@ -50,6 +52,7 @@ if(get_magic_quotes_gpc())
       }
     }
   }
+}
 }
 
 /**
