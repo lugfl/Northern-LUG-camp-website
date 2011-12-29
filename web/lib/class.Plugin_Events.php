@@ -59,6 +59,7 @@ class Plugin_Events extends Plugin {
 		'anreise',
 		'ankunft',
 		'abfahrt',
+		'events'
 	);
 
 	function __construct($pdo,$page,$domain,$site) {
@@ -216,6 +217,25 @@ class Plugin_Events extends Plugin {
 		}
 
 		if($this->in['vegetarier'] != 1) { $this->in['vegetarier'] = 0; }
+
+		if( isset($this->in['events']) && is_array($this->in['events']) && sizeof($this->in['events'])>0 ) {
+			$min_1_mainevent_selected = FALSE;
+			foreach( $this->in['events'] as $ev) {
+				if( is_numeric($ev) ) {
+					$e = $this->events->getEventById($ev);
+					if( $e != null ) {
+						if( ! isset($e['parent']) || !is_numeric($e['parent']) ) {
+							$min_1_mainevent_selected = TRUE;
+						}
+					}
+				}
+			}
+			if( ! $min_1_mainevent_selected ) {
+				$this->err['events'] = 'Du musst Dich f&uuml;r mindestens eine Haupt-Veranstaltung anmelden.';
+			}
+		} else {
+			$this->err['events'] = 'Du musst Dich f&uuml;r mindestens eine Veranstaltung anmelden.';
+		}
 	}
 
 	protected function anmeldung_form() {

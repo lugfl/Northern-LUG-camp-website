@@ -53,6 +53,27 @@ class Events  {
 		}
 		return $ret;
 	}
+
+	/**
+	 * Get a Event by ID
+	 */
+	public function getEventById($eventid) {
+		$ret = null;
+		try {
+			$SQL = 'SELECT e.*,de.domainid FROM event_event e 
+			LEFT JOIN domain_event de ON e.eventid=de.eventid
+			WHERE e.hidden=0 AND e.eventid=? ORDER BY e.sort';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($eventid));
+			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
+				$ret = $row;
+			}
+			$st->closeCursor();
+		} catch (PDOException $e) {
+			print $e;
+		}
+		return $ret;
+	}
 }
 
 ?>
