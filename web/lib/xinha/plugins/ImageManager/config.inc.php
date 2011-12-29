@@ -56,7 +56,7 @@ $IMConfig['base_url'] = '';
 
 // $IMConfig['images_dir'] = "/some/path/to/images/directory;
 
-$IMConfig['images_dir'] = "demo_images";
+$IMConfig['images_dir'] = substr(__FILE__,0,strrpos(__FILE__,'/'))."/../../../../content_pics/";
 
 // -------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ $IMConfig['images_dir'] = "demo_images";
 // try to figure out the URL of the sample images directory. For your installation
 // you will probably want to keep images in another directory.
 
-$IMConfig['images_url'] = str_replace( "backend.php", "", $_SERVER["PHP_SELF"] ) . "demo_images";
+$IMConfig['images_url'] = "/content_pics";
 
 // -------------------------------------------------------------------------
 
@@ -239,7 +239,7 @@ $IMConfig['allow_new_dir'] = true;
 * DEFAULT: for demo purposes we turn this off.
 */
 
-$IMConfig['allow_upload'] = false;
+$IMConfig['allow_upload'] = true;
 
 // -------------------------------------------------------------------------
 
