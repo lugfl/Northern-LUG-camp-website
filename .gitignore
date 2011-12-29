@@ -2,3 +2,5 @@ web/.htconfig.php
 web/admin/.htconfig.php
 *~
 *.save
+web/templates_c
+web/pi.php
