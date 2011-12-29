@@ -12,13 +12,13 @@ abstract class Plugin {
 
 	/**
 	 * Process variables from readInput() and exec Changes or read Content
-   */
+	 */
 	abstract public function processInput();
 
 	/**
 	 * Return the Method for Output-Generated.
-   *
-   * currently only buildin with getOutput() or Smarty-based
+	 *
+	 * currently only buildin with getOutput() or Smarty-based
 	 */
 	abstract public function getOutputMethod();
 

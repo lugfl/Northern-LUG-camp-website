@@ -5,6 +5,7 @@ require_once('lib/func.http_get_var.php');
 require_once(WEB_ROOT.'/lib/class.Site.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
 require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
@@ -65,13 +66,17 @@ switch( $pagetype ) {
 		}
 		break;
 	case Site::PAGETYPE_TEXT_WIKI:
+		$plugin = new Plugin_Text_Wiki($pdo,$page);
+		if( $site->isInRole('admin') ) {
+			$plugin->enableEditing();
+		}
 		break;
 	default:
 		exit('Unknown Pagetype');
 		break;
 }
 
-// 2.) read Input an process it
+// 2.) read Input and process it
 if( $plugin != null ) {
 	$plugin->readInput();
 	$plugin->processInput();

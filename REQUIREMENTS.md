@@ -15,4 +15,4 @@ PEAR-Modules
 - Net_SMTP
 - Mail
 - Mail_Mime
-
+- Text_Wiki

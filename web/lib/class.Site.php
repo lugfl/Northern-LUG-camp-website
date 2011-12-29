@@ -1,5 +1,6 @@
 <?php
 
+require_once('Text/Wiki.php');
 
 class Site {
 
@@ -7,14 +8,14 @@ class Site {
 	const PAGETYPE_TEXT_WIKI = 2;
 	const PAGETYPE_PLUGIN_LOGIN = 3;
 
-  protected $pdo = null;
+	protected $pdo = null;
 	protected $domain = null;
 	private $pageCache = array();
 
-  function __construct($pdo) {
+	function __construct($pdo) {
 		$this->pdo = $pdo;
 		$this->searchMyDomain();
-  }
+	}
 
 	/**
 	 * Search for matching domain configuration
@@ -36,72 +37,73 @@ class Site {
 
 	/**
 	 * Get the current domain configuration
-   */
+	*/
 	public function getDomain() {
 		return $this->domain;
 	}
 	
 	/**
-   * Get the Configuration of a specific page
-   */
+	* Get the Configuration of a specific page
+	*/
 	public function getPage($pageid=null) {
 
 		if( $pageid != null && isset($this->pageCache[$pageid]) ) {
 			return $this->pageCache[$pageid];
 		}
 
-	  $ret = null;
-	  $SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl FROM content_page ";
-	  $st = null;
+		$ret = null;
+		$SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl FROM content_page ";
+		$st = null;
 		if( $pageid == null) {
-	  	$SQL .= " WHERE domainid=? AND parentpageid IS NULL LIMIT 1";
+		  	$SQL .= " WHERE domainid=? AND parentpageid IS NULL LIMIT 1";
 			$st = $this->pdo->prepare($SQL);
-	    $st->execute(array($this->domain['domainid']));
-	  } else  {
-	    $SQL .= "WHERE domainid=? AND pageid=?";
-	    $st = $this->pdo->prepare($SQL);
-	    $st->execute(array($this->domain['domainid'],$pageid));
-  	}
+			$st->execute(array($this->domain['domainid']));
+		} else  {
+			$SQL .= "WHERE domainid=? AND pageid=?";
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($this->domain['domainid'],$pageid));
+ 		}
 		if( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
-  	  $ret = $row;
+			$ret = $row;
 			$this->pageCache[$row['pageid']] = $row;
-	  }
+		}
 		if($st != null) {
 			$st->closeCursor();
 		}
-  	return $ret;
+		return $ret;
 	}
 
 	/**
-   * Get the navigation elements for the specified parentpage.
-   *
-   * @param int parentpageid, may be null for query root-Level navigation
-   */
+	* Get the navigation elements for the specified parentpage.
+	*
+	* @param int parentpageid, may be null for query root-Level navigation
+	*/
 	public function getNavigation($parentpageid = null) {
-	  $ret = null;
-	  $SQL = "SELECT pageid,domainid,parentpageid,title,navorder,acl FROM content_page ";
-	  $st = null;
+		$ret = null;
+		$SQL = "SELECT pageid,domainid,parentpageid,title,navorder,acl FROM content_page ";
+		$st = null;
 		if( $parentpageid == null) {
-	  	$SQL .= " WHERE domainid=? AND parentpageid IS NULL ORDER BY navorder";
+	  		$SQL .= " WHERE domainid=? AND parentpageid IS NULL ORDER BY navorder";
 			$st = $this->pdo->prepare($SQL);
-	    $st->execute(array($this->domain['domainid']));
-	  } else  {
-	    $SQL .= "WHERE domainid=? AND parentpageid=? ORDER BY navorder";
-	    $st = $this->pdo->prepare($SQL);
-	    $st->execute(array($this->domain['domainid'],$parentpageid));
-  	}
+	    		$st->execute(array($this->domain['domainid']));
+		} else  {
+			$SQL .= "WHERE domainid=? AND parentpageid=? ORDER BY navorder";
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($this->domain['domainid'],$parentpageid));
+		}
 		while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
-  	  $ret[] = $row;
-	  }
+			$ret[] = $row;
+		}
 		if($st != null) {
 			$st->closeCursor();
 		}
-  	return $ret;
+		return $ret;
 		
 	}
 
 	/**
 	 * Read Page-Content from Database by using the right plugin
+	 * TODO Why this ? Aren't we using the Plugins getOutput()-Method/Smarty in index.php ?
 	 */
 	public function getPageContent($pageid) {
 		$ret = null;
@@ -114,8 +116,10 @@ class Site {
 					$ret = $page['content'];
 					break;
 				case Site::PAGETYPE_TEXT_WIKI:
-					// @todo Implement Wiki-Syntaxparser
-					$ret = '<pre>' . $page['content'] . '</pre>';
+					// Neues Objekt instanziieren
+					$wiki = new Text_Wiki();
+					// Text nach XHTML formatieren
+					$ret = $wiki->transform($page['content'], 'Xhtml');
 				case Site::PAGETYPE_PLUGIN_LOGIN:
 					// TODO
 					break;
@@ -129,7 +133,7 @@ class Site {
 
 	/**
 	 * Get the pagetype for the specified page
-   */
+	*/
 	public function getPageType($pageid) {
 		$page = $this->getPage($pageid);
 		return $page['pagetypeid'];
@@ -137,7 +141,7 @@ class Site {
 
 	/**
 	 * Get the navigation-path from specified page to root-level
-   */
+	*/
 	function getRootPath($pageid) {
 		$ret = array();
 
@@ -152,7 +156,7 @@ class Site {
 			$tmp = $this->getRootPath($page['parentpageid']);
 			$ret = array_merge($ret,$tmp);
 			$ret[]= $pageid;
-		}	else {
+		} else {
 			$ret[]= $pageid;
 		}
 		return $ret;
