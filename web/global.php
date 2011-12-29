@@ -14,7 +14,7 @@ if( is_dir(WEB_ROOT . '/templates/' . $_SERVER['SERVER_NAME']) ) {
   define('TEMPLATE_STYLE','.');
 }
 
-require_once('lib/inc.database.php');
+//require_once('lib/inc.database.php');
 require_once('config.php');
 
 require_once('lib/inc.sponsoren.php');
