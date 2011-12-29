@@ -218,12 +218,15 @@ class Plugin_Events extends Plugin {
 
 		if($this->in['vegetarier'] != 1) { $this->in['vegetarier'] = 0; }
 
+		// Check for required Main-Event and do some cleanup with Input-Trash in Event-Array...
+		$events_clenup = array();
 		if( isset($this->in['events']) && is_array($this->in['events']) && sizeof($this->in['events'])>0 ) {
 			$min_1_mainevent_selected = FALSE;
 			foreach( $this->in['events'] as $ev) {
 				if( is_numeric($ev) ) {
 					$e = $this->events->getEventById($ev);
 					if( $e != null ) {
+						$events_clenup[] = $ev;
 						if( ! isset($e['parent']) || !is_numeric($e['parent']) ) {
 							$min_1_mainevent_selected = TRUE;
 						}
@@ -236,6 +239,7 @@ class Plugin_Events extends Plugin {
 		} else {
 			$this->err['events'] = 'Du musst Dich f&uuml;r mindestens eine Veranstaltung anmelden.';
 		}
+		$this->in['events'] = $events_clenup; // now Event-Array is a array with 100% integer values
 	}
 
 	protected function anmeldung_form() {
