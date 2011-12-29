@@ -1,7 +1,6 @@
 <?php
 
-function get_sponsoren_image() {
-  my_connect();
+function get_sponsoren_image($pdo) {
 
 	$ret = '';
 	
@@ -11,10 +10,11 @@ function get_sponsoren_image() {
 
 	$display_id = $_SESSION['sponsoren_id'];
 
-	$res1 = my_query('SELECT sponsorenid,name,url,img FROM sponsoren WHERE sponsorenid>=' . $display_id . ' LIMIT 1');
-	if(isset($res1)) {
-		if (mysql_num_rows($res1)>0) {
-			$row = mysql_fetch_assoc($res1);
+	try {
+		$SQL = 'SELECT sponsorenid,name,url,img FROM sponsoren WHERE sponsorenid>=? LIMIT 1';
+		$st = $pdo->prepare($SQL);
+		$st->execute( array($display_id) );
+		if ( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
 			$ret .= '<label for-id="sponsor'.$display_id.'">sponsored by:</label><br/>';
 			$ret .= '<a href="'.$row['url'].'" target="_blank">';
 	    // Bilder in der DB stehen immer mit /images/... in der URL
@@ -24,9 +24,11 @@ function get_sponsoren_image() {
 		} else {
 			$display_id = 0;
 		}
+		$st->closeCursor();
 		$_SESSION['sponsoren_id'] = $display_id; 
+	} catch (PDOException $e) {
+		print $e;
 	}
-	mysql_free_result($res1);
 	return $ret;
 }
 

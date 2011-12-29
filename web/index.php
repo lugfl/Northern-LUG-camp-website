@@ -132,7 +132,7 @@ if( is_array($n2) ) {
 $tmpl->assign('SUBNAVI',$navi2);
 
 $tmpl->assign('TITLE',$page['title']);
-$tmpl->assign('SPONSOREN',get_sponsoren_image());
+$tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
 $tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
 $tmpl->display($template) ;
 
