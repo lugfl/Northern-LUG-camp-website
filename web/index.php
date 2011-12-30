@@ -141,6 +141,11 @@ if( is_array($n2) ) {
 }
 $tmpl->assign('SUBNAVI',$navi2);
 
+// Set some variables for rolebased functions in templates
+$tmpl->assign('auth_ok', $site->auth_ok());
+$tmpl->assign('role_user', $site->isInRole('user'));
+$tmpl->assign('role_admin', $site->isInRole('admin'));
+
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
 //$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
