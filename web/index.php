@@ -105,48 +105,38 @@ if( $plugin != null ) {
 }
 
 $rootpath = $site->getRootPath($p);
-// Create Naviline 1
-$navi1 = '';
-$navi1arr = array();
-$n1 = $site->getNavigation(); // Hauptnavi
-foreach( $n1 as $nav1) {
-	if( $site->isInRole($nav1['acl']) ) {
-		$l = '<a href="./index.php?p='.$nav1['pageid'].'"';
-		if($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath) ) {
-			$l .= ' class="akktiv"';
-		}
-		$l .= '>'.$nav1['title'].'</a>';
-		$navi1arr[]=$l;
-	}
-}
-$navi1 = '' . implode('|',$navi1arr) . '';
-
-$tmpl->assign('NAVI',$navi1);
-
-// Create Naviline 2
-$navi2 = null;
-$navi2arr = array();
-$searchNaviRoot = $p;
-if( is_numeric($page['parentpageid']) ) {
-	$searchNaviRoot = $page['parentpageid'];
-}else {
-	$searchNaviRoot = $page['pageid'];
-}
-$n2 = $site->getNavigation($searchNaviRoot);
-if( is_array($n2) ) {
-	foreach( $n2 as $nav2) {
-		if( $site->isInRole($nav2['acl']) ) {
-			$l = '<a href="./index.php?p='.$nav2['pageid'].'"';
-			if($p == $nav2['pageid']) {
-				$l .= ' class="akktiv"';
+// Create Naviline
+$naviarr = array();
+foreach( $site->getNavigation() as $nav1) // Level 1
+{
+	$item = ARRAY();
+	if( $site->isInRole($nav1['acl']) )
+	{
+		$item['url'] = './index.php?p='.$nav1['pageid'];
+		$item['title'] = $nav1['title'];
+		$item['active'] = ($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath));
+		$item['subitems'] = ARRAY();
+		// search for subitems
+		$subItems = $site->getNavigation($nav1['pageid']);
+		if(isset($subItems))
+		{
+			foreach( $site->getNavigation($nav1['pageid']) as $nav2) // Level 2
+			{
+				$subItem = ARRAY();
+				if( $site->isInRole($nav2['acl']) )
+				{
+					$subItem['url'] = './index.php?p='.$nav2['pageid'];
+					$subItem['title'] = $nav2['title'];
+					$subItem['active'] = ($p == $nav2['pageid'] || in_array($nav2['pageid'],$rootpath));
+					$item['subitems'][] = $subItem;
+				}
 			}
-			$l .= '>'.$nav2['title'].'</a>';
-			$navi2arr[]=$l;
 		}
+		$navi1arr[] = $item;
 	}
-	$navi2 = '' . implode('|',$navi2arr) . '';
 }
-$tmpl->assign('SUBNAVI',$navi2);
+// assign navigation structure to Smarty..
+$tmpl->assign('NAVI',$navi1arr);
 
 // Set some variables for rolebased functions in templates
 $tmpl->assign('auth_ok', $site->auth_ok());
