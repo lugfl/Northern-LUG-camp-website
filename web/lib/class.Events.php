@@ -5,6 +5,9 @@
  */
 class Events  {
 
+	const ALL_EVENTS = 1;
+	const FILTER_EVENTS = 2;
+
 	private $pdo = null;
 
 	public function __construct($pdo) {
@@ -36,12 +39,16 @@ class Events  {
 	/**
 	 * Get list of all Events for specified domain
 	 */
-	public function getEvents($domainid) {
+	public function getEvents($domainid,$filter = Events::FILTER_EVENTS) {
 		$ret = array();
 		try {
 			$SQL = 'SELECT e.*,de.domainid FROM event_event e 
 			LEFT JOIN domain_event de ON e.eventid=de.eventid
-			WHERE e.hidden=0 AND de.domainid=? ORDER BY e.sort';
+			WHERE e.hidden=0 AND de.domainid=? ';
+			if( $filter == Events::FILTER_EVENTS ) {
+				$SQL .= ' AND buchanfang <= NOW() AND buchende >= NOW() ';
+			}
+			$SQL .= ' ORDER BY e.sort';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($domainid));
 			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
