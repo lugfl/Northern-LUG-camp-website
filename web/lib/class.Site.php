@@ -200,6 +200,17 @@ class Site {
 		return $ret;
 	}
 
+	/**
+	 * Get ID of current logedin account
+	 */
+	public function getMyAccountID() {
+		$ret = null;
+		if( isset($_SESSION['_accountid']) ) {
+			$ret = $_SESSION['_accountid'];
+		}
+		return $ret;
+	}
+
 }
 
 ?>
