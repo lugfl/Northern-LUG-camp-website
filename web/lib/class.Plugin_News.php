@@ -12,7 +12,7 @@ class Plugin_News extends Plugin {
 	private $pdo = null;
 	private $page = null;
 	private $news = null;
-	private $domainid = null;
+	private $domain = null;
 	private $eintragid = null;
 
 	private $enable_edit = false;
@@ -22,11 +22,11 @@ class Plugin_News extends Plugin {
 
 	private $viewMode = self::VIEWMODE_OVERVIEW;
 
-	function __construct($pdo,$page,$eintragid,$domainid) {
+	function __construct($pdo,$page,$eintragid,$domain) {
 		$this->pdo = $pdo;
 		$this->page = $page;
-		$this->news = new News($pdo,$domainid);
-		$this->domainid = $domainid;
+		$this->news = new News($pdo,$domain['domainid']);
+		$this->domain = $domain;
 		if($eintragid > 0) {
 			$this->eintragid = $eintragid;
 			$this->viewMode = self::VIEWMODE_SINGLE;

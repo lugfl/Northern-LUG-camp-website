@@ -9,6 +9,7 @@ require_once(WEB_ROOT.'/lib/class.Plugin_Events.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_News.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_MyCamp_Rechnung.php');
 require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
@@ -79,10 +80,13 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_PLUGIN_NEWS:
 		$newsEintragId = http_get_var('news');
-		$plugin = new Plugin_News($pdo,$page,$newsEintragId,$domaininfo['domainid']);
+		$plugin = new Plugin_News($pdo,$page,$newsEintragId,$domaininfo);
 		if($site->isInRole('admin')) {
 			$plugin->enableEditing();
 		}
+		break;
+	case Site::PAGETYPE_PLUGIN_MYCAMP_RECHNUNG:
+		$plugin = new Plugin_MyCamp_Rechnung($pdo,$page,$domaininfo);
 		break;
  	default:
 		exit('Unknown Pagetype');

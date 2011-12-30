@@ -141,6 +141,67 @@ class Events  {
 		}
 		return $insert_id;
 	}
+
+	public function getEventRegistrationsForAccount($domainid,$accountid) {
+		$ret = array();
+
+		try{
+			$SQL = 'SELECT eae.bezahlt, ee.name as eventname, ee.charge as eventkosten, ea.anmeldungid '
+				.'FROM event_anmeldung_event eae '
+				.'LEFT JOIN event_anmeldung ea ON ea.anmeldungid = eae.anmeldungid ' 					.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
+				.'LEFT JOIN domain_event de ON de.eventid = eae.eventid '
+				.'WHERE de.domainid = ? AND eae.accountid = ?';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($domainid,$accountid));
+			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
+				$ret[] = $row;
+			}
+			$st->closeCursor();
+		} catch (PDOException $e) {
+			print $e;
+		}
+
+		return $ret;
+	}
+
+	public function getEventRegistration($anmeldungid) {
+		$ret = array();
+
+		try{
+			$SQL = 'SELECT ';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($domainid,$accountid));
+			$ret = $st->fetch(PDO::FETCH_ASSOC);
+			$st->closeCursor();
+		
+
+		} catch (PDOException $e) {
+			print $e;
+		}
+
+		return $ret;
+	}
+
+	public function getBoughtArtikelForAccount($domainid, $accountid) {
+		$ret = array();
+
+		try{
+			$SQL = 'SELECT ea.name, eaa.groesse, eaa.anzahl, (eaa.anzahl*ea.preis) as kosten eaa.bezahlt '
+				.'FROM event_account_artikel eaa '
+				.'LEFT JOIN event_artikel ea ON ea.artikelid = eae.artikelid '
+				.'WHERE eaa.accountid = ?';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($accountid));
+			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
+				$ret[] = $row;
+			}
+			$st->closeCursor();
+		} catch (PDOException $e) {
+			print $e;
+		}
+
+		return $ret;
+	}
 }
 
 ?>

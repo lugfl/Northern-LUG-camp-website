@@ -9,6 +9,7 @@ class Site {
 	const PAGETYPE_PLUGIN_LOGIN = 3;
 	const PAGETYPE_PLUGIN_EVENTS = 4;
 	const PAGETYPE_PLUGIN_NEWS = 5;
+	const PAGETYPE_PLUGIN_MYCAMP_RECHNUNG = 6;
 
 	protected $pdo = null;
 	protected $domain = null;
