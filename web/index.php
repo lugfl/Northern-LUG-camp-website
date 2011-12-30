@@ -79,7 +79,7 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_PLUGIN_NEWS:
 		$newsEintragId = http_get_var('news');
-		$plugin = new Plugin_News($pdo,$page,$newsEintragId);
+		$plugin = new Plugin_News($pdo,$page,$newsEintragId,$domaininfo['domainid']);
 		if($site->isInRole('admin')) {
 			$plugin->enableEditing();
 		}

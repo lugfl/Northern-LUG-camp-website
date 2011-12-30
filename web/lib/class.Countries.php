@@ -64,7 +64,7 @@ class Countries {
 				$this->loadCountries(); // List Modified; reload it
 				$ret = $this->SearchOrAdd($name);
 			} catch (PDOException $p) {
-				print $e;
+				print $p;
 			}
 		}
 		return $ret;

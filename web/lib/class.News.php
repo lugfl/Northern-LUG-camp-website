@@ -8,11 +8,13 @@ class News {
 	const NEWS_TEASER_COUNT = 5;
 
 	private $pdo = null;
+	private $domainid = 0;
 
 	private $news = array();
 
-	public function __construct($pdo) {
+	public function __construct($pdo,$domainid) {
 		$this->pdo = $pdo;
+		$this->domainid = $domainid;
 		$this->loadNews();
 	}
 
@@ -44,10 +46,11 @@ class News {
 
 		// load news from database
 		try {
-			$SQL = 'SELECT n.eintragid, n.title, c.name as category, n.short, n.txt, n.author, DATE_FORMAT(n.crdate,"%e.%c.%Y") AS date '
+			$SQL = 'SELECT n.eintragid, n.title, n.short, n.txt, a.username as author, DATE_FORMAT(n.crdate,"%e.%c.%Y") AS date '
 				.'FROM news_eintrag n '
-				.'LEFT JOIN news_cat c ON n.catid = c.catid '
-//				.'LEFT JOIN account a ON n.accountid = a.accountid'
+				.'LEFT JOIN content_domain d ON d.domainid = n.domainid '
+				.'LEFT JOIN account a ON n.accountid = a.accountid '
+				.'WHERE d.domainid = '.$this->domainid.' '
 				.'ORDER BY n.eintragid DESC '
 				.'LIMIT '.self::NEWS_TEASER_COUNT;
 			$st = $this->pdo->prepare($SQL);
@@ -62,30 +65,30 @@ class News {
 	}
 
 	/**
-	 * Search a News or create a new DB-Entry, if not exists.
-	 * TODO copied from Countries, where is this used? Replace it with just an Add function ?
+	 * create a new DB-Entry
 	 */
-	public function searchOrAdd($title, $catid, $short, $txt, $author) {
-		$ret = null;
-		foreach( $this->news as $c ) {
-			if( $c['title'] == $title ) {
-				$ret = $c;
-			}
+	public function addNews($title, $short, $txt, $accountid) {
+		try {
+			$SQL = 'INSERT INTO news_eintrag (title, short, txt, accountid, domainid, crdate) VALUES (?,?,?,?,NOW())';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute( array($title, $short, $txt, $accountid, $this->domainid) );
+			$st->closeCursor();
+			$this->loadNews(); // List Modified; reload it
+		} catch (PDOException $p) {
+			print $p;
 		}
-		if( $ret == null ) {
-			// no Entry found
-			try {
-				$SQL = 'INSERT INTO news_eintrag (title, catid, short, txt, author,crdate) VALUES (?,?,?,?,?,NOW())';
-				$st = $this->pdo->prepare($SQL);
-				$st->execute( array($title, $catid, $short, $txt, $author) );
-				$st->closeCursor();
-				$this->loadNews(); // List Modified; reload it
-				$ret = $this->SearchOrAdd($title, $catid, $short, $txt, $author);
-			} catch (PDOException $p) {
-				print $e;
-			}
+	}
+
+	public function updateNews($eintragid,$short,$txt) {
+		try{
+			$SQL = "UPDATE `news_eintrag` SET `short`=?, `txt`=? WHERE `eintragid`=?";
+			$st = $this->pdo->prepare($SQL);
+			$res = $st->execute( ARRAY($short, $txt, $eintragid) );
+			if(!$res)
+				throw new Exception("Could not update news..");
+		} catch (PDOException $p) {
+			print $p;
 		}
-		return $ret;
 	}
 }
 

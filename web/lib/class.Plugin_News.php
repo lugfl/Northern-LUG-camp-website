@@ -12,14 +12,19 @@ class Plugin_News extends Plugin {
 	private $pdo = null;
 	private $page = null;
 	private $news = null;
-	private $eintragid = 0;
+	private $domainid = null;
+	private $eintragid = null;
+
+	private $edited_short = null;
+	private $edited_txt = null;
 
 	private $viewMode = VIEWMODE_OVERVIEW;
 
-	function __construct($pdo,$page,$eintragid) {
+	function __construct($pdo,$page,$eintragid,$domainid) {
 		$this->pdo = $pdo;
 		$this->page = $page;
-		$this->news = new News($pdo);
+		$this->news = new News($pdo,$domainid);
+		$this->domainid = $domainid;
 		if($eintragid > 0) {
 			$this->eintragid = $eintragid;
 			$this->viewMode = VIEWMODE_SINGLE;
@@ -33,30 +38,31 @@ class Plugin_News extends Plugin {
 
 	public function readInput() {
 		// get the edited content from the browser
-		if(http_get_var('editor') == 1)
-			$this->edited_content = http_get_var('codeeditor');
+		if(http_get_var('editor') == 1) {
+			$this->edited_title = http_get_var('codeeditor_title');
+			$this->edited_short = http_get_var('codeeditor_short');
+			$this->edited_txt = http_get_var('codeeditor');
+		}
 	}
 
 	public function processInput() {
 		// do nothing if we are not in edit mode..
-		if(!$this->enable_edit || !isset($this->edited_content))
+		if( !$this->enable_edit || (!isset($this->edited_short) || !isset($this->edited_txt) ) )
 			return;
 
 		// only save if content has been altered..
-		// TODO anpassen
-/*
-		if($this->edited_content != $this->page['content'])
-		{
-			$SQL = "UPDATE `content_page` SET `content`=? WHERE `pageid`=?";
-			$st = $this->pdo->prepare($SQL);
-			$res = $st->execute( ARRAY($this->edited_content, $this->page['pageid']) );
-			if(!$res)
-				throw new Exception("Could not update pagecontent..");
-
-			// update content we are going to display..
-			$this->page['content'] = $this->edited_content;
+		if($this->viewMode == VIEWMODE_SINGLE) {
+			$currentNews = $this->news->getSingleNews($this->eintragid);
+			if($this->edited_short != $currentNews['short'] || $this->edited_txt != $currentNews['txt'])
+			{
+				$this->news->updateNews($this->eintragid,$this->edited_short,$this->edited_txt);
+				$this->loadNews();
+			}
+		}elseif($this->viewMode != VIEWMODE_OVERVIEW) {
+			// TODO implement new News
+			$this->news->addNews($this->edited_title, $this->edited_short, $this->edited_txt, $_SESSION['_accountid']);
 		}
-*/	}
+	}
 
 	public function getOutputMethod()
 	{
@@ -84,7 +90,6 @@ class Plugin_News extends Plugin {
 				$ret['ENABLE_EDITOR'] = true;
 				$ret['XINHA_DIR'] = XINHA_WEBROOT;
 			}
-			print_r($ret);
 			return $ret;
 		}
 		$ret['PAGEID'] = $this->page['pageid'];

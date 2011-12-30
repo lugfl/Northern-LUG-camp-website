@@ -104,13 +104,6 @@ CREATE TABLE event_zahlung (
 	PRIMARY KEY pk_zahlung(zahlungid)
 );
 
-CREATE TABLE news_cat (
-	catid	BIGINT UNSIGNED NOT NULL auto_increment,
-	name	VARCHAR(50) NOT NULL,
-	pic	VARCHAR(255) DEFAULT NULL,
-	PRIMARY KEY pk_news_cat(catid)
-);
-
 CREATE TABLE news_eintrag (
 	eintragid	BIGINT UNSIGNED NOT NULL auto_increment,
 	title		VARCHAR(80) NOT NULL,
@@ -119,6 +112,8 @@ CREATE TABLE news_eintrag (
 	txt		TEXT NOT NULL,
 	crdate		DATETIME NOT NULL,
 	author		VARCHAR(50) NOT NULL,
+	domainid	INT NOT NULL,
+	accountid	BIGINT UNSIGNED NOT NULL,
 	PRIMARY KEY pk_news_eintrag(eintragid)
 );
 
