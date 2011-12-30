@@ -199,15 +199,16 @@ class Plugin_Events extends Plugin {
 		}
 
 		$geb_err = '';
-		if(!preg_match('/^[0-9]{1,2}$/i',$this->in['geb_d']) || $this->in['geb_d'] > 31 || $this->in['geb_d'] < 1 ) {
+		if( !is_numeric($this->in['geb_d']) || $this->in['geb_d'] > 31 || $this->in['geb_d'] < 1 ) {
 			$geb_err .= 'Der Tag ist nicht richtig angegeben.';
 		}
-		if(!preg_match('/^[0-9]{1,2}$/i',$this->in['geb_m']) || $this->in['geb_m'] > 12 || $this->in['geb_m'] < 1 ) {
+		if(!is_numeric($this->in['geb_m']) || $this->in['geb_m'] > 12 || $this->in['geb_m'] < 1 ) {
 			$geb_err .= 'Der Monat ist nicht richtig angegeben.';
 		}
-		if(!preg_match('/^[0-9]{4}$/i',$this->in['geb_y']) || $this->in['geb_y'] > 2000 || $this->in['geb_y'] < 1900 ) {
+		if(!is_numeric($this->in['geb_y']) || $this->in['geb_y'] > 2010 || $this->in['geb_y'] < 1900 ) {
 			$geb_err .= 'Das Jahr ist nicht richtig angegeben.';
 		}
+
 		if($geb_err != '') { 
 			$this->err['geb'] = $geb_err;
 		} else {
