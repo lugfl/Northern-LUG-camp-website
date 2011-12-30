@@ -42,12 +42,15 @@ class Events  {
 	public function getEvents($domainid,$filter = Events::FILTER_EVENTS) {
 		$ret = array();
 		try {
-			$SQL = 'SELECT e.*,de.domainid FROM event_event e 
-			LEFT JOIN domain_event de ON e.eventid=de.eventid
-			WHERE e.hidden=0 AND de.domainid=? ';
+			$SQL  = 'SELECT e.*,de.domainid,COUNT(eae.anmeldungid) AS curregistrations ';
+			$SQL .= ' FROM event_event e ';
+			$SQL .= ' LEFT JOIN domain_event de ON e.eventid=de.eventid';
+			$SQL .= ' LEFT JOIN event_anmeldung_event eae ON e.eventid=eae.eventid ';
+			$SQL .= ' WHERE e.hidden=0 AND de.domainid=? ';
 			if( $filter == Events::FILTER_EVENTS ) {
 				$SQL .= ' AND buchanfang <= NOW() AND buchende >= NOW() ';
 			}
+			$SQL .= ' GROUP BY e.eventid ';
 			$SQL .= ' ORDER BY e.sort';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($domainid));
