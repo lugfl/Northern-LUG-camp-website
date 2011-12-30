@@ -69,7 +69,7 @@ class News {
 	 */
 	public function addNews($title, $short, $txt, $accountid) {
 		try {
-			$SQL = 'INSERT INTO news_eintrag (title, short, txt, accountid, domainid, crdate) VALUES (?,?,?,?,NOW())';
+			$SQL = 'INSERT INTO news_eintrag (title, short, txt, accountid, domainid, crdate) VALUES (?,?,?,?,?,NOW())';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute( array($title, $short, $txt, $accountid, $this->domainid) );
 			$st->closeCursor();
@@ -84,6 +84,7 @@ class News {
 			$SQL = "UPDATE `news_eintrag` SET `short`=?, `txt`=? WHERE `eintragid`=?";
 			$st = $this->pdo->prepare($SQL);
 			$res = $st->execute( ARRAY($short, $txt, $eintragid) );
+			$this->loadNews(); // List Modified; reload it
 			if(!$res)
 				throw new Exception("Could not update news..");
 		} catch (PDOException $p) {

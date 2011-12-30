@@ -34,3 +34,7 @@ function page_create_show()
 {
 	show_object(parent.document.getElementById("content_addform"), true);
 }
+function news_create_show()
+{
+	show_object(parent.document.getElementById("news_addform"), true);
+}

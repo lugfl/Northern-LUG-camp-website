@@ -19,7 +19,7 @@ try {
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
 	// required for PHP < 5.3.6 as workaround for charset
-  // see http://www.php.net/manual/en/ref.pdo-mysql.connection.php
+	// see http://www.php.net/manual/en/ref.pdo-mysql.connection.php
 	$pdo->exec('SET names utf8');
 	$pdo->exec('SET character set utf8');
 } catch (PDOException $e) {

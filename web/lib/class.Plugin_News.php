@@ -15,10 +15,12 @@ class Plugin_News extends Plugin {
 	private $domainid = null;
 	private $eintragid = null;
 
+	private $enable_edit = false;
+
 	private $edited_short = null;
 	private $edited_txt = null;
 
-	private $viewMode = VIEWMODE_OVERVIEW;
+	private $viewMode = self::VIEWMODE_OVERVIEW;
 
 	function __construct($pdo,$page,$eintragid,$domainid) {
 		$this->pdo = $pdo;
@@ -27,7 +29,7 @@ class Plugin_News extends Plugin {
 		$this->domainid = $domainid;
 		if($eintragid > 0) {
 			$this->eintragid = $eintragid;
-			$this->viewMode = VIEWMODE_SINGLE;
+			$this->viewMode = self::VIEWMODE_SINGLE;
 		}
 	}
 
@@ -39,9 +41,9 @@ class Plugin_News extends Plugin {
 	public function readInput() {
 		// get the edited content from the browser
 		if(http_get_var('editor') == 1) {
-			$this->edited_title = http_get_var('codeeditor_title');
-			$this->edited_short = http_get_var('codeeditor_short');
-			$this->edited_txt = http_get_var('codeeditor');
+			$this->edited_title = http_get_var('news_title');
+			$this->edited_short = http_get_var('news_short');
+			$this->edited_txt = http_get_var('news_txt');
 		}
 	}
 
@@ -51,14 +53,14 @@ class Plugin_News extends Plugin {
 			return;
 
 		// only save if content has been altered..
-		if($this->viewMode == VIEWMODE_SINGLE) {
+		if($this->viewMode == self::VIEWMODE_SINGLE) {
 			$currentNews = $this->news->getSingleNews($this->eintragid);
 			if($this->edited_short != $currentNews['short'] || $this->edited_txt != $currentNews['txt'])
 			{
 				$this->news->updateNews($this->eintragid,$this->edited_short,$this->edited_txt);
 				$this->loadNews();
 			}
-		}elseif($this->viewMode != VIEWMODE_OVERVIEW) {
+		}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
 			// TODO implement new News
 			$this->news->addNews($this->edited_title, $this->edited_short, $this->edited_txt, $_SESSION['_accountid']);
 		}
@@ -74,7 +76,7 @@ class Plugin_News extends Plugin {
 	*/
 	public function getSmartyTemplate()
 	{
-		if($this->viewMode == VIEWMODE_SINGLE) {
+		if($this->viewMode == self::VIEWMODE_SINGLE) {
 			return 'page.news_eintrag.html';
 		}
 		return 'page.news.html';
@@ -82,14 +84,15 @@ class Plugin_News extends Plugin {
 
 	public function getSmartyVariables()
 	{
-		$ret = ARRAY();
-		if($this->viewMode == VIEWMODE_SINGLE) {
+		$ret = ARRAY();	
+		if( $this->enable_edit )
+		{
+			$ret['ENABLE_EDITOR'] = true;
+			$ret['XINHA_DIR'] = XINHA_WEBROOT;
+		}
+
+		if($this->viewMode == self::VIEWMODE_SINGLE) {
 			$ret = $this->news->getSingleNews($this->eintragid);
-			if( $this->enable_edit )
-			{
-				$ret['ENABLE_EDITOR'] = true;
-				$ret['XINHA_DIR'] = XINHA_WEBROOT;
-			}
 			return $ret;
 		}
 		$ret['PAGEID'] = $this->page['pageid'];
