@@ -103,6 +103,7 @@ class Plugin_Events extends Plugin {
 						$this->prepareSmartyForm();
 					} else {
 						// Save Registration
+						$registration_id = $this->events->addEventRegistration($this->in);
 					}
 					break;
 				default:
@@ -144,6 +145,11 @@ class Plugin_Events extends Plugin {
 		}
 		if( isset($this->in['bemerkung']) ) {
 			$this->in['bemerkung'] = strip_tags($this->in['bemerkung']);
+		}
+
+		$aid = $this->site->getMyAccountID();
+		if($aid != null) {
+			$this->in['accountid'] = $aid;
 		}
 
 	}
@@ -202,7 +208,12 @@ class Plugin_Events extends Plugin {
 		if(!preg_match('/^[0-9]{4}$/i',$this->in['geb_y']) || $this->in['geb_y'] > 2000 || $this->in['geb_y'] < 1900 ) {
 			$geb_err .= 'Das Jahr ist nicht richtig angegeben.';
 		}
-		if($geb_err != '') { $this->err['geb'] = $geb_err; }
+		if($geb_err != '') { 
+			$this->err['geb'] = $geb_err;
+		} else {
+			// Create unixtimestamp from birthday inputfields
+			$this->in['geb'] = mktime(0,0,0,$this->in['geb_m'],$this->in['geb_d'],$this->in['geb_y']);
+		}
 
 		if($this->in['lugid'] == 0)
 		{
