@@ -8,6 +8,7 @@ require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Events.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_News.php');
 require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
@@ -76,7 +77,13 @@ switch( $pagetype ) {
 	case Site::PAGETYPE_PLUGIN_EVENTS:
 		$plugin = new Plugin_Events($pdo,$page,$domaininfo,$site);
 		break;
-	default:
+	case Site::PAGETYPE_PLUGIN_NEWS:
+		$plugin = new Plugin_News($pdo,$page);
+		if($site->isInRole('admin')) {
+			$plugin->enableEditing();
+		}
+		break;
+ 	default:
 		exit('Unknown Pagetype');
 		break;
 }
