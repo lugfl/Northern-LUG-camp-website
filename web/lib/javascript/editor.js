@@ -1,23 +1,36 @@
+function show_object(obj, state)
+{
+	if(state == true)
+	{
+		obj.style.left = "100px";
+		obj.style.top = "150px";
+	}
+	else
+	{
+		obj.style.left = "-1000px";
+		obj.style.top = "-1000px";
+	}
+}
 function editor_show()
 {
-	var edit_win = parent.document.getElementById("content_editor");
-	edit_win.style.left = "100px";
-	edit_win.style.top = "150px";		
+	show_object(parent.document.getElementById("content_editor"), true);
 }
 function editor_hide()
 {
-	var edit_win = parent.document.getElementById("content_editor");
-	edit_win.style.left = "-1000px";
-	edit_win.style.top = "-1000px";
+	show_object(parent.document.getElementById("content_editor"), false);
 }
 function editor_save()
 {
-	editor_hide();
 	var eform = parent.document.getElementById("editor_form");
+	show_object(eform, false);
 	eform.action = document.location.href;
 	eform.submit();
 }
 function editor_discard()
 {
-	editor_hide();
+	show_object(parent.document.getElementById("content_editor"), false);
+}
+function page_create_show()
+{
+	show_object(parent.document.getElementById("content_addform"), true);
 }

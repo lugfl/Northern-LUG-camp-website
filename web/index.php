@@ -113,6 +113,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 	$item = ARRAY();
 	if( $site->isInRole($nav1['acl']) )
 	{
+		$item['pageid'] = $nav1['pageid'];
 		$item['url'] = './index.php?p='.$nav1['pageid'];
 		$item['title'] = $nav1['title'];
 		$item['active'] = ($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath));
@@ -126,6 +127,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 				$subItem = ARRAY();
 				if( $site->isInRole($nav2['acl']) )
 				{
+					$subItem['pageid'] = $nav2['pageid'];
 					$subItem['url'] = './index.php?p='.$nav2['pageid'];
 					$subItem['title'] = $nav2['title'];
 					$subItem['active'] = ($p == $nav2['pageid'] || in_array($nav2['pageid'],$rootpath));
