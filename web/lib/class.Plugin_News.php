@@ -12,13 +12,18 @@ class Plugin_News extends Plugin {
 	private $pdo = null;
 	private $page = null;
 	private $news = null;
+	private $eintragid = 0;
 
 	private $viewMode = VIEWMODE_OVERVIEW;
 
-	function __construct($pdo,$page) {
+	function __construct($pdo,$page,$eintragid) {
 		$this->pdo = $pdo;
 		$this->page = $page;
 		$this->news = new News($pdo);
+		if($eintragid > 0) {
+			$this->eintragid = $eintragid;
+			$this->viewMode = VIEWMODE_SINGLE;
+		}
 	}
 
 	public function enableEditing()
@@ -38,7 +43,7 @@ class Plugin_News extends Plugin {
 			return;
 
 		// only save if content has been altered..
-		// TODO anpassen, page gibts nimmer
+		// TODO anpassen
 /*
 		if($this->edited_content != $this->page['content'])
 		{
@@ -63,7 +68,7 @@ class Plugin_News extends Plugin {
 	*/
 	public function getSmartyTemplate()
 	{
-		if($viewmode == VIEWMODE_SINGLE) {
+		if($this->viewMode == VIEWMODE_SINGLE) {
 			return 'page.news_eintrag.html';
 		}
 		return 'page.news.html';
@@ -72,20 +77,14 @@ class Plugin_News extends Plugin {
 	public function getSmartyVariables()
 	{
 		$ret = ARRAY();
-		if($viewmode == VIEWMODE_SINGLE) {
-			$news = loadSingleNews();
-			// TODO add correct category 
-			$ret['CATEGORY'] = 'Allgemein';
-			$ret['TITLE'] = $this->page['title'];
-			$ret['SHORT'] = $this->page['short'];
-			$ret['AUTHOR'] = $this->page['author'];
-			if( isset($this->page['txt']) )
-				$ret['TXT'] = $this->page['txt'];
+		if($this->viewMode == VIEWMODE_SINGLE) {
+			$ret = $this->news->getSingleNews($this->eintragid);
 			if( $this->enable_edit )
 			{
 				$ret['ENABLE_EDITOR'] = true;
 				$ret['XINHA_DIR'] = XINHA_WEBROOT;
 			}
+			print_r($ret);
 			return $ret;
 		}
 		$ret['PAGEID'] = $this->page['pageid'];

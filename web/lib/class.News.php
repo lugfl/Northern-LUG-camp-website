@@ -23,6 +23,16 @@ class News {
 		return $this->news;
 	}
 
+	public function getSingleNews($id) {
+		for($i = 0; $i < count($this->news); $i++) {
+			$eintrag = $this->news[$i];
+			if($eintrag['eintragid'] == $id) {
+				return $eintrag;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Load latest News from database.
 	 *
