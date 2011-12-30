@@ -7,7 +7,6 @@
 	_editor_icons = "classic";
 	var css_path = "/templates/{$TEMPLATE_STYLE}/style.css";
 </script>
-<a href="javascript:editor_show();">[Seite bearbeiten]</a>
 <div id="content_editor" style="position:absolute; z-index: 99; left: -10000px; top: -10000px;">
 	<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
 	<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
