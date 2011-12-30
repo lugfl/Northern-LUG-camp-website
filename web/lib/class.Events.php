@@ -74,6 +74,62 @@ class Events  {
 		}
 		return $ret;
 	}
+
+	/**
+	 * Insert new Registration in Tabele event_anmeldung and event_anmeldung_event
+	 */
+	public function addEventRegistration($data) {
+
+		if( ! isset($data['bemerkung']) ) {
+			$data['bemerkung'] = '';
+		}
+		$insert_id = null;
+
+		// Prepare named parameters for INSERT
+		$pairs = Array();
+		$pairs[':accountid'] = $data['accountid'];
+		$pairs[':lugid'] = $data['lugid'];
+		$pairs[':vorname'] = $data['vorname'];
+		$pairs[':nachname'] = $data['nachname'];
+		$pairs[':strasse'] = $data['strasse'];
+		$pairs[':hausnr'] = $data['haus'];
+		$pairs[':plz'] = $data['plz'];
+		$pairs[':ort'] = $data['ort'];
+		$pairs[':landid'] = $data['landid'];
+		$pairs[':email'] = $data['email'];
+		$pairs[':gebdat'] = $data['geb'];
+		$pairs[':vegetarier'] = $data['vegetarier'];
+		$pairs[':arrival'] = $data['anreise'];
+		$pairs[':ankunft'] = $data['ankunft'];
+		$pairs[':abfahrt'] = $data['abfahrt'];
+		$pairs[':bemerkung'] = $data['bemerkung'];
+		try {
+			// Create databasenetry with person-related registration-Data
+			$SQL = 'INSERT INTO event_anmeldung (accountid,lugid,vorname,nachname,strasse,hausnr,plz,ort,landid,email,gebdat,vegetarier,arrival,ankunft,abfahrt,bemerkung) ';
+			$SQL .= 'VALUES (:accountid,:lugid,:vorname,:nachname,:strasse,:hausnr,:plz,:ort,:landid,:email,FROM_UNIXTIME(:gebdat),:vegetarier,:arrival,:ankunft,:abfahrt,:bemerkung) ';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute($pairs);
+			$insert_id = $this->pdo->lastInsertId();
+			$st->closeCursor();
+		} catch (PDOException $e) {
+			print $e;
+		}
+
+		if( $insert_id != null && isset($data['events']) && is_array($data['events']) ) {
+			// register the new person with each selected event...
+			try {
+				$SQL = 'INSERT INTO event_anmeldung_event (anmeldungid,eventid,accountid) VALUES (?,?,?)';
+				$st = $this->pdo->prepare($SQL);
+				foreach( $data['events'] as $eventid ) {
+					$st->execute( array($insert_id,$eventid,$data['accountid']) );
+				}
+				$st->closeCursor();
+			} catch ( PDOException $e ) {
+				print $e;
+			}
+		}
+		return $insert_id;
+	}
 }
 
 ?>
