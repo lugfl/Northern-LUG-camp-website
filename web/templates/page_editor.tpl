@@ -16,4 +16,29 @@
 	</form>
 	<span class="editor_buttons"><button onclick="editor_save();">save</button><button onclick="editor_discard();">discard</button></span>
 </div>
+<div id="content_addform" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
+	<form id="pageadd_form" method="POST">
+		<label for="page_title">Titel der Seite:</label><input type="text" name="page_title" value="neue Seite" /><br />
+		<label for="page_position">Position der Seite:</label>
+		<fieldset name="page_position">
+			<label for="page_relation_above">Vor</label><input name="page_relation_above" type="radio" value="above"><br />
+			<label for="page_relation_below">Nach</label><input name="page_relation_below" type="radio" value="below"><br />
+			<select name="page_pos">
+				{* generate list from navigation *}
+				{foreach from=$NAVI item=lvl1}
+					<option value="{$lvl1.pageid}">|-- {$lvl1.title}</option>
+					{foreach from=$lvl1.subitems item=lvl2}
+						<option value="{$lvl2.pageid}">&nbsp;&nbsp;|-- {$lvl2.title}</option>
+					{/foreach}
+				{/foreach}
+			</select><br />
+		</fieldset>
+		<label for="page_role">Berechtigung:</label><select name="page_role">
+				<option value="-">jeder</option>
+				<option value="user">eingeloggte Benutzer</option>
+				<option value="admin">nur Admins</option>
+			</select><br />
+		<span class="editor_buttons"><button onclick="pageadd_save();">save</button><button onclick="pageadd_discard();">discard</button></span>
+	</form>
+</div>
 {/if}
