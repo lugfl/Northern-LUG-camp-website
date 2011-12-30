@@ -104,16 +104,17 @@ class Events  {
 		$pairs[':ort'] = $data['ort'];
 		$pairs[':landid'] = $data['landid'];
 		$pairs[':email'] = $data['email'];
-		$pairs[':gebdat'] = $data['geb'];
+		$pairs[':gebdat'] = $data['geb_y'] . '-' . $data['geb_m'] . '-' . $data['geb_d'];
 		$pairs[':vegetarier'] = $data['vegetarier'];
 		$pairs[':arrival'] = $data['anreise'];
 		$pairs[':ankunft'] = $data['ankunft'];
 		$pairs[':abfahrt'] = $data['abfahrt'];
 		$pairs[':bemerkung'] = $data['bemerkung'];
+
 		try {
 			// Create databasenetry with person-related registration-Data
 			$SQL = 'INSERT INTO event_anmeldung (accountid,lugid,vorname,nachname,strasse,hausnr,plz,ort,landid,email,gebdat,vegetarier,arrival,ankunft,abfahrt,bemerkung) ';
-			$SQL .= 'VALUES (:accountid,:lugid,:vorname,:nachname,:strasse,:hausnr,:plz,:ort,:landid,:email,FROM_UNIXTIME(:gebdat),:vegetarier,:arrival,:ankunft,:abfahrt,:bemerkung) ';
+			$SQL .= 'VALUES (:accountid,:lugid,:vorname,:nachname,:strasse,:hausnr,:plz,:ort,:landid,:email,DATE(:gebdat),:vegetarier,:arrival,:ankunft,:abfahrt,:bemerkung) ';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute($pairs);
 			$insert_id = $this->pdo->lastInsertId();

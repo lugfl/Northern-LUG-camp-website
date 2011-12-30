@@ -104,6 +104,9 @@ class Plugin_Events extends Plugin {
 					} else {
 						// Save Registration
 						$registration_id = $this->events->addEventRegistration($this->in);
+						if( $registration_id != null ) {
+							$this->smarty_assign['events_block'] = 'events_registration_successfull';
+						}
 					}
 					break;
 				default:
@@ -211,9 +214,6 @@ class Plugin_Events extends Plugin {
 
 		if($geb_err != '') { 
 			$this->err['geb'] = $geb_err;
-		} else {
-			// Create unixtimestamp from birthday inputfields
-			$this->in['geb'] = mktime(0,0,0,$this->in['geb_m'],$this->in['geb_d'],$this->in['geb_y']);
 		}
 
 		if($this->in['lugid'] == 0)
