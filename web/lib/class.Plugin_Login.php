@@ -5,6 +5,16 @@ require_once('Mail/RFC822.php');
 require_once('lib/func.http_get_var.php');
 require_once('lib/class.Plugin.php');
 
+/**
+ * Plugin for Login
+ *
+ * Template-Blocks:
+ *
+ * - newpw (new password request)
+ * - newform (account registration form)
+ * - confirmmailsend (account created, registration mail send)
+ * - confirmed (registration confirmed via mail-link)
+ */
 class Plugin_Login extends Plugin {
 
 	private $pdo = null;
@@ -26,6 +36,8 @@ class Plugin_Login extends Plugin {
 		$this->pdo = $pdo;
 		$this->page = $page;
 
+		// Default value for template view
+		$this->smarty_assign['login_block'] = 'login';
 		
 	}
 
@@ -48,6 +60,7 @@ class Plugin_Login extends Plugin {
 		if(isset($_SESSION['_login_ok']) && $_SESSION['_login_ok'] == 1) {
 			$this->auth_ok = TRUE;
 		}
+
 	}
 
 	protected  function loglogin($accountid) {
@@ -116,26 +129,27 @@ class Plugin_Login extends Plugin {
 				unset($_SESSION['_accountid']);
 				unset($_SESSION['_username']);
 				$this->auth_ok = FALSE;
+				$this->smarty_assign['login_block'] = 'loginform';
 			}
 		}
 
 		switch($this->input_m) {
 			case "login":
-				$rc = $this->processLogin();
+				$this->auth_ok = $this->processLogin();
 				break;
 			case "newform":
-				$this->smarty_assign['newform'] = TRUE;
+				$this->smarty_assign['login_block'] = 'newform';
 				$this->smarty_assign['auth_user'] = $this->input_auth_user;
 				$this->smarty_assign['auth_email'] = $this->input_auth_email;
 				break;
 			case "new":
-				$this->smarty_assign['newform'] = TRUE;
+				$this->smarty_assign['login_block'] = 'newform';
 				if( $this->validateAccountData() ) {
 					// save new Account
 					$newacc = $this->createAccount($this->input_auth_user,$this->input_auth_pass,$this->input_auth_email);
 					if( $newacc != null ) {
 						$rc = $this->sendConfirmMail($newacc);
-						$this->smarty_assign['confirm_mail_send'] = TRUE;
+						$this->smarty_assign['login_block'] = 'confirmmailsend';
 					}
 				} else {
 					// display user and email in Form again
@@ -155,7 +169,7 @@ class Plugin_Login extends Plugin {
 								$SQL = 'UPDATE account SET active=1 WHERE accountid=?';
 								$st = $this->pdo->prepare($SQL);
 								$st->execute(array($u['accountid']));
-								$this->smarty_assign['block'] = 'confirmed';
+								$this->smarty_assign['login_block'] = 'confirmed';
 							} catch ( PDOException $e ) {
 								print $e;
 							}
@@ -164,7 +178,6 @@ class Plugin_Login extends Plugin {
 				}
 				break;
 		}
-		$this->smarty_assign['newpw'] = $this->input_newpw;
 		$this->smarty_assign['auth_ok'] = $this->auth_ok;
 		$this->smarty_assign['error'] = $this->error;
 		$this->smarty_assign['loginpage'] = $this->loginpageid;
