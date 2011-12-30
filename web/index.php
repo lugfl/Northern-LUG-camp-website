@@ -132,11 +132,11 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 				}
 			}
 		}
-		$navi1arr[] = $item;
+		$naviarr[] = $item;
 	}
 }
 // assign navigation structure to Smarty..
-$tmpl->assign('NAVI',$navi1arr);
+$tmpl->assign('NAVI',$naviarr);
 
 // Set some variables for rolebased functions in templates
 $tmpl->assign('auth_ok', $site->auth_ok());
