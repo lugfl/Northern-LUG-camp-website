@@ -146,6 +146,10 @@ $tmpl->assign('auth_ok', $site->auth_ok());
 $tmpl->assign('role_user', $site->isInRole('user'));
 $tmpl->assign('role_admin', $site->isInRole('admin'));
 
+// Set variable to allow pagetyperelated templates
+// (only numeric representation available)
+$tmpl->assign('pagetypeid',$page['pagetypeid']);
+
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
 //$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
