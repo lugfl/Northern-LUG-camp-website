@@ -7,7 +7,7 @@ xinha_init = xinha_init ? xinha_init : function()
 {
   xinha_editors = xinha_editors ? xinha_editors :
   [
-    'codeeditor'
+    'codeeditor', 'newseditor',
   ];
 
 xinha_plugins = xinha_plugins ? xinha_plugins :

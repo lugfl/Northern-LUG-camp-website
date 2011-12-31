@@ -7,9 +7,9 @@
 	_editor_icons = "classic";
 	var css_path = "/templates/{$TEMPLATE_STYLE}/style.css";
 </script>
+<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
+<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
 <div id="content_editor" style="position:absolute; z-index: 99; left: -10000px; top: -10000px;">
-	<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
-	<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
 	<form id="editor_form" method="POST">
 		<input type="hidden" name="editor" value="1">
 		<textarea id="codeeditor" name="codeeditor" rows="30" cols="50" style="width: 900px">{$CONTENT}</textarea>
@@ -42,13 +42,11 @@
 	</form>
 </div>
 <div id="news_addform" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
-	<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
-	<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
 	<form id="newsadd_form" method="POST">
 		<input type="hidden" name="editor" value="1" />
 		<label for="news_title">Title:</label><input type="text" name="news_title" value="News" /><br />
 		<label for="news_short">Kurztext:</label><input type="text" name="news_short" value="Kurztext" /><br />
-		<label for="news_txt">Text:</label><textarea id="codeeditor" name="news_text" rows="10" cols="50" style="width: 900px"></textarea><br />
+		<label for="news_txt">Text:</label><textarea id="newseditor" name="news_text" rows="10" cols="50" style="width: 900px"></textarea><br />
 		<span class="editor_buttons"><button onclick="newsadd_save();">save</button><button onclick="newsadd_discard();">discard</button></span>
 	</form>
 </div>
