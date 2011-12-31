@@ -248,7 +248,9 @@ class Plugin_Login extends Plugin {
 		$this->smarty_assign['auth_ok'] = $this->auth_ok;
 		$this->smarty_assign['error'] = $this->error;
 		$this->smarty_assign['loginpage'] = $this->loginpageid;
-
+		if( isset($_SESSION['_username']) ) {
+			$this->smarty_assign['username'] = $_SESSION['_username'];
+		}
 		
 	}
 
