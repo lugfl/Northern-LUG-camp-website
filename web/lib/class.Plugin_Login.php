@@ -10,10 +10,13 @@ require_once('lib/class.Plugin.php');
  *
  * Template-Blocks:
  *
+ * - newpwform (new password request form)
  * - newpw (new password request)
  * - newform (account registration form)
  * - confirmmailsend (account created, registration mail send)
  * - confirmed (registration confirmed via mail-link)
+ * - chpwform (change-password form)
+ * - chpwconfirm (change-password confirm)
  */
 class Plugin_Login extends Plugin {
 
@@ -22,6 +25,7 @@ class Plugin_Login extends Plugin {
 	private $input_logout = FALSE;
 	private $input_auth_user = '';
 	private $input_auth_pass = '';
+	private $input_auth_newpass = ''; // used for password changes
 	private $input_auth_pass2 = '';
 	private $input_auth_email = '';
 	private $input_h = '';
@@ -49,7 +53,11 @@ class Plugin_Login extends Plugin {
 		if( $this->input_auth_user == '' ) {
 			$this->input_auth_user = http_get_var('au');
 		}
+		if( $this->input_auth_user == '' && isset($_SESSION['_username']) ) {
+			$this->input_auth_user = $_SESSION['_username']; // required for change-password-requests
+		}
 		$this->input_auth_pass = http_get_var('auth_pass');
+		$this->input_auth_newpass = http_get_var('auth_newpass');
 		$this->input_auth_pass2 = http_get_var('auth_pass2');
 		$this->input_auth_email = http_get_var('auth_email');
 		$this->input_m = http_get_var('m',0);
@@ -118,6 +126,29 @@ class Plugin_Login extends Plugin {
 		return $ret;
 	}
 
+	/**
+	 * Validate Input for change-password-request
+	 */
+	private function validateChPasswordData() {
+		$ret = TRUE;
+		$auth = $this->processLogin(FALSE);
+		
+		if( FALSE == $auth ) {
+			$this->smarty_assign['err_auth'] = TRUE;
+			$ret = FALSE;
+		}
+		
+		if($this->input_auth_newpass == '') {
+			$this->smarty_assign['err_auth_pass'] = 'Du hast kein neues Passwort angegeben!';
+			$ret = FALSE;
+		}elseif($this->input_auth_pass2 != $this->input_auth_newpass) {
+			$this->smarty_assign['err_auth_pass'] = 'Deine neuen Passw&ouml;rter stimmen nicht &uuml;berein!';
+			$ret = FALSE;
+		}
+
+		return $ret;
+	}
+
 	public function processInput() {
 		// AutoLogout
 		if( $this->auth_ok ) {
@@ -133,14 +164,17 @@ class Plugin_Login extends Plugin {
 
 		switch($this->input_m) {
 			case "login":
+				// process login request
 				$this->auth_ok = $this->processLogin();
 				break;
 			case "newform":
+				// show form for new Registration
 				$this->smarty_assign['login_block'] = 'newform';
 				$this->smarty_assign['auth_user'] = $this->input_auth_user;
 				$this->smarty_assign['auth_email'] = $this->input_auth_email;
 				break;
 			case "new":
+				// save new Account or redisplay form
 				$this->smarty_assign['login_block'] = 'newform';
 				if( $this->validateAccountData() ) {
 					// save new Account
@@ -158,6 +192,7 @@ class Plugin_Login extends Plugin {
 				// display form for new Account
 				break;
 			case "c":
+				// check account confirmation hash an display confirmation page
 				if( $this->input_auth_user != '' && $this->input_h != '' ) {
 					$u = $this->getAccount($this->input_auth_user);
 					if( $u != null ) {
@@ -176,9 +211,11 @@ class Plugin_Login extends Plugin {
 				}
 				break;
 				case "newpwform":
+					// display form for new password requests
 					$this->smarty_assign['login_block'] = 'newpwform';
 					break;
 				case "newpw":
+					// generate a new Password an send it per mail
 					$new_pw = $this->new_password($this->input_auth_user,$this->input_auth_email);
 					if( $new_pw != FALSE ) {
 						$u = $this->getAccount($this->input_auth_user);
@@ -189,6 +226,22 @@ class Plugin_Login extends Plugin {
 						// user not found
 						$this->smarty_assign['err_user_not_found'] = TRUE;
 						$this->smarty_assign['login_block'] = 'newpwform';
+					}
+					break;
+				case "chpwform":
+					// display change-password-form
+					$this->smarty_assign['login_block'] = 'chpwform';
+					break;
+				case "chpw":
+					// change password or redisplay form
+					if( FALSE == $this->validateChPasswordData() ) {
+						$this->smarty_assign['login_block'] = 'chpwform';
+					} else {
+						if( TRUE == $this->updatePassword($this->input_auth_user,$this->input_auth_newpass) ) {
+							$this->smarty_assign['login_block'] = 'chpwconfirm';
+						} else {
+							$this->smarty_assign['login_block'] = 'chpwform';
+						}
 					}
 					break;
 		}
@@ -240,7 +293,7 @@ class Plugin_Login extends Plugin {
 	/**
 	 * Check Username and Password and set _SESSION Variables after successfull login.
 	 */
-	private function processLogin() {
+	private function processLogin($sessionmodify = true) {
 		$ret = FALSE;
 		if($this->input_auth_user != '' && $this->input_auth_pass != '') {
 			// Formular abgeschickt
@@ -250,13 +303,15 @@ class Plugin_Login extends Plugin {
 				$st->execute(array($this->input_auth_user,$this->input_auth_pass));
 				if($row = $st->fetch(PDO::FETCH_ASSOC)) {
 						if($row) {
-							$_SESSION['_login_ok'] = 1;
-							$_SESSION['_accountid'] = $row['accountid'];
-							$_SESSION['_username'] = $row['username'];
-							$arry = explode(",",$row['acl']);
-							$arry[]= 'user'; // every authentificated User is in Role "user"
-							$_SESSION['_acl'] = join(',',$arry);
-							$this->loglogin($row['accountid']);
+							if( $sessionmodify ) {
+								$_SESSION['_login_ok'] = 1;
+								$_SESSION['_accountid'] = $row['accountid'];
+								$_SESSION['_username'] = $row['username'];
+								$arry = explode(",",$row['acl']);
+								$arry[]= 'user'; // every authentificated User is in Role "user"
+								$_SESSION['_acl'] = join(',',$arry);
+								$this->loglogin($row['accountid']);
+							}
 							$ret = TRUE;
 						}
 				}
@@ -264,15 +319,6 @@ class Plugin_Login extends Plugin {
 			}catch (PDOException $e) {
 				print $e;
 			}
-		}
-		return $ret;
-	}
-
-	public function checkNewPw() {
-		$ret = FALSE;
-		if( $this->input_newpw == 1 ) {
-			// show form
-			// TODO
 		}
 		return $ret;
 	}
@@ -365,6 +411,25 @@ class Plugin_Login extends Plugin {
 		}
 		return $rand_password;
 	}
+
+	/**
+	 * Update Password in Database without random generation and mail.
+	 */
+	protected function updatePassword($user,$newpasswd) {
+		$ret = FALSE;
+		try {
+			$SQL = "UPDATE account SET passwd = MD5(?) WHERE username = ?";
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($newpasswd,$user));
+			if($st->rowCount() == 1) {
+				$ret = TRUE;
+			}
+		} catch ( PDOException $e) {
+			print $e;
+		}
+		return $ret;
+	}
+
 }
 
 ?>
