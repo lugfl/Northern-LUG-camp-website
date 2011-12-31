@@ -60,7 +60,7 @@ $plugin = null;
 // 1.) load Plugin for Page
 switch( $pagetype ) {
 	case Site::PAGETYPE_PLUGIN_LOGIN:
-		$plugin = new Plugin_Login($pdo,$page);
+		$plugin = new Plugin_Login($pdo,$page,$domaininfo);
 		$plugin->setLoginPage($p);
 		break;
 	case Site::PAGETYPE_TEXT_HTML:

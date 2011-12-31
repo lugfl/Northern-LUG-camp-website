@@ -22,6 +22,7 @@ class Plugin_Login extends Plugin {
 
 	private $pdo = null;
 	private $page = null;
+	private $domaininfo = null;
 	private $input_logout = FALSE;
 	private $input_auth_user = '';
 	private $input_auth_pass = '';
@@ -35,9 +36,10 @@ class Plugin_Login extends Plugin {
 	private $loginpageid = 0;
 	private $input_m = 0;
 
-	function __construct($pdo,&$page) {
+	function __construct($pdo,&$page,$domaininfo) {
 		$this->pdo = $pdo;
 		$this->page = $page;
+		$this->domaininfo = $domaininfo;
 
 		// Default value for template view
 		$this->smarty_assign['login_block'] = 'login';
@@ -270,8 +272,8 @@ class Plugin_Login extends Plugin {
 		$msg .= "\nNeuigkeiten zur Webseite werden auf der Mailingliste bekanntgegeben.";
 		$msg .= "\nDie Anmeldeseite der Mailingliste findest Du unter http://lists.lugcamp.org/cgi-bin/mailman/listinfo/teilnehmer";
 		$msg .= "\n\nWir freuen uns auf Dich\n\ndie Mitglieder der LUG Flensburg";
-			
-		$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',$user['email'],'Registrierung auf ' . $_SERVER['SERVER_NAME'],$msg);
+
+		$send_mail	= my_mailer($this->domaininfo['email'],$user['email'],'Registrierung auf ' . $_SERVER['SERVER_NAME'],$msg);
 		return $send_mail;
 	}
 
@@ -287,8 +289,8 @@ class Plugin_Login extends Plugin {
 		$msg .= $user['newpw'];
 		$msg .= "\n\n";
 		$msg .= "Mit dem neuen Passwort kannst Du Dich auf der Webseite jetzt anmelden.\n\n";
-			
-		$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',$user['email'],'Passwortanforderung auf ' . $_SERVER['SERVER_NAME'],$msg);
+		
+		$send_mail	= my_mailer($this->domaininfo['email'],$user['email'],'Passwortanforderung auf ' . $_SERVER['SERVER_NAME'],$msg);
 		return $send_mail;
 	}
 

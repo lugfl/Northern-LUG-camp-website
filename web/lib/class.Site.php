@@ -25,7 +25,7 @@ class Site {
 	 */
 	protected function searchMyDomain() {
 		$ret = FALSE;
-		$SQL = "SELECT domainid,name FROM content_domain WHERE name=?";
+		$SQL = "SELECT domainid,name,email FROM content_domain WHERE name=?";
 		$st = $this->pdo->prepare($SQL);
 		$res = $st->execute(array($_SERVER['SERVER_NAME']));
 		if ( $row = $st->fetch(PDO::FETCH_ASSOC)) {
