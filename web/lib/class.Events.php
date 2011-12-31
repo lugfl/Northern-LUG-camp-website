@@ -142,7 +142,7 @@ class Events  {
 		return $insert_id;
 	}
 
-	public function getEventRegistrationsForAccount($domainid,$accountid) {
+	public function getEventRegistrationsForAccount($accountid, $domainid) {
 		$ret = array();
 
 		try{
@@ -182,16 +182,23 @@ class Events  {
 		return $ret;
 	}
 
-	public function getBoughtArtikelForAccount($domainid, $accountid) {
+	public function getBoughtArtikelForAccount($accountid, $domainid = null) {
 		$ret = array();
 
 		try{
 			$SQL = 'SELECT ea.name, eaa.groesse, eaa.anzahl, (eaa.anzahl*ea.preis) as kosten, eaa.bezahlt '
 				.'FROM event_account_artikel eaa '
 				.'LEFT JOIN event_artikel ea ON ea.artikelid = eaa.artikelid '
-				.'WHERE eaa.accountid = ?';
-			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($accountid));
+				.'LEFT JOIN domain_artikel da ON da.artikelid = eaa.artikelid '
+				.'WHERE eaa.accountid = ? ';
+			if($domainid != null) {
+				$SQL .= 'AND da.domainid = ? ';
+				$st = $this->pdo->prepare($SQL);
+				$st->execute(array($accountid,$domainid));
+			}else{
+				$st = $this->pdo->prepare($SQL);
+				$st->execute(array($accountid));
+			}
 			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
 				$ret[] = $row;
 			}

@@ -74,11 +74,11 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 			$ret['rechnung_block'] = 'anmeldung';
 		}else{
 			$ret['EVENTS'] = $this->events->getEventRegistrationsForAccount(
-				$this->domain['domainid'], 
-				$_SESSION['_accountid']);
+				$_SESSION['_accountid'], 
+				$this->domain['domainid']);
 			$ret['ARTIKEL'] = $this->events->getBoughtArtikelForAccount(
-				$this->domain['domainid'], 
-				$_SESSION['_accountid']);
+				$_SESSION['_accountid'],
+				$this->domain['domainid']);
 			$ret['rechnung_block'] = 'overview';
 		}
 
