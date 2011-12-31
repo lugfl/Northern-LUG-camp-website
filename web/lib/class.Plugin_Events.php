@@ -171,17 +171,17 @@ class Plugin_Events extends Plugin {
 
 	protected function validateInput() {
 	
-		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['vorname'])) {
+		if(!preg_match('/^[[:alpha:] -]{3,40}$/iu',$this->in['vorname'])) {
 			// Fehler im Vornamen
 			$this->err['vorname'] = 'Dieser Vorname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)';
 		}
 
-		if(!preg_match('/^[[:alpha:]-]{3,40}$/i',$this->in['nachname'])) {
+		if(!preg_match('/^[[:alpha:] -]{3,40}$/iu',$this->in['nachname'])) {
 			// Fehler im Nachnamen
 			$this->err['nachname'] = 'Dieser Nachname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)';
 		}
 
-		if(!preg_match('/^[[:alpha:]. -]{3,40}$/i',$this->in['strasse'])) {
+		if(!preg_match('/^[[:alpha:]. -]{3,40}$/iu',$this->in['strasse'])) {
 			// Fehler in der Strasse
 			$this->err['strasse'] = 'Dieser Stra&szlig;enname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)';
 		}
@@ -196,14 +196,14 @@ class Plugin_Events extends Plugin {
 			$this->err['plz'] = 'Diese Postleitzahl enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-10 Zeichen)';
 		}
 
-		if(!preg_match('/^[[:alpha:]0-9 -]{3,40}$/i',$this->in['ort'])) {
+		if(!preg_match('/^[[:alpha:]0-9 -]{3,40}$/iu',$this->in['ort'])) {
 			// Fehler im Ort
 			$this->err['ort'] = 'Dieser Ort enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)';
 		}
 
 		if($this->in['landid'] == 0)
 		{
-			if(!preg_match('/^[[:alpha:].:,; -]{3,50}$/i',$this->in['landnew'])) {
+			if(!preg_match('/^[[:alpha:].:,; -]{3,50}$/iu',$this->in['landnew'])) {
 				// Fehler im neu angegebenen Land
 				$this->err['land'] = 'Du hast kein Land angebeben oder der Name enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-40 Zeichen)';
 			}
