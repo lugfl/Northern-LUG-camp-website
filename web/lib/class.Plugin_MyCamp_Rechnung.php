@@ -44,9 +44,11 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		// TODO review
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
 		if(isset($this->in['anmeldungid'])) {
+			// display single registration
 			$this->smarty_assign = $this->events->getEventRegistration($this->in['anmeldungid']);
 			$this->smarty_assign['rechnung_block'] = 'anmeldung';
 		}else{
+			// create list of registrations
 			$this->smarty_assign['EVENTS'] = $this->events->getEventRegistrationsForAccount(
 				$_SESSION['_accountid'], 
 				$this->domain['domainid']);
