@@ -25,7 +25,6 @@ class Plugin_Login extends Plugin {
 	private $input_auth_pass2 = '';
 	private $input_auth_email = '';
 	private $input_h = '';
-	private $input_newpw = 0;
 	private $smarty_assign = array();
 	private $auth_ok = FALSE;
 	private $error = '';
@@ -53,7 +52,6 @@ class Plugin_Login extends Plugin {
 		$this->input_auth_pass = http_get_var('auth_pass');
 		$this->input_auth_pass2 = http_get_var('auth_pass2');
 		$this->input_auth_email = http_get_var('auth_email');
-		$this->input_newpw = http_get_var('newpw',0);
 		$this->input_m = http_get_var('m',0);
 		$this->input_h = http_get_var('h');
 
@@ -177,6 +175,22 @@ class Plugin_Login extends Plugin {
 					}
 				}
 				break;
+				case "newpwform":
+					$this->smarty_assign['login_block'] = 'newpwform';
+					break;
+				case "newpw":
+					$new_pw = $this->new_password($this->input_auth_user,$this->input_auth_email);
+					if( $new_pw != FALSE ) {
+						$u = $this->getAccount($this->input_auth_user);
+						$u['newpw'] = $new_pw;
+						$rc = $this->sendNewPasswordMail($u);
+						$this->smarty_assign['login_block'] = 'newpwconfirm';
+					} else {
+						// user not found
+						$this->smarty_assign['err_user_not_found'] = TRUE;
+						$this->smarty_assign['login_block'] = 'newpwform';
+					}
+					break;
 		}
 		$this->smarty_assign['auth_ok'] = $this->auth_ok;
 		$this->smarty_assign['error'] = $this->error;
@@ -203,6 +217,23 @@ class Plugin_Login extends Plugin {
 		$msg .= "\n\nWir freuen uns auf Dich\n\ndie Mitglieder der LUG Flensburg";
 			
 		$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',$user['email'],'Registrierung auf ' . $_SERVER['SERVER_NAME'],$msg);
+		return $send_mail;
+	}
+
+	/**
+	 * Send new password mail.
+	 */
+	private function sendNewPasswordMail($user) {
+		
+		$msg = "Moin moin,\n\n";
+		$msg .= "in Deinem Namen wurde auf der Webseite " . $_SERVER['SERVER_NAME'] . " ein neues Passwort angefordert.\n\n";
+		$msg .= "Sollte die Passwortanforderung nicht von Dir selbst angestossen worden sein, informiere uns bitte.\n\n";
+		$msg .= "Das neue Passwort lautet:\n\n";
+		$msg .= $user['newpw'];
+		$msg .= "\n\n";
+		$msg .= "Mit dem neuen Passwort kannst Du Dich auf der Webseite jetzt anmelden.\n\n";
+			
+		$send_mail	= my_mailer('anmeldung@lug-camp-2008.de',$user['email'],'Passwortanforderung auf ' . $_SERVER['SERVER_NAME'],$msg);
 		return $send_mail;
 	}
 
@@ -238,10 +269,12 @@ class Plugin_Login extends Plugin {
 	}
 
 	public function checkNewPw() {
+		$ret = FALSE;
 		if( $this->input_newpw == 1 ) {
 			// show form
 			// TODO
 		}
+		return $ret;
 	}
 
 	public function getOutputMethod() {
@@ -306,7 +339,9 @@ class Plugin_Login extends Plugin {
 	}
 
 	/**
-	 * Create a new random password
+	 * Create a new random passworda
+	 *
+	 * @return new password or FALSE if user not found
 	 */
 	protected function new_password($user, $email)
 	{
@@ -319,7 +354,7 @@ class Plugin_Login extends Plugin {
 			$rand_password .= substr($content,(rand()%(strlen ($content))), 1);
 		}
 		try {
-			$SQL1 = "UPDATE account SET passwd = MD5(?) WHERE username = ? AND email = ?";
+			$SQL = "UPDATE account SET passwd = MD5(?) WHERE username = ? AND email = ?";
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($rand_password,$user,$email));
 			if($st->rowCount() != 1) {
