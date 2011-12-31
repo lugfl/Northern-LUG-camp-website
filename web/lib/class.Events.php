@@ -116,8 +116,8 @@ class Events  {
 
 		try {
 			// Create databasenetry with person-related registration-Data
-			$SQL = 'INSERT INTO event_anmeldung (accountid,lugid,vorname,nachname,strasse,hausnr,plz,ort,landid,email,gebdat,vegetarier,arrival,ankunft,abfahrt,bemerkung) ';
-			$SQL .= 'VALUES (:accountid,:lugid,:vorname,:nachname,:strasse,:hausnr,:plz,:ort,:landid,:email,DATE(:gebdat),:vegetarier,:arrival,:ankunft,:abfahrt,:bemerkung) ';
+			$SQL = 'INSERT INTO event_anmeldung (accountid,lugid,vorname,nachname,strasse,hausnr,plz,ort,landid,email,gebdat,vegetarier,arrival,ankunft,abfahrt,bemerkung,crdate) ';
+			$SQL .= 'VALUES (:accountid,:lugid,:vorname,:nachname,:strasse,:hausnr,:plz,:ort,:landid,:email,DATE(:gebdat),:vegetarier,:arrival,:ankunft,:abfahrt,:bemerkung,NOW()) ';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute($pairs);
 			$insert_id = $this->pdo->lastInsertId();
