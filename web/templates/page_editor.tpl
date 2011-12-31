@@ -1,3 +1,4 @@
+{$ENABLE_EDITOR}
 {if $ENABLE_EDITOR}
 <script type="text/javascript" src="lib/javascript/editor.js"></script>
 <script type="text/javascript">
@@ -47,7 +48,7 @@
 		<label for="news_title">Title:</label><input type="text" name="news_title" value="News" /><br />
 		<label for="news_short">Kurztext:</label><input type="text" name="news_short" value="Kurztext" /><br />
 		<label for="news_txt">Text:</label><textarea id="newseditor" name="news_text" rows="10" cols="50" style="width: 900px"></textarea><br />
-		<span class="editor_buttons"><button onclick="newsadd_save();">save</button><button onclick="newsadd_discard();">discard</button></span>
+		<span class="editor_buttons"><button onclick="news_create_save();">save</button><button onclick="editor_hide();">discard</button></span>
 	</form>
 </div>
 {/if}

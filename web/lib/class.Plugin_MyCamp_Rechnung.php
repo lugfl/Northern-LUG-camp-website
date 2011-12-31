@@ -9,9 +9,11 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 	private $page = null;
 	private $events = null;
 	private $enable_edit = false;
-	private $edited_content = null;
 
 	private $domain = null;
+
+	private $in = null;
+	private $smarty_assign = null;
 
 	function __construct($pdo,$page,$domain) {
 		$this->pdo = $pdo;
@@ -25,29 +27,54 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		$this->enable_edit = true;
 	}
 
-	public function readInput() {
+	public function readInput() {		
+		$this->in['anmeldungid'] = http_get_var('anmeldung');
+		$this->in['editor'] = http_get_var('editor');
+
 		// get the edited content from the browser
-		if(http_get_var('editor') == 1)
-			$this->edited_content = http_get_var('codeeditor');
+		if($this->in['editor'] == 1)
+			$this->in['codeeditor'] = http_get_var('codeeditor');
 	}
 
 	public function processInput() {
 		// do nothing if we are not in edit mode..
-		if(!$this->enable_edit || !isset($this->edited_content))
+		if(!$this->enable_edit || !isset($this->in['codeeditor']))
 			return;
+
+		// TODO review
+		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
+		if(isset($this->in['anmeldungid'])) {
+			$this->smarty_assign = $this->events->getEventRegistration($this->in['anmeldungid']);
+			$this->smarty_assign['rechnung_block'] = 'anmeldung';
+		}else{
+			$this->smarty_assign['EVENTS'] = $this->events->getEventRegistrationsForAccount(
+				$_SESSION['_accountid'], 
+				$this->domain['domainid']);
+			$this->smarty_assign['ARTIKEL'] = $this->events->getBoughtArtikelForAccount(
+				$_SESSION['_accountid'],
+				$this->domain['domainid']);
+			$this->smarty_assign['rechnung_block'] = 'overview';
+		}
+
+		if( $this->enable_edit )
+		{
+			$ret['ENABLE_EDITOR'] = true;
+			$ret['XINHA_DIR'] = XINHA_WEBROOT;
+		}
+		return $ret;
 
 		// only save if content has been altered..
 /* TODO
-		if($this->edited_content != $this->page['content'])
+		if($this->in['codeeditor'] != $this->page['content'])
 		{
 			$SQL = "UPDATE `content_page` SET `content`=? WHERE `pageid`=?";
 			$st = $this->pdo->prepare($SQL);
-			$res = $st->execute( ARRAY($this->edited_content, $this->page['pageid']) );
+			$res = $st->execute( ARRAY($this->in['codeeditor'], $this->page['pageid']) );
 			if(!$res)
 				throw new Exception("Could not update pagecontent..");
 
 			// update content we are going to display..
-			$this->page['content'] = $this->edited_content;
+			$this->page['content'] = $this->in['codeeditor'];
 		}
 */
 	}
@@ -65,29 +92,8 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		return 'page.mycamp_rechnung.html';
 	}
 
-	public function getSmartyVariables()
-	{
-		$ret = array();
-		$ret['PAGEID'] = $this->page['pageid'];
-		if(http_get_var('anmeldung') != null) {
-			$ret = $this->events->getEventRegistration($anmeldungid);
-			$ret['rechnung_block'] = 'anmeldung';
-		}else{
-			$ret['EVENTS'] = $this->events->getEventRegistrationsForAccount(
-				$_SESSION['_accountid'], 
-				$this->domain['domainid']);
-			$ret['ARTIKEL'] = $this->events->getBoughtArtikelForAccount(
-				$_SESSION['_accountid'],
-				$this->domain['domainid']);
-			$ret['rechnung_block'] = 'overview';
-		}
-
-		if( $this->enable_edit )
-		{
-			$ret['ENABLE_EDITOR'] = true;
-			$ret['XINHA_DIR'] = XINHA_WEBROOT;
-		}
-		return $ret;
+	public function getSmartyVariables() {
+		return $this->smarty_assign;
 	}
 }
 

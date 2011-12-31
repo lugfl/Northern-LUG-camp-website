@@ -17,8 +17,8 @@ class Plugin_News extends Plugin {
 
 	private $enable_edit = false;
 
-	private $edited_short = null;
-	private $edited_txt = null;
+	private $in = null;
+	private $smarty_assign = null;
 
 	private $viewMode = self::VIEWMODE_OVERVIEW;
 
@@ -41,28 +41,52 @@ class Plugin_News extends Plugin {
 	public function readInput() {
 		// get the edited content from the browser
 		if(http_get_var('editor') == 1) {
-			$this->edited_title = http_get_var('news_title');
-			$this->edited_short = http_get_var('news_short');
-			$this->edited_txt = http_get_var('news_txt');
+			$this->in['edited_title'] = http_get_var('news_title');
+			$this->in['edited_short'] = http_get_var('news_short');
+			$this->in['edited_txt'] = http_get_var('news_txt');
 		}
 	}
 
 	public function processInput() {
 		// do nothing if we are not in edit mode..
-		if( !$this->enable_edit || (!isset($this->edited_short) || !isset($this->edited_txt) ) )
+		if( !$this->enable_edit || (!isset($this->in['edited_short']) || !isset($this->in['edited_txt']) ) )
 			return;
+
+		$this->smarty_assign = ARRAY();	
+		if( $this->enable_edit )
+		{
+			$this->smarty_assign['ENABLE_EDITOR'] = true;
+			$this->smarty_assign['XINHA_DIR'] = XINHA_WEBROOT;
+		}
+
+		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
+		if($this->viewMode == self::VIEWMODE_SINGLE) {
+			$this->smarty_assign = $this->news->getSingleNews($this->eintragid);
+		}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
+			$this->smarty_assign['NEWSLISTE'] = $this->news->getNews();
+		}
+
+
+
 
 		// only save if content has been altered..
 		if($this->viewMode == self::VIEWMODE_SINGLE) {
 			$currentNews = $this->news->getSingleNews($this->eintragid);
-			if($this->edited_short != $currentNews['short'] || $this->edited_txt != $currentNews['txt'])
+			if($this->in['edited_short'] != $currentNews['short'] || $this->in['edited_txt'] != $currentNews['txt'])
 			{
-				$this->news->updateNews($this->eintragid,$this->edited_short,$this->edited_txt);
+				$this->news->updateNews(
+					$this->eintragid,
+					$this->in['edited_short'],
+					$this->in['edited_txt']);
 				$this->loadNews();
 			}
 		}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
 			// TODO implement new News
-			$this->news->addNews($this->edited_title, $this->edited_short, $this->edited_txt, $_SESSION['_accountid']);
+			$this->news->addNews(
+				$this->in['edited_title'], 
+				$this->in['edited_short'], 
+				$this->in['edited_txt'], 
+				$_SESSION['_accountid']);
 		}
 	}
 
@@ -84,20 +108,7 @@ class Plugin_News extends Plugin {
 
 	public function getSmartyVariables()
 	{
-		$ret = ARRAY();	
-		if( $this->enable_edit )
-		{
-			$ret['ENABLE_EDITOR'] = true;
-			$ret['XINHA_DIR'] = XINHA_WEBROOT;
-		}
-
-		if($this->viewMode == self::VIEWMODE_SINGLE) {
-			$ret = $this->news->getSingleNews($this->eintragid);
-			return $ret;
-		}
-		$ret['PAGEID'] = $this->page['pageid'];
-		$ret['NEWSLISTE'] = $this->news->getNews();
-		return $ret;
+		return $this->smarty_assign;
 	}
 }
 

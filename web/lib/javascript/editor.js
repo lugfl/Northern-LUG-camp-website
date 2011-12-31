@@ -38,3 +38,7 @@ function news_create_show()
 {
 	show_object(parent.document.getElementById("news_addform"), true);
 }
+function news_create_save()
+{
+	parent.document.getElementById("news_add_form").submit();
+}
