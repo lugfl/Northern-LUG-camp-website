@@ -44,50 +44,55 @@ class Plugin_News extends Plugin {
 			$this->in['edited_title'] = http_get_var('news_title');
 			$this->in['edited_short'] = http_get_var('news_short');
 			$this->in['edited_txt'] = http_get_var('news_txt');
+			$this->in['news_submit'] = http_get_var('news_submit');
 		}
 	}
 
 	public function processInput() {
-		// do nothing if we are not in edit mode..
-		if( !$this->enable_edit || (!isset($this->in['edited_short']) || !isset($this->in['edited_txt']) ) )
-			return;
 
 		$this->smarty_assign = ARRAY();	
-		if( $this->enable_edit )
-		{
-			$this->smarty_assign['ENABLE_EDITOR'] = true;
-			$this->smarty_assign['XINHA_DIR'] = XINHA_WEBROOT;
-		}
-
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
+
 		if($this->viewMode == self::VIEWMODE_SINGLE) {
 			$this->smarty_assign = $this->news->getSingleNews($this->eintragid);
 		}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
 			$this->smarty_assign['NEWSLISTE'] = $this->news->getNews();
 		}
 
+		// do nothing more if we are not in edit mode..
+		if( !$this->enable_edit)
+			return;
 
+		if( $this->enable_edit )
+		{
+			$this->smarty_assign['ENABLE_EDITOR'] = true;
+			$this->smarty_assign['XINHA_DIR'] = XINHA_WEBROOT;
 
-
-		// only save if content has been altered..
-		if($this->viewMode == self::VIEWMODE_SINGLE) {
-			$currentNews = $this->news->getSingleNews($this->eintragid);
-			if($this->in['edited_short'] != $currentNews['short'] || $this->in['edited_txt'] != $currentNews['txt'])
-			{
-				$this->news->updateNews(
-					$this->eintragid,
-					$this->in['edited_short'],
-					$this->in['edited_txt']);
-				$this->loadNews();
+			// only save if content has been altered..
+			if($this->in['news_submit'] == "submitted") {
+				if($this->viewMode == self::VIEWMODE_SINGLE) {
+					$currentNews = $this->news->getSingleNews($this->eintragid);
+					if($this->in['edited_short'] != $currentNews['short'] 
+						|| $this->in['edited_txt'] != $currentNews['txt'])
+					{
+						$this->news->updateNews(
+							$this->eintragid,
+							$this->in['edited_short'],
+							$this->in['edited_txt']);
+						$this->loadNews();
+					}
+				}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
+					// TODO implement new News
+					$this->news->addNews(
+						$this->in['edited_title'], 
+						$this->in['edited_short'], 
+						$this->in['edited_txt'], 
+						$_SESSION['_accountid']);
+				}
 			}
-		}elseif($this->viewMode == self::VIEWMODE_OVERVIEW) {
-			// TODO implement new News
-			$this->news->addNews(
-				$this->in['edited_title'], 
-				$this->in['edited_short'], 
-				$this->in['edited_txt'], 
-				$_SESSION['_accountid']);
 		}
+
+
 	}
 
 	public function getOutputMethod()

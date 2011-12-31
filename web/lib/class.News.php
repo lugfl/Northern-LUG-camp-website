@@ -46,7 +46,8 @@ class News {
 
 		// load news from database
 		try {
-			$SQL = 'SELECT n.eintragid, n.title, n.short, n.txt, a.username as author, DATE_FORMAT(n.crdate,"%e.%c.%Y") AS date '
+			$SQL = 'SELECT n.eintragid, n.title, n.short, n.txt, a.username as author, '
+				.'DATE_FORMAT(n.crdate,"%e.%c.%Y") AS date '
 				.'FROM news_eintrag n '
 				.'LEFT JOIN content_domain d ON d.domainid = n.domainid '
 				.'LEFT JOIN account a ON n.accountid = a.accountid '
