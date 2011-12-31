@@ -1,4 +1,4 @@
-{$ENABLE_EDITOR}
+<!-- ENABLE_EDITOR = {$ENABLE_EDITOR} -->
 {if $ENABLE_EDITOR}
 <script type="text/javascript" src="lib/javascript/editor.js"></script>
 <script type="text/javascript">
