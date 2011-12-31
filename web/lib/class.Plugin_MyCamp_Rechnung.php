@@ -77,6 +77,7 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 				$this->domain['domainid'], 
 				$_SESSION['_accountid']);
 			$ret['ARTIKEL'] = $this->events->getBoughtArtikelForAccount(
+				$this->domain['domainid'], 
 				$_SESSION['_accountid']);
 			$ret['rechnung_block'] = 'overview';
 		}
