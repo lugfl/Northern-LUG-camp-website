@@ -145,6 +145,12 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 // assign navigation structure to Smarty..
 $tmpl->assign('NAVI',$naviarr);
 
+// define all pagetypes in Smarty, so we can make make layout desicions based on page types... ( mainly used for the Xinha editor )
+$site_reflection = new ReflectionClass('Site');
+foreach($site_reflection->getConstants() as $constant => $value)
+	if( preg_match('/^PAGETYPE_.*$/', $constant) )
+		$tmpl->assign($constant, $value);
+
 // Set some variables for rolebased functions in templates
 $tmpl->assign('auth_ok', $site->auth_ok());
 $tmpl->assign('role_user', $site->isInRole('user'));
