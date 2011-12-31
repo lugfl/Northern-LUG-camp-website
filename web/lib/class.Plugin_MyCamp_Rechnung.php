@@ -29,27 +29,31 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 
 	public function readInput() {		
 		$this->in['anmeldungid'] = http_get_var('anmeldung');
+		/* TODO implement edit-mode
 		$this->in['editor'] = http_get_var('editor');
 
 		// get the edited content from the browser
 		if($this->in['editor'] == 1)
 			$this->in['codeeditor'] = http_get_var('codeeditor');
+		*/
 	}
 
 	public function processInput() {
-		// do nothing if we are not in edit mode..
-		if(!$this->enable_edit || !isset($this->in['codeeditor']))
-			return;
 
-		// TODO review
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
-		if(isset($this->in['anmeldungid'])) {
+		if($this->in['anmeldungid'] > 0) {
 			// display single registration
 			$this->smarty_assign = $this->events->getEventRegistration($this->in['anmeldungid']);
+			foreach(Plugin_Events::$ANREISE as $anreiseart) {
+				if($anreiseart['anreiseid'] == $this->smarty_assign['ANMELDUNG']['arrival']) {
+					$this->smarty_assign['ANMELDUNG']['anreise'] = $anreiseart['name'];
+					break;
+				}
+			}
 			$this->smarty_assign['rechnung_block'] = 'anmeldung';
 		}else{
 			// create list of registrations
-			$this->smarty_assign['EVENTS'] = $this->events->getEventRegistrationsForAccount(
+			$this->smarty_assign['PERSONEN'] = $this->events->getEventRegistrationsForAccount(
 				$_SESSION['_accountid'], 
 				$this->domain['domainid']);
 			$this->smarty_assign['ARTIKEL'] = $this->events->getBoughtArtikelForAccount(
@@ -58,15 +62,15 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 			$this->smarty_assign['rechnung_block'] = 'overview';
 		}
 
+/* TODO implement edit-mode for events...
 		if( $this->enable_edit )
 		{
-			$ret['ENABLE_EDITOR'] = true;
-			$ret['XINHA_DIR'] = XINHA_WEBROOT;
+			$this->smarty_assign['ENABLE_EDITOR'] = true;
+			$this->smarty_assign['XINHA_DIR'] = XINHA_WEBROOT;
 		}
-		return $ret;
 
 		// only save if content has been altered..
-/* TODO
+
 		if($this->in['codeeditor'] != $this->page['content'])
 		{
 			$SQL = "UPDATE `content_page` SET `content`=? WHERE `pageid`=?";

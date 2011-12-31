@@ -18,6 +18,14 @@ require_once('lib/class.Events.php');
  */
 class Plugin_Events extends Plugin {
 
+	public static $ANREISE = array(
+		array('anreiseid' => 2, 'name' => 'Ich komme mit der Bahn und m&ouml;chte von euch abgeholt werden'),
+		array('anreiseid' => 3, 'name' => 'Ich komme mit dem PKW und brauche einen Parkplatz'),
+		array('anreiseid' => 4, 'name' => 'Ich komme mit dem Wohnwagen/Wohnmobil und brauche einen Stellplatz'),
+		array('anreiseid' => 5, 'name' => 'Ich komme mit dem Schiff und m&ouml;chte von euch abgeholt werden'),
+		array('anreiseid' => 6, 'name' => 'Ich komme mit dem Flugzeug und m&ouml;chte von euch abgeholt werden'),
+		array('anreiseid' => 1, 'name' => 'Ich komme irgendwie anders zum Camp'),
+	);
 	// Inputdaten
 	private $in = Array();
 
@@ -37,14 +45,7 @@ class Plugin_Events extends Plugin {
 
 	private $smarty_assign = array();
 
-	private $ANREISE = array(
-		array('anreiseid' => 2, 'name' => 'Ich komme mit der Bahn und m&ouml;chte von euch abgeholt werden'),
-		array('anreiseid' => 3, 'name' => 'Ich komme mit dem PKW und brauche einen Parkplatz'),
-		array('anreiseid' => 4, 'name' => 'Ich komme mit dem Wohnwagen/Wohnmobil und brauche einen Stellplatz'),
-		array('anreiseid' => 5, 'name' => 'Ich komme mit dem Schiff und m&ouml;chte von euch abgeholt werden'),
-		array('anreiseid' => 6, 'name' => 'Ich komme mit dem Flugzeug und m&ouml;chte von euch abgeholt werden'),
-		array('anreiseid' => 2, 'name' => 'Ich komme irgendwie anders zum Camp'),
-	);
+
 
 	private $ALLOWED_FORM_FIELDS = array(
 		'passwort',
@@ -133,7 +134,7 @@ class Plugin_Events extends Plugin {
 		$this->smarty_assign['countries'] = $this->countries->getCountries();
 		$this->smarty_assign['events_list'] = $this->events->getEvents($this->domain['domainid']);
 		$this->smarty_assign['events_block'] = 'events_form';
-		$this->smarty_assign['anreise_list'] = $this->ANREISE;
+		$this->smarty_assign['anreise_list'] = self::ANREISE;
 		$this->smarty_assign['p'] = $this->p;
 		foreach( $this->ALLOWED_FORM_FIELDS as $f) {
 			if( isset($this->in[$f]) ) {

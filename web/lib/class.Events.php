@@ -146,17 +146,30 @@ class Events  {
 		$ret = array();
 
 		try{
-			$SQL = 'SELECT eae.bezahlt, ee.name as eventname, ee.charge as eventkosten, ea.anmeldungid '
-				.'FROM event_anmeldung_event eae '
-				.'LEFT JOIN event_anmeldung ea ON ea.anmeldungid = eae.anmeldungid ' 					.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
-				.'LEFT JOIN domain_event de ON de.eventid = eae.eventid '
-				.'WHERE de.domainid = ? AND eae.accountid = ?';
+			// first fetch all registered persons for the account
+			$SQL = 'SELECT ea.anmeldungid, ea.vorname, ea.nachname '
+				.'FROM event_anmeldung ea '
+				.'WHERE ea.accountid = ? ';
 			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($domainid,$accountid));
+			$st->execute(array($accountid));
 			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
 				$ret[] = $row;
 			}
 			$st->closeCursor();
+
+			foreach($ret as &$person) {
+				$SQL = 'SELECT eae.bezahlt, ee.name as eventname, ee.charge as eventkosten '
+					.'FROM event_anmeldung_event eae '
+					.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
+					.'LEFT JOIN domain_event de ON de.eventid = eae.eventid '
+					.'WHERE de.domainid = ? AND eae.anmeldungid = ?';
+				$st = $this->pdo->prepare($SQL);
+				$st->execute(array($domainid,$person['anmeldungid']));
+				while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
+					$person['EVENTS'][] = $row;
+				}
+				$st->closeCursor();
+			}
 		} catch (PDOException $e) {
 			print $e;
 		}
@@ -168,10 +181,28 @@ class Events  {
 		$ret = array();
 
 		try{
-			$SQL = 'SELECT ';
+			// get the registration data
+			$SQL = 'SELECT ea.vorname, ea.nachname, ea.strasse, ea.hausnr, ea.plz, ea.ort, ea.land, '
+				.'ea.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
+				.'ea.arrival '
+				.'FROM event_anmeldung ea '
+				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
+				.'WHERE ea.anmeldungid = ? ';
 			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($domainid,$accountid));
-			$ret = $st->fetch(PDO::FETCH_ASSOC);
+			$st->execute(array($anmeldungid));
+			$ret['ANMELDUNG'] = $st->fetch(PDO::FETCH_ASSOC);
+			$st->closeCursor();
+
+			// get the events for which the user is registered
+			$SQL = 'SELECT ee.name, ee.charge '
+				.'FROM event_anmeldung_event eae '
+				.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
+				.'WHERE eae.anmeldungid = ? ';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($anmeldungid));
+			while($row = $st->fetch(PDO::FETCH_ASSOC)) {
+				$ret['EVENTS'][] = $row;
+			}
 			$st->closeCursor();
 		
 
