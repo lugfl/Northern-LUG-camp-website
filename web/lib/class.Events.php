@@ -186,9 +186,9 @@ class Events  {
 		$ret = array();
 
 		try{
-			$SQL = 'SELECT ea.name, eaa.groesse, eaa.anzahl, (eaa.anzahl*ea.preis) as kosten eaa.bezahlt '
+			$SQL = 'SELECT ea.name, eaa.groesse, eaa.anzahl, (eaa.anzahl*ea.preis) as kosten, eaa.bezahlt '
 				.'FROM event_account_artikel eaa '
-				.'LEFT JOIN event_artikel ea ON ea.artikelid = eae.artikelid '
+				.'LEFT JOIN event_artikel ea ON ea.artikelid = eaa.artikelid '
 				.'WHERE eaa.accountid = ?';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($accountid));
