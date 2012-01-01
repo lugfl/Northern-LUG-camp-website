@@ -69,7 +69,8 @@ class Plugin_Events extends Plugin {
 		'anreise',
 		'ankunft',
 		'abfahrt',
-		'events'
+		'events',
+		'bemerkung'
 	);
 
 	function __construct($pdo,$page,$domain,$site) {
