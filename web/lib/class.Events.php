@@ -184,7 +184,7 @@ class Events  {
 			// get the registration data
 			$SQL = 'SELECT ea.vorname, ea.nachname, ea.strasse, ea.hausnr, ea.plz, ea.ort, ea.land, '
 				.'ea.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
-				.'ea.arrival '
+				.'ea.arrival,ea.bemerkung '
 				.'FROM event_anmeldung ea '
 				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
 				.'WHERE ea.anmeldungid = ? ';
