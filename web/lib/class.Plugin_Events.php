@@ -12,12 +12,14 @@ require_once('lib/class.Events.php');
  *
  * mode: save
  * mode: lar  (List All Registrations)
+ * mode: rc (List registration Comments)
  *
  * Template-Blocks ($this->smarty_assign['events_block']:
  *  - events_registration_successfull
  *  - events_login_required
  *  - events_admin_selector
  *  - events_admin_list_registrations
+ *  - events_admin_registration_comments
  *
  * Links to other Plugins:
  *  - mcrech  is used for links to Plugin_MyCamp_Rechnung
@@ -135,13 +137,26 @@ class Plugin_Events extends Plugin {
 						$this->smarty_assign['events_block'] = 'events_admin_list_registrations';
 						$this->smarty_assign['events_registrations'] = $reg;
 						$this->smarty_assign['events_data'] = $this->events->getEventById($this->in['eventid']);
-					} else {
-						// no event selected, show event-selector
+					}
+					break;
+				case "rc":
+					// list all registrations
+					if( isset($this->in['eventid']) && is_numeric($this->in['eventid']) ) {
+						// event selected, show registrations for this event
+						$reg = $this->events->getEventRegistrationComments($this->in['eventid']);
+						$this->smarty_assign['events_block'] = 'events_admin_registration_comments';
+						$this->smarty_assign['events_registration_comments'] = $reg;
+						$this->smarty_assign['events_data'] = $this->events->getEventById($this->in['eventid']);
+					}
+					break;
+				case "se":
+						if( isset($this->in['eventid']) ) {
+							$this->smarty_assign['selected_eventid'] = $this->in['eventid'];
+						}
 						$this->smarty_assign['events_block'] = 'events_admin_selector';
 						$eventlist = $this->events->getEvents($this->domain['domainid'],Events::ALL_EVENTS);
 						$this->smarty_assign['events_list'] = $eventlist;
 						$this->smarty_assign['p'] = $this->p;
-					}
 					break;
 				default:
 					$this->prepareSmartyForm();
@@ -186,6 +201,13 @@ class Plugin_Events extends Plugin {
 		}
 
 		$this->in['eventid'] = http_get_var('eventid'); // used for m=lar
+		if( isset($this->in['eventid']) and is_numeric($this->in['eventid']) ) {
+			$_SESSION['selected_eventid'] = $this->in['eventid'];
+		} else {
+			if( isset($_SESSION['selected_eventid']) ) {
+				$this->in['eventid'] = $_SESSION['selected_eventid'];
+			}
+		}
 
 		$aid = $this->site->getMyAccountID();
 		if($aid != null) {
@@ -325,9 +347,21 @@ class Plugin_Events extends Plugin {
 		$ret = array();
 		$ret[] = array(
 			'pageid' => $this->page['pageid'],
-			'title' => 'List all Registrations',
-			'url' => '?p=' . $this->page['pageid'] . '&mode=lar'
+			'title' => 'Select Event',
+			'url' => '?p=' . $this->page['pageid'] . '&mode=se'
 		);
+		if( isset($this->in['eventid']) ) {
+			$ret[] = array(
+				'pageid' => $this->page['pageid'],
+				'title' => 'List all Registrations',
+				'url' => '?p=' . $this->page['pageid'] . '&mode=lar'
+			);
+			$ret[] = array(
+				'pageid' => $this->page['pageid'],
+				'title' => 'List all Comments',
+				'url' => '?p=' . $this->page['pageid'] . '&mode=rc'
+			);
+		}
 		return $ret;
 	}
 
