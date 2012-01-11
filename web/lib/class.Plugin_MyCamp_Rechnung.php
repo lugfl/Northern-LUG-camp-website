@@ -49,7 +49,14 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		if( $this->enable_edit ) {
 			$tmp = http_get_var('accountid');
 			if( isset($tmp) and is_numeric($tmp) and $tmp > 0 ) {
+				// request with new accountid
 				$this->accountid = $tmp;
+				$_SESSION['admin_last_selected_accountid'] = $tmp;
+			} else {
+				// revisit this page, so load accountid from session
+				if ( isset($_SESSION['admin_last_selected_accountid']) ) {
+					$this->accountid = $_SESSION['admin_last_selected_accountid'];
+				}
 			}
 		}
 		/* TODO implement edit-mode
