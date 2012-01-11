@@ -16,6 +16,11 @@ require_once('lib/class.Events.php');
  * Template-Blocks ($this->smarty_assign['events_block']:
  *  - events_registration_successfull
  *  - events_login_required
+ *  - events_admin_selector
+ *  - events_admin_list_registrations
+ *
+ * Links to other Plugins:
+ *  - mcrech  is used for links to Plugin_MyCamp_Rechnung
  */
 class Plugin_Events extends Plugin {
 
