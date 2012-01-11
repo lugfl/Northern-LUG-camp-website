@@ -58,11 +58,16 @@ class Site {
 		$SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl FROM content_page ";
 		$st = null;
 		if( $pageid == null) {
+			// query default landingpage
 		  	$SQL .= " WHERE domainid=? AND parentpageid IS NULL LIMIT 1";
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($this->domain['domainid']));
 		} else  {
-			$SQL .= "WHERE domainid=? AND pageid=?";
+			if( is_numeric($pageid) ) {
+				$SQL .= "WHERE domainid=? AND pageid=?";
+			} else {
+				$SQL .= 'WHERE domainid=? AND alias=?';
+			}
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($this->domain['domainid'],$pageid));
  		}
