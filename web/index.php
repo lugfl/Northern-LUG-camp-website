@@ -87,6 +87,9 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_PLUGIN_MYCAMP_RECHNUNG:
 		$plugin = new Plugin_MyCamp_Rechnung($pdo,$page,$domaininfo);
+		if($site->isInRole('admin')) {
+			$plugin->enableEditing();
+		}
 		break;
  	default:
 		exit('Unknown Pagetype');
