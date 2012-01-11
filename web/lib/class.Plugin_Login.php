@@ -434,6 +434,10 @@ class Plugin_Login extends Plugin {
 		return $ret;
 	}
 
+	public function getAdminNavigation() {
+		return array();
+	}
+
 }
 
 ?>

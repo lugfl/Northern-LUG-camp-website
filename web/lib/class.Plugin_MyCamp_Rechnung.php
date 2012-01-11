@@ -101,6 +101,10 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 	public function getSmartyVariables() {
 		return $this->smarty_assign;
 	}
+
+	public function getAdminNavigation() {
+		return array();
+	}
 }
 
 ?>

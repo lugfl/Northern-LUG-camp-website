@@ -22,6 +22,18 @@ abstract class Plugin {
 	 */
 	abstract public function getOutputMethod();
 
+	/**
+	 * Return Array with Admin-Navigation Links.
+	 *
+	 * Each Item should have the followin Attributes:
+	 *
+	 * - pageid
+	 * - url (incl. all required URL-Parameter)
+	 * - title
+	 */
+	abstract public function getAdminNavigation();
+
+
 	protected function checkMaintenance() {
 		global $MAINTENANCE_MODE;
 		$ret = FALSE;

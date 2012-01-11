@@ -11,6 +11,7 @@ require_once('lib/class.Events.php');
  * Register for a new event.
  *
  * mode: save
+ * mode: lar  (List All Registrations)
  *
  * Template-Blocks ($this->smarty_assign['events_block']:
  *  - events_registration_successfull
@@ -121,6 +122,22 @@ class Plugin_Events extends Plugin {
 						}
 					}
 					break;
+				case "lar":
+					// list all registrations
+					if( isset($this->in['eventid']) && is_numeric($this->in['eventid']) ) {
+						// event selected, show registrations for this event
+						$reg = $this->events->getEventRegistrations($this->in['eventid']);
+						$this->smarty_assign['events_block'] = 'events_admin_list_registrations';
+						$this->smarty_assign['events_registrations'] = $reg;
+						$this->smarty_assign['events_data'] = $this->events->getEventById($this->in['eventid']);
+					} else {
+						// no event selected, show event-selector
+						$this->smarty_assign['events_block'] = 'events_admin_selector';
+						$eventlist = $this->events->getEvents($this->domain['domainid'],Events::ALL_EVENTS);
+						$this->smarty_assign['events_list'] = $eventlist;
+						$this->smarty_assign['p'] = $this->p;
+					}
+					break;
 				default:
 					$this->prepareSmartyForm();
 					break;
@@ -162,6 +179,8 @@ class Plugin_Events extends Plugin {
 		if( isset($this->in['bemerkung']) ) {
 			$this->in['bemerkung'] = strip_tags($this->in['bemerkung']);
 		}
+
+		$this->in['eventid'] = http_get_var('eventid'); // used for m=lar
 
 		$aid = $this->site->getMyAccountID();
 		if($aid != null) {
@@ -297,6 +316,15 @@ class Plugin_Events extends Plugin {
 			return FALSE;
 	}
 
+	public function getAdminNavigation() {
+		$ret = array();
+		$ret[] = array(
+			'pageid' => $this->page['pageid'],
+			'title' => 'List all Registrations',
+			'url' => '?p=' . $this->page['pageid'] . '&mode=lar'
+		);
+		return $ret;
+	}
 
 }
 

@@ -70,6 +70,10 @@ class Plugin_Text_Html extends Plugin {
 		}
 		return $ret;
 	}
+
+	public function getAdminNavigation() {
+		return array();
+	}
 }
 
 ?>

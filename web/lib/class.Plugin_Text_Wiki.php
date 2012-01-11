@@ -75,6 +75,11 @@ class Plugin_Text_Wiki extends Plugin {
 		}
 		return $ret;
 	}
+
+	public function getAdminNavigation() {
+		return array();
+	}
+
 }
 
 ?>

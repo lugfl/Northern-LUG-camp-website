@@ -183,10 +183,11 @@ class Events  {
 		try{
 			// get the registration data
 			$SQL = 'SELECT ea.vorname, ea.nachname, ea.strasse, ea.hausnr, ea.plz, ea.ort, ea.land, '
-				.'ea.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
+				.'a.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
 				.'ea.arrival,ea.bemerkung '
 				.'FROM event_anmeldung ea '
 				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
+				.'LEFT JOIN account a ON ea.accountid=a.accountid '
 				.'WHERE ea.anmeldungid = ? ';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($anmeldungid));
@@ -238,6 +239,30 @@ class Events  {
 			print $e;
 		}
 
+		return $ret;
+	}
+
+	public function getEventRegistrations($eventid) {
+		$ret = array();
+		try {
+			$SQL = 'SELECT ea.vorname, ea.nachname, ea.strasse, ea.hausnr, ea.plz, ea.ort, ea.land, '
+				.'a.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
+				.'ea.arrival,ea.bemerkung '
+				.'FROM event_anmeldung ea '
+				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
+				.'LEFT JOIN event_anmeldung_event eae ON eae.anmeldungid=ea.anmeldungid '
+				.'LEFT JOIN account a ON eae.accountid=a.accountid '
+				.'WHERE eae.eventid = ? '
+				.'ORDER BY ea.vorname, ea.nachname ';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute(array($eventid));
+			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
+				$ret[] = $row;
+			}
+			$st->closeCursor();
+		} catch( PDOException $e) {
+			print $e;
+		}
 		return $ret;
 	}
 }

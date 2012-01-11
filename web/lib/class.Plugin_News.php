@@ -115,6 +115,10 @@ class Plugin_News extends Plugin {
 	{
 		return $this->smarty_assign;
 	}
+
+	public function getAdminNavigation() {
+		return array();
+	}
 }
 
 ?>

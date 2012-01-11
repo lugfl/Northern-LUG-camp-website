@@ -94,6 +94,7 @@ switch( $pagetype ) {
 }
 
 // 2.) read Input and process it
+$adminnavi = array();
 if( $plugin != null ) {
 	$plugin->readInput();
 	$plugin->processInput();
@@ -106,6 +107,12 @@ if( $plugin != null ) {
 			$content = $plugin->getOutput();
 			$tmpl->assign('CONTENT',$content);
 			break;
+	}
+
+	// Admin navigation
+	$tmparr = $plugin->getAdminNavigation();
+	foreach( $tmparr as $tmpi) {
+		$adminnavi[] = $tmpi;
 	}
 }
 
@@ -144,6 +151,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 }
 // assign navigation structure to Smarty..
 $tmpl->assign('NAVI',$naviarr);
+$tmpl->assign('ADMINNAVI',$adminnavi);
 
 // define all pagetypes in Smarty, so we can make make layout desicions based on page types... ( mainly used for the Xinha editor )
 $site_reflection = new ReflectionClass('Site');
