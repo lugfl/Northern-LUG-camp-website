@@ -247,7 +247,7 @@ class Events  {
 		try {
 			$SQL = 'SELECT ea.vorname, ea.nachname, ea.strasse, ea.hausnr, ea.plz, ea.ort, ea.land, '
 				.'a.email, DATE_FORMAT(ea.gebdat,"%e.%c.%Y") as gebdat, ea.vegetarier, el.name as lugname, '
-				.'ea.arrival,ea.bemerkung '
+				.'ea.arrival,ea.bemerkung,a.username,a.accountid '
 				.'FROM event_anmeldung ea '
 				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
 				.'LEFT JOIN event_anmeldung_event eae ON eae.anmeldungid=ea.anmeldungid '
