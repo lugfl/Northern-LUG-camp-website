@@ -71,8 +71,15 @@ class Plugin_Text_Html extends Plugin {
 		return $ret;
 	}
 
-	public function getAdminNavigation() {
-		return array();
+	public function getAdminNavigation()
+	{
+		$ret = parent::getAdminNavigation();
+		$ret[] =  ARRAY(
+				'pageid' => null,
+				'title' => 'Seite bearbeiten',
+				'url' => 'javascript:editor_show();',
+		);
+		return $ret;
 	}
 }
 

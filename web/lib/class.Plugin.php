@@ -31,7 +31,32 @@ abstract class Plugin {
 	 * - url (incl. all required URL-Parameter)
 	 * - title
 	 */
-	abstract public function getAdminNavigation();
+	public function getAdminNavigation()
+	{
+		// return default actions for all plugins/pages
+		return ARRAY(
+/* NOT IMPLEMENTED yet..	ARRAY(
+					'pageid' => null,
+					'title' => 'Seite erstellen',
+					'url' => 'javascript:page_create_show();',
+				),
+				ARRAY(
+					'pageid' => null,
+					'title' => 'Seite löschen',
+					'url' => 'javascript:page_delete_show();',
+				),
+				ARRAY(
+					'pageid' => null,
+					'title' => 'Seite verschieben',
+					'url' => 'javascript:page_move_show();',
+				),
+				ARRAY(
+					'pageid' => null,
+					'title' => 'Seite umbenennen',
+					'url' => 'javascript:page_rename_show();',
+				)
+*/		);
+	}
 
 
 	protected function checkMaintenance() {

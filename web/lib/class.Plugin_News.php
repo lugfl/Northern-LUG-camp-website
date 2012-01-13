@@ -116,8 +116,25 @@ class Plugin_News extends Plugin {
 		return $this->smarty_assign;
 	}
 
-	public function getAdminNavigation() {
-		return array();
+	public function getAdminNavigation()
+	{
+		$ret = parent::getAdminNavigation();
+		$ret[] = ARRAY(
+				'pageid' => null,
+				'title' => 'News schreiben',
+				'url' => 'javascript:news_create_show();',
+		);
+		$ret[] = ARRAY(
+				'pageid' => null,
+				'title' => 'News bearbeiten',
+				'url' => 'javascript:editor_show();',
+		);
+		$ret[] = ARRAY(
+				'pageid' => null,
+				'title' => 'News löschen',
+				'url' => 'javascript:news_delete_show();',
+		);
+		return $ret;
 	}
 }
 
