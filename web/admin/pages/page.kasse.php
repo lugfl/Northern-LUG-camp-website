@@ -16,6 +16,7 @@ class HtmlPage_kasse extends HtmlPage {
 	}
 	
 	function getContent() {
+		$ret = '';
 		$nickname 	= http_get_var('nickname');
 		$action		= http_get_var('action');
 		if($action == 'pay') {

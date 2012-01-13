@@ -18,10 +18,17 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 	}
 	
 	function paystatus($anmeldungid,$accountid,$events_array,$artikel_array) {
-		$array = array('brauerei'=>"nicht angemeldet","abzeichen"=>"");
+		$array = array(
+				'brauerei' => "nicht angemeldet",
+				'abzeichen' => "",
+				'urkunde' => null,
+				'camp' => null,
+				'shirts' => null,
+			);
 		$e_SQL = "SELECT eventid,bezahlt FROM event_anmeldung_event WHERE anmeldungid = '".$anmeldungid."'";
 		$e_res = my_query($e_SQL);
 		while($e_row = mysql_fetch_assoc($e_res)) {
+			$topay = $payed = 0;
 			if($e_row['eventid'] == 1) {
 				$array['brauerei'] = "NICHT bezahlt";
 			}

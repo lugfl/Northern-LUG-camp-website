@@ -18,6 +18,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 	}
 	
 	function paystatus($anmeldungid,$accountid,$events_array,$artikel_array) {
+		$topay = $payed = 0;
 		$e_SQL = "SELECT eventid,bezahlt FROM event_anmeldung_event WHERE anmeldungid = '".$anmeldungid."'";
 		$e_res = my_query($e_SQL);
 		while($e_row = mysql_fetch_assoc($e_res)) {

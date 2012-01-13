@@ -19,6 +19,7 @@ class HtmlPage_account extends HtmlPage {
 	var $errors = Array();
 	var $errctr = 0;
 	var $a = ''; // Action
+	private $messages;
 
 	function HtmlPage_account() {
 	}
@@ -65,6 +66,11 @@ class HtmlPage_account extends HtmlPage {
 
 	function getAccountContent($daten) {	
 		$ret = '';
+		$logintime = null;
+		// define item to prevent php notice messages
+		if(!array_key_exists('anmeldung', $daten))
+			$daten['anmeldung'] = ARRAY();
+
 		if($this->messages) {
 			$ret = $this->messages;
 		}
