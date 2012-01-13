@@ -21,9 +21,9 @@
 		<label for="page_title">Titel der Seite:</label><input type="text" id="page_title" name="page_title" value="neue Seite" /><br />
 		<fieldset>
 			<legend>Position der Seite:</legend>
-			<label for="before">Vor</label><input id="before" name="page_relation" type="radio" value="above"><br />
-			<label for="after">Nach</label><input id="after" name="page_relation" type="radio" value="below" selected="selected"><br />
-			<label for="in">Unterseite von</label><input id="in" name="page_relation" type="radio" value="in"><br />
+			<input id="before" name="page_relation" type="radio" value="above"><label for="before">Vor</label><br />
+			<input id="after" name="page_relation" type="radio" value="below" checked="checked"><label for="after">Nach</label><br />
+			<input id="in" name="page_relation" type="radio" value="in"><label for="in">Unterseite von</label><br />
 			<select name="page_pos">
 				{* generate list from navigation *}
 				{foreach from=$NAVI item=lvl1}
@@ -39,7 +39,7 @@
 				<option value="user">eingeloggte Benutzer</option>
 				<option value="admin">nur Admins</option>
 			</select><br />
-		<span class="editor_buttons"><button onclick="pageadd_save();">save</button><button onclick="pageadd_discard();">discard</button></span>
+		<span class="editor_buttons"><button onclick="pageadd_save();">Seite erstellen</button><button onclick="pageadd_discard();">abbrechen</button></span>
 	</form>
 </div>
 <div id="news_addform" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
