@@ -22,7 +22,8 @@
 		<label for="page_position">Position der Seite:</label>
 		<fieldset name="page_position">
 			<label for="page_relation">Vor</label><input name="page_relation" type="radio" value="above"><br />
-			<label for="page_relation">Nach</label><input name="page_relation" type="radio" value="below"><br />
+			<label for="page_relation">Nach</label><input name="page_relation" type="radio" value="below" selected="selected"><br />
+			<label for="page_relation">Unterseite von</label><input name="page_relation" type="radio" value="in"><br />
 			<select name="page_pos">
 				{* generate list from navigation *}
 				{foreach from=$NAVI item=lvl1}
