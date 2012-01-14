@@ -1,5 +1,7 @@
-function show_object(obj, state)
+function show_window(name, state)
 {
+	if(arguments.length == 1){ state=true; }
+	var obj = parent.document.getElementById(name);
 	if(state == true)
 	{
 		obj.style.left = "100px";
@@ -17,37 +19,15 @@ function submit_form(form_id)
 	sform.action = document.location.href;
 	sform.submit();
 }
-function editor_show()
-{
-	show_object(parent.document.getElementById("content_editor"), true);
-}
-function editor_hide()
-{
-	show_object(parent.document.getElementById("content_editor"), false);
-}
 function editor_save()
 {
-	editor_hide();
 	submit_form('editor_form');
 }
 function pageadd_save()
 {
-	editor_hide();
 	submit_form('pageadd_form');
-}
-function editor_discard()
-{
-	show_object(parent.document.getElementById("content_editor"), false);
-}
-function page_create_show()
-{
-	show_object(parent.document.getElementById("content_addform"), true);
-}
-function news_create_show()
-{
-	show_object(parent.document.getElementById("news_addform"), true);
 }
 function news_create_save()
 {
-	parent.document.getElementById("news_add_form").submit();
+	submit_form('news_add_form');
 }

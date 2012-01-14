@@ -87,7 +87,7 @@ class Plugin_Text_Html extends Plugin {
 		$ret[] =  ARRAY(
 				'pageid' => null,
 				'title' => 'Seite bearbeiten',
-				'url' => 'javascript:editor_show();',
+				'url' => 'javascript:show_window(\'content_editor\');',
 		);
 		return $ret;
 	}

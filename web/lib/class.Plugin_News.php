@@ -122,8 +122,9 @@ class Plugin_News extends Plugin {
 		$ret[] = ARRAY(
 				'pageid' => null,
 				'title' => 'News schreiben',
-				'url' => 'javascript:news_create_show();',
+				'url' => 'javascript:show_window(\'news_addform\');',
 		);
+/* NEEDED AS NOT News dependant here in the top admin nav ??
 		$ret[] = ARRAY(
 				'pageid' => null,
 				'title' => 'News bearbeiten',
@@ -134,6 +135,7 @@ class Plugin_News extends Plugin {
 				'title' => 'News löschen',
 				'url' => 'javascript:news_delete_show();',
 		);
+*/
 		return $ret;
 	}
 }

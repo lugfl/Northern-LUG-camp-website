@@ -38,22 +38,22 @@ abstract class Plugin {
 				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite erstellen',
-					'url' => 'javascript:page_create_show();',
+					'url' => 'javascript:show_window(\'page_addform\');',
 				),
 /* NOT IMPLEMENTED yet..	ARRAY(
 					'pageid' => null,
 					'title' => 'Seite löschen',
-					'url' => 'javascript:page_delete_show();',
+					'url' => 'javascript:show_window(\'page_delete\');',
 				),
 				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite verschieben',
-					'url' => 'javascript:page_move_show();',
+					'url' => 'javascript:show_window(\'page_move\');',
 				),
 				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite umbenennen',
-					'url' => 'javascript:page_rename_show();',
+					'url' => 'javascript:show_window(\'page_rename\');',
 				)
 */		);
 	}
