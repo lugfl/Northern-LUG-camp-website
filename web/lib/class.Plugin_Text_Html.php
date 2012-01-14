@@ -21,18 +21,28 @@ class Plugin_Text_Html extends Plugin {
 	}
 
 	public function readInput() {
-		// get the edited content from the browser
-		if(http_get_var('editor') == 1)
-			$this->edited_content = http_get_var('codeeditor');
+		// nothing to be read for "static" content
 	}
 
 	public function processInput() {
+		// nothing to process for "static" content
+	}
+
+
+	public function processAdminInput() {
+		// call parent so its AdminInput handler is processed first
+		parent::processAdminInput();
+
 		// do nothing if we are not in edit mode..
-		if(!$this->enable_edit || !isset($this->edited_content))
+		if(!$this->enable_edit)
 			return;
 
-		// only save if content has been altered..
-		if($this->edited_content != $this->page['content'])
+		// get the edited content from the browser
+		if(http_get_var('editor') == 1)
+			$this->edited_content = http_get_var('codeeditor');
+
+		// only save if content has been altered and entered..
+		if($this->edited_content != $this->page['content'] && isset($this->edited_content))
 		{
 			$SQL = "UPDATE `content_page` SET `content`=? WHERE `pageid`=?";
 			$st = $this->pdo->prepare($SQL);
