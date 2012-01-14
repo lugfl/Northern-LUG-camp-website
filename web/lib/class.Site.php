@@ -44,7 +44,7 @@ class Site {
 	public function getDomain() {
 		return $this->domain;
 	}
-	
+
 	/**
 	* Get the Configuration of a specific page
 	*/
@@ -106,7 +106,6 @@ class Site {
 			$st->closeCursor();
 		}
 		return $ret;
-		
 	}
 
 	/**
