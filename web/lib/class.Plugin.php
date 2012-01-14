@@ -58,6 +58,16 @@ abstract class Plugin {
 */		);
 	}
 
+	/**
+	 * Processes Admin related input, similar to what
+	 * readInput() and processInput() are doing
+	 * but only gets called when in admin role
+	 *
+	 * Remember to call this parent when subclassing the function !
+	 */
+	public function processAdminInput()
+	{
+	}
 
 	protected function checkMaintenance() {
 		global $MAINTENANCE_MODE;

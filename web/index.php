@@ -101,6 +101,10 @@ switch( $pagetype ) {
 // 2.) read Input and process it
 $adminnavi = array();
 if( $plugin != null ) {
+	// start with processing the admin related pluginhandling if we are in admin role.
+	if($site->isInRole('admin'))
+		$plugin->processAdminInput();
+
 	$plugin->readInput();
 	$plugin->processInput();
 	switch( $plugin->getOutputMethod() ) {
