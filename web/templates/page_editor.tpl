@@ -43,6 +43,14 @@
 		<span class="editor_buttons"><button onclick="pageadd_save();">Seite erstellen</button><button onclick="show_window('page_addform', false);">abbrechen</button></span>
 	</form>
 </div>
+<div id="page_delete" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
+	<form id="pagedel_form" method="POST">
+		<input type="hidden" name="a" value="page_delete">
+		<h3>Soll diese Seite wirklich gelöscht werden ?<br /></h3>
+		<p>Ein Löschen ist unwiederbringlich und daher endgültig !!!</p>
+		<span class="editor_buttons"><button onclick="submit_form('pagedel_form');">Seite löschen</button><button onclick="show_window('page_delete', false);">abbrechen</button></span>
+	</form>
+</div>
 <div id="news_addform" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
 	<form id="newsadd_form" method="POST">
 		<input type="hidden" name="editor" value="1" />

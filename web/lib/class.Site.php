@@ -276,6 +276,22 @@ class Site {
 		return $new_site;
 	}
 
+	/**
+	 * deletes and existing page and returns the parent page id, or null if none if deletion failed..
+	 */
+	public function deletePage($page_id)
+	{
+		$st = $this->pdo->prepare("SELECT pageid, parentpageid FROM content_page WHERE domainid=? AND pageid=? LIMIT 1");
+		$st->execute( ARRAY( $this->domain['domainid'], $page_id ));
+		if($page = $st->fetch(PDO::FETCH_ASSOC))
+		{
+			// requested page seems to exists, so remove it...
+			$success = $this->pdo->query("DELETE FROM content_page WHERE pageid=".(int)$page_id." LIMIT 1");
+			if($success)
+				return $page['parentpageid'];
+		}
+		return null;
+	}
 }
 
 ?>

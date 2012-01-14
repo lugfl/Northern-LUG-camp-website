@@ -50,12 +50,12 @@ abstract class Plugin {
 					'title' => 'Seite erstellen',
 					'url' => 'javascript:show_window(\'page_addform\');',
 				),
-/* NOT IMPLEMENTED yet..	ARRAY(
+				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite löschen',
 					'url' => 'javascript:show_window(\'page_delete\');',
 				),
-				ARRAY(
+/* NOT IMPLEMENTED yet..				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite verschieben',
 					'url' => 'javascript:show_window(\'page_move\');',
@@ -92,6 +92,17 @@ abstract class Plugin {
 					// redirect to created page
 					header ("HTTP/1.1 301 Moved Permanently");
 					header ("Location: /?p=".$new_pageid);
+					exit();
+				}
+				break;
+			case 'page_delete':
+				global $site;
+				$redirect_to = $site->deletePage($this->page['pageid']);
+				if($redirect_to)
+				{
+					// redirect to created page
+					header ("HTTP/1.1 301 Moved Permanently");
+					header ("Location: /?p=".$redirect_to);
 					exit();
 				}
 				break;
