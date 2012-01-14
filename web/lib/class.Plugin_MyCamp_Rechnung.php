@@ -14,8 +14,6 @@ require_once('lib/class.Plugin.php');
  */
 class Plugin_MyCamp_Rechnung extends Plugin {
 
-	private $pdo = null;
-	private $page = null;
 	private $events = null;
 	private $enable_edit = false;
 
@@ -26,8 +24,7 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 	private $smarty_assign = null;
 
 	function __construct($pdo,$page,$domain) {
-		$this->pdo = $pdo;
-		$this->page = $page;
+		parent::__construct($pdo, $page);
 		$this->domain = $domain;
 		$this->events = new Events($pdo);
 	}

@@ -5,15 +5,8 @@ require_once('lib/class.Plugin.php');
 
 class Plugin_Text_Wiki extends Plugin {
 
-	private $pdo = null;
-	private $page = null;
 	private $enable_edit = false;
 	private $edited_content = null;
-
-	function __construct($pdo,$page) {
-		$this->pdo = $pdo;
-		$this->page = $page;
-	}
 
 	public function enableEditing()
 	{

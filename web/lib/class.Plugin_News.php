@@ -9,8 +9,6 @@ class Plugin_News extends Plugin {
 	const VIEWMODE_OVERVIEW = 0;
 	const VIEWMODE_SINGLE = 1;
 
-	private $pdo = null;
-	private $page = null;
 	private $news = null;
 	private $domain = null;
 	private $eintragid = null;
@@ -23,8 +21,7 @@ class Plugin_News extends Plugin {
 	private $viewMode = self::VIEWMODE_OVERVIEW;
 
 	function __construct($pdo,$page,$eintragid,$domain) {
-		$this->pdo = $pdo;
-		$this->page = $page;
+		parent::__construct($pdo, $page);
 		$this->news = new News($pdo,$domain['domainid']);
 		$this->domain = $domain;
 		if($eintragid > 0) {

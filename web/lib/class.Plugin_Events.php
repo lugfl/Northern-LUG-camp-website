@@ -41,8 +41,6 @@ class Plugin_Events extends Plugin {
 	private $err = Array();
 
 
-	private $pdo = null;
-	private $page = null;
 	private $domain = null;
 	private $events = null;
 	private $site = null;
@@ -82,8 +80,7 @@ class Plugin_Events extends Plugin {
 	);
 
 	function __construct($pdo,$page,$domain,$site) {
-		$this->pdo = &$pdo;
-		$this->page = &$page;
+		parent::__construct($pdo, $page);
 		$this->domain = &$domain;
 		$this->site = &$site;
 		$this->events = new Events($this->pdo);

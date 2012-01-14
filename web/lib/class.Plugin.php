@@ -5,6 +5,16 @@ abstract class Plugin {
 	const OUTPUT_METHOD_BUILDIN = 0;
 	const OUTPUT_METHOD_SMARTY = 1;
 
+	protected $pdo = null;
+	protected $page = null;
+
+	public function __construct($pdo, $page)
+	{
+		$this->pdo = $pdo;
+		$this->page = $page;
+	}
+
+
 	/**
 	 * Read all required GET/POST Variables, but do nothing with ut
 	 */

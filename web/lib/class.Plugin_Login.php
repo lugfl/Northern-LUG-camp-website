@@ -20,8 +20,6 @@ require_once('lib/class.Plugin.php');
  */
 class Plugin_Login extends Plugin {
 
-	private $pdo = null;
-	private $page = null;
 	private $domaininfo = null;
 	private $input_logout = FALSE;
 	private $input_auth_user = '';
@@ -37,8 +35,7 @@ class Plugin_Login extends Plugin {
 	private $input_m = 0;
 
 	function __construct($pdo,&$page,$domaininfo) {
-		$this->pdo = $pdo;
-		$this->page = $page;
+		parent::__construct($pdo, $page);
 		$this->domaininfo = $domaininfo;
 
 		// Default value for template view
