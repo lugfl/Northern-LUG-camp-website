@@ -28,6 +28,8 @@ try {
 	exit();
 }
 
+// make $site available globally..
+global $site;
 $site = new Site($pdo);
 
 $p = http_get_var('p');
