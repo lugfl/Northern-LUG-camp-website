@@ -11,6 +11,10 @@ class Site {
 	const PAGETYPE_PLUGIN_NEWS = 5;
 	const PAGETYPE_PLUGIN_MYCAMP_RECHNUNG = 6;
 
+	const PAGERELATION_BEFORE = 'before';
+	const PAGERELATION_BELOW = 'below';
+	const PAGERELATION_IN = 'in';
+
 	protected $pdo = null;
 	protected $domain = null;
 	private $pageCache = array();
@@ -215,6 +219,61 @@ class Site {
 			$ret = $_SESSION['_accountid'];
 		}
 		return $ret;
+	}
+
+
+	/**
+	 * creates a new page and returns the created page id, or null if none was created
+	 */
+	public function createPage($title, $type = self::PAGETYPE_TEXT_HTML, $position_relation = self::PAGERELATION_AFTER, $position_to = NULL, $role = NULL )
+	{
+		$new_site = null;
+
+		// check if page we want to create the relation really exists
+		$sql = "SELECT pageid, parentpageid,  navorder FROM content_page WHERE domainid=? AND pageid=? LIMIT 1";
+		$st = $this->pdo->prepare($sql);
+		$st->execute(array($this->domain['domainid'],$position_to));
+		if($page = $st->fetch(PDO::FETCH_ASSOC))
+		{
+			$parent_page = 0;
+			$navorder = 100;
+
+			// calculate parent_page and navorder depending on relation and position_to
+			switch($position_relation)
+			{
+				case self::PAGERELATION_BEFORE:
+					$parent_page = $page['parentpageid'];
+					$navorder = $page['navorder'] - 10;
+					break;
+				case self::PAGERELATION_BELOW:
+					$parent_page = $page['parentpageid'];
+					$navorder = $page['navorder'] + 10;
+					break;
+				case self::PAGERELATION_IN:
+					$parent_page = $position_to;
+					$navorder = 100;
+					break;
+				default:
+					throw new Exception("Page relation type not supported..");
+			}
+
+			// site seems to exists so insert new site..
+			$ins = $this->pdo->prepare("INSERT INTO content_page (domainId, parentpageid, pagetypeid, title, content, crdate, navorder,acl) VALUES (?,?,?,?,?,CURDATE(),?,?)");
+			$success = $ins->execute( ARRAY(
+					(int)$this->domain['domainid'],
+					(int)$parent_page,
+					(int)$type,
+					$title,
+					'',
+					(int)$navorder,
+					$role )
+				);
+			if($success)
+				$new_site = $this->pdo->lastInsertId();
+			$ins->closeCursor();
+		}
+		$st->closeCursor();
+		return $new_site;
 	}
 
 }

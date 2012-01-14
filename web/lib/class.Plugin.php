@@ -35,12 +35,12 @@ abstract class Plugin {
 	{
 		// return default actions for all plugins/pages
 		return ARRAY(
-/* NOT IMPLEMENTED yet..	ARRAY(
+				ARRAY(
 					'pageid' => null,
 					'title' => 'Seite erstellen',
 					'url' => 'javascript:page_create_show();',
 				),
-				ARRAY(
+/* NOT IMPLEMENTED yet..	ARRAY(
 					'pageid' => null,
 					'title' => 'Seite löschen',
 					'url' => 'javascript:page_delete_show();',
@@ -67,6 +67,25 @@ abstract class Plugin {
 	 */
 	public function processAdminInput()
 	{
+		// process action dependant code
+		switch(http_get_var('a'))
+		{
+			case 'page_add':
+				global $site;
+				// create the page using Site class
+				$role = http_get_var('page_role');
+				if($role == "-")
+					$role = NULL;
+				$new_pageid = $site->createPage( http_get_var('page_title'), Site::PAGETYPE_TEXT_HTML, http_get_var('page_relation'), http_get_var('page_pos'), $role);
+				if($new_pageid)
+				{
+					// redirect to created page
+					header ("HTTP/1.1 301 Moved Permanently");
+					header ("Location: /?p=".$new_pageid);
+					exit();
+				}
+				break;
+                }
 	}
 
 	protected function checkMaintenance() {

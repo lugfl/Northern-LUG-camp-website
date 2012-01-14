@@ -11,6 +11,12 @@ function show_object(obj, state)
 		obj.style.top = "-1000px";
 	}
 }
+function submit_form(form_id)
+{
+	var sform = parent.document.getElementById(form_id);
+	sform.action = document.location.href;
+	sform.submit();
+}
 function editor_show()
 {
 	show_object(parent.document.getElementById("content_editor"), true);
@@ -21,10 +27,13 @@ function editor_hide()
 }
 function editor_save()
 {
-	var eform = parent.document.getElementById("editor_form");
-	show_object(eform, false);
-	eform.action = document.location.href;
-	eform.submit();
+	editor_hide();
+	submit_form('editor_form');
+}
+function pageadd_save()
+{
+	editor_hide();
+	submit_form('pageadd_form');
 }
 function editor_discard()
 {

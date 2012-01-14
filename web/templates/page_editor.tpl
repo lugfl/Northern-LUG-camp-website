@@ -18,6 +18,7 @@
 </div>
 <div id="content_addform" style="position:absolute; z-index: 99; left: -10000px; top: -10000px; background: white; border: 1px solid #685e9c; padding: 10px;">
 	<form id="pageadd_form" method="POST">
+		<input type="hidden" name="a" value="page_add">
 		<label for="page_title">Titel der Seite:</label><input type="text" id="page_title" name="page_title" value="neue Seite" /><br />
 		<fieldset>
 			<legend>Position der Seite:</legend>
