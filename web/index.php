@@ -101,12 +101,19 @@ switch( $pagetype ) {
 // 2.) read Input and process it
 $adminnavi = array();
 if( $plugin != null ) {
-	// start with processing the admin related pluginhandling if we are in admin role.
-	if($site->isInRole('admin'))
-		$plugin->processAdminInput();
+	try // processing input may cause exceptions to be thrown
+	{
+		// start with processing the admin related pluginhandling if we are in admin role.
+		if($site->isInRole('admin'))
+			$plugin->processAdminInput();
 
-	$plugin->readInput();
-	$plugin->processInput();
+		$plugin->readInput();
+		$plugin->processInput();
+	}
+	catch(Exception $e) // Catch them here and assign the message to SMARTY so we can display a nice error message
+	{
+		$tmpl->assign("ERROR", $e->getMessage());
+	}
 	switch( $plugin->getOutputMethod() ) {
 		case Plugin::OUTPUT_METHOD_SMARTY:
 			$template = TEMPLATE_STYLE . '/' . $plugin->getSmartyTemplate();
