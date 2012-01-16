@@ -281,16 +281,23 @@ class Site {
 	 */
 	public function deletePage($page_id)
 	{
+		$ret = null;
 		$st = $this->pdo->prepare("SELECT pageid, parentpageid FROM content_page WHERE domainid=? AND pageid=? LIMIT 1");
 		$st->execute( ARRAY( $this->domain['domainid'], $page_id ));
 		if($page = $st->fetch(PDO::FETCH_ASSOC))
 		{
+			// check if page has subpages..
+			$childs = $this->pdo->query("SELECT pageid FROM content_page WHERE pageid=".(int)$page_id);
+			if($childs->rowCount() > 0)
+				throw new Exception("Page can not be deleted as it still contains subpages. Please consider to remove those first.");
+
 			// requested page seems to exists, so remove it...
 			$success = $this->pdo->query("DELETE FROM content_page WHERE pageid=".(int)$page_id." LIMIT 1");
 			if($success)
-				return $page['parentpageid'];
+				$ret = $page['parentpageid'];
 		}
-		return null;
+		$st->closeCursor();
+		return $ret;
 	}
 }
 
