@@ -250,6 +250,9 @@ class Site {
 					$navorder = $page['navorder'] + 10;
 					break;
 				case self::PAGERELATION_IN:
+					// do not allow to create 3'rd level and deeper menu items
+					if($page['parentpageid'] != 0)
+						throw new Exception("Creating 3'rd level and deeper menu-items is not supported...");
 					$parent_page = $position_to;
 					$navorder = 100;
 					break;
