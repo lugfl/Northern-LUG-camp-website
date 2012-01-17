@@ -22,7 +22,7 @@
 		<label for="page_title">Titel der Seite:</label><input type="text" id="page_title" name="page_title" value="neue Seite" /><br />
 		<fieldset>
 			<legend>Position der Seite:</legend>
-			<input id="before" name="page_relation" type="radio" value="above"><label for="before">Vor</label><br />
+			<input id="before" name="page_relation" type="radio" value="before"><label for="before">Vor</label><br />
 			<input id="after" name="page_relation" type="radio" value="below" checked="checked"><label for="after">Nach</label><br />
 			<input id="in" name="page_relation" type="radio" value="in"><label for="in">Unterseite von</label><br />
 			<select name="page_pos">
