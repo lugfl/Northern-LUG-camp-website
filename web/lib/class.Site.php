@@ -235,7 +235,7 @@ class Site {
 		$st->execute(array($this->domain['domainid'],$position_to));
 		if($page = $st->fetch(PDO::FETCH_ASSOC))
 		{
-			$parent_page = 0;
+			$parent_page = null;
 			$navorder = 100;
 
 			// calculate parent_page and navorder depending on relation and position_to
@@ -264,7 +264,7 @@ class Site {
 			$ins = $this->pdo->prepare("INSERT INTO content_page (domainId, parentpageid, pagetypeid, title, content, crdate, navorder,acl) VALUES (?,?,?,?,?,CURDATE(),?,?)");
 			$success = $ins->execute( ARRAY(
 					(int)$this->domain['domainid'],
-					(int)$parent_page,
+					$parent_page,
 					(int)$type,
 					$title,
 					'',
