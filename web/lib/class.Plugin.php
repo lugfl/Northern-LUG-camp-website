@@ -5,6 +5,10 @@ abstract class Plugin {
 	const OUTPUT_METHOD_BUILDIN = 0;
 	const OUTPUT_METHOD_SMARTY = 1;
 
+	const METHOD_GET = 1;
+	const METHOD_POST = 2;
+	const METHOD_HEAD = 3;
+
 	protected $pdo = null;
 	protected $page = null;
 
@@ -14,6 +18,23 @@ abstract class Plugin {
 		$this->page = $page;
 	}
 
+	/**
+	 */
+	public function getRequestMethod() {
+		$ret = 0;
+		switch( $_SERVER["REQUEST_METHOD"] ) {
+			case "GET":
+				$ret = Plugin::METHOD_GET;
+				break;
+			case "POST":
+				$ret = Plugin::METHOD_POST;
+				break;
+			case "HEAD":
+				$ret = Plugin::METHOD_HEAD;
+				break;
+		}
+		return $ret;
+	}
 
 	/**
 	 * Read all required GET/POST Variables, but do nothing with ut
