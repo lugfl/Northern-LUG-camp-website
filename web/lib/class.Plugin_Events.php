@@ -119,10 +119,12 @@ class Plugin_Events extends Plugin {
 						$this->prepareSmartyForm();
 					} else {
 						// Save Registration
-						$registration_id = $this->events->addEventRegistration($this->in);
-						if( $registration_id != null ) {
-							$this->smarty_assign['events_block'] = 'events_registration_successfull';
-							// TODO sendConfirmMail()
+						if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+							$registration_id = $this->events->addEventRegistration($this->in);
+							if( $registration_id != null ) {
+								$this->smarty_assign['events_block'] = 'events_registration_successfull';
+								// TODO sendConfirmMail()
+							}
 						}
 					}
 					break;
