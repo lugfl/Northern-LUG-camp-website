@@ -290,7 +290,7 @@ class Site {
 		if($page = $st->fetch(PDO::FETCH_ASSOC))
 		{
 			// check if page has subpages..
-			$childs = $this->pdo->query("SELECT pageid FROM content_page WHERE pageid=".(int)$page_id);
+			$childs = $this->pdo->query("SELECT pageid FROM content_page WHERE parentpageid=".(int)$page_id);
 			if($childs->rowCount() > 0)
 				throw new Exception("Page can not be deleted as it still contains subpages. Please consider to remove those first.");
 
