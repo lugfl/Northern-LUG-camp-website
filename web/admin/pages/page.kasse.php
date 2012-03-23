@@ -32,7 +32,7 @@ class HtmlPage_kasse extends HtmlPage {
 			$email = $uarray['email'];
 
 			$msg = 'Hallo '.$username.",\n\n";
-			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du für das LugCamp 2008 gebucht hast als bezahlt markiert:'."\n\n";
+			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du für das LugCamp gebucht hast als bezahlt markiert:'."\n\n";
 			
 			$nomsg = $msg;
 
@@ -88,7 +88,7 @@ class HtmlPage_kasse extends HtmlPage {
 
 			if($nomsg != $msg) {
 				$msg .= "\nGruß\nJan Boysen\nKassenwart Lug Flensburg";
-				$send_mail = my_mailer('kasse@lug-camp-2008.de',$email,'Geldeingang LugCamp 2008',$msg);
+				$send_mail = my_mailer('kasse@lug-camp-2012.de',$email,'Geldeingang LugCamp 2012',$msg);
 			}
 		} else {
 			if($nickname) {
