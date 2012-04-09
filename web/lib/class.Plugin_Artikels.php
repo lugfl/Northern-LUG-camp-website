@@ -55,6 +55,7 @@ class Plugin_Artikels extends Plugin {
 
 		switch($this->mode) {
 			case "kaufe":
+				// Artikel in den Warenkorb
 				if( $this->in_artikelid != 0) {
 					// Artikel suchen
 					$art = $this->getCachedArtikel($this->in_artikelid);
@@ -72,6 +73,7 @@ class Plugin_Artikels extends Plugin {
 				}
 				break;
 			case "del":
+				// Artikel aus Warenkorb loeschen
 				if( $this->in_artikelid != 0) {
 					// Artikel suchen
 					$art = $this->getCachedArtikel($this->in_artikelid);
@@ -87,6 +89,9 @@ class Plugin_Artikels extends Plugin {
 						trigger_error('Ups');
 					}
 				}
+				break;
+			case "commit":
+				// Bestellung abschicken
 				break;
 		}
 		$this->recalcBasket();
