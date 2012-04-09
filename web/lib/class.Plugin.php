@@ -11,6 +11,7 @@ abstract class Plugin {
 
 	protected $pdo = null;
 	protected $page = null;
+	private $_debugs = array();
 
 	public function __construct($pdo, $page)
 	{
@@ -137,6 +138,14 @@ abstract class Plugin {
 			$ret = TRUE;
 		}
 		return $ret;
+	}
+
+	public function addDebug($str) {
+		$this->_debugs[] = $str;
+	}
+
+	public function getDebug() {
+		return $this->_debugs;
 	}
 }
 

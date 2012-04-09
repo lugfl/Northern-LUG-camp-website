@@ -10,6 +10,7 @@ require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_News.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_MyCamp_Rechnung.php');
+require_once(WEB_ROOT.'/lib/class.Plugin_Artikels.php');
 require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
 
 // connect to Database
@@ -92,6 +93,9 @@ switch( $pagetype ) {
 		if($site->isInRole('admin')) {
 			$plugin->enableEditing();
 		}
+		break;
+	case Site::PAGETYPE_PLUGIN_ARTIKEL:
+		$plugin = new Plugin_Artikels($pdo,$page);
 		break;
  	default:
 		exit('Unknown Pagetype');
@@ -184,10 +188,16 @@ $tmpl->assign('role_admin', $site->isInRole('admin'));
 // (only numeric representation available)
 $tmpl->assign('pagetypeid',$page['pagetypeid']);
 
+$tmpl->assign('T',time());
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
 //$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
 $tmpl->display($template) ;
 
-
+if( defined('DEBUG') && DEBUG == 1 ) {
+	if( $plugin != null ) {
+		var_dump($plugin->getDebug());
+	}
+	var_dump($_SESSION);
+}
 ?>
