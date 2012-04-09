@@ -64,7 +64,9 @@ class Plugin_Artikels extends Plugin {
 						// Groesse checken
 						if( in_array($this->in_groesse,$art['groessen']) ) {
 							// Warenkorb aktualieren
-							$this->addToBasket($art,$this->in_groesse,1);
+							if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
+								$this->addToBasket($art,$this->in_groesse,1);
+							}
 							
 						}
 					} else {
@@ -82,7 +84,9 @@ class Plugin_Artikels extends Plugin {
 						// Groesse checken
 						if( in_array($this->in_groesse,$art['groessen'],TRUE) ) {
 							// Warenkorb aktualieren
-							$this->delFromBasket($art,$this->in_groesse,1);
+							if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
+								$this->delFromBasket($art,$this->in_groesse,1);
+							}
 						} else {
 						}
 					} else {
