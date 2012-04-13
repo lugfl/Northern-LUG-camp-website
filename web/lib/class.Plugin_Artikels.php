@@ -7,6 +7,7 @@ require_once('lib/class.Artikel.php');
 class Plugin_Artikels extends Plugin {
 
 	private $artikel = null;
+	private $site = null;
 
 	private $smarty_assign = array();
 	private $artikelliste = array();
@@ -16,10 +17,11 @@ class Plugin_Artikels extends Plugin {
 	private $in_groesse = 0;
 	private $mode = "";
 
-	function __construct($pdo,$page) {
+	function __construct($pdo,$page,$site) {
 		parent::__construct($pdo,$page);
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
 		$this->artikel = new Artikel($pdo,$page['domainid']);
+		$this->site = $site;
 
 		// create shoplist
 		$tmp = $this->artikel->getArtikels();

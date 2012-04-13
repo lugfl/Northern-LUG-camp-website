@@ -95,7 +95,7 @@ switch( $pagetype ) {
 		}
 		break;
 	case Site::PAGETYPE_PLUGIN_ARTIKEL:
-		$plugin = new Plugin_Artikels($pdo,$page);
+		$plugin = new Plugin_Artikels($pdo,$page,$site);
 		break;
  	default:
 		exit('Unknown Pagetype');
