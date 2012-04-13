@@ -98,6 +98,21 @@ class Plugin_Artikels extends Plugin {
 				break;
 			case "commit":
 				// Bestellung abschicken
+				$my_accountid = $this->site->getMyAccountID();
+				$anz_artikel = 0;
+				for( $i=0; $i < count($this->basket); $i++) {
+					$artikelid = $this->basket[$i]['artikel']['artikelid'];
+					$anzahl = $this->basket[$i]['anzahl'];
+					$groesse = $this->basket[$i]['groesse'];
+					$this->addDebug('commitBasket('.$artikelid.','.$anzahl.','.$groesse.','.$my_accountid.')');
+					$rc = $this->artikel->orderArtikel($artikelid,$anzahl,$groesse,$my_accountid);
+					if( $rc != 0 ) {
+						$anz_artikel++;
+					}
+				}
+				$this->basket = array();
+				$_SESSION['basket'] = array();
+				$_SESSION['basket_preis'] = 0.0;
 				break;
 		}
 		$this->recalcBasket();
