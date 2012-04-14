@@ -223,11 +223,14 @@ class Events  {
 				.'LEFT JOIN event_artikel ea ON ea.artikelid = eaa.artikelid '
 				.'LEFT JOIN domain_artikel da ON da.artikelid = eaa.artikelid '
 				.'WHERE eaa.accountid = ? ';
+
+			$ORDERBY = ' ORDER BY ea.name,eaa.groesse ';
 			if($domainid != null) {
-				$SQL .= 'AND da.domainid = ? ';
+				$SQL .= 'AND da.domainid = ? ' . $ORDERBY;
 				$st = $this->pdo->prepare($SQL);
 				$st->execute(array($accountid,$domainid));
 			}else{
+				$SQL .= $ORDERBY;
 				$st = $this->pdo->prepare($SQL);
 				$st->execute(array($accountid));
 			}
