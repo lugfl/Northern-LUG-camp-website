@@ -5,7 +5,7 @@ function get_sponsoren_image($pdo) {
 	$ret = '';
 	
 	if(!isset($_SESSION['sponsoren_id'])) {
-		$_SESSION['sponsoren_id'] = 0;
+		$_SESSION['sponsoren_id'] = 1;
 	}
 
 	$display_id = $_SESSION['sponsoren_id'];
@@ -22,7 +22,7 @@ function get_sponsoren_image($pdo) {
 			$ret .= '</a>';
 			$display_id++;
 		} else {
-			$display_id = 0;
+			$display_id = 1;
 		}
 		$st->closeCursor();
 		$_SESSION['sponsoren_id'] = $display_id; 
