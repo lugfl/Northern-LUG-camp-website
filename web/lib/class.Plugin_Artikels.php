@@ -58,61 +58,68 @@ class Plugin_Artikels extends Plugin {
 		switch($this->mode) {
 			case "kaufe":
 				// Artikel in den Warenkorb
-				if( $this->in_artikelid != 0) {
-					// Artikel suchen
-					$art = $this->getCachedArtikel($this->in_artikelid);
-					if( $art != null && is_array($art['groessen']) ) {
+				if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+					if( $this->in_artikelid != 0) {
+						// Artikel suchen
+						$art = $this->getCachedArtikel($this->in_artikelid);
+						if( $art != null && is_array($art['groessen']) ) {
 						
-						// Groesse checken
-						if( in_array($this->in_groesse,$art['groessen']) ) {
-							// Warenkorb aktualieren
-							if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
-								$this->addToBasket($art,$this->in_groesse,1);
-							}
+							// Groesse checken
+							if( in_array($this->in_groesse,$art['groessen']) ) {
+								// Warenkorb aktualieren
+								if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
+									$this->addToBasket($art,$this->in_groesse,1);
+								}
 							
+							}
+						} else {
+							trigger_error('Ups');
 						}
-					} else {
-						trigger_error('Ups');
 					}
 				}
 				break;
 			case "del":
 				// Artikel aus Warenkorb loeschen
-				if( $this->in_artikelid != 0) {
-					// Artikel suchen
-					$art = $this->getCachedArtikel($this->in_artikelid);
-					if( $art != null && is_array($art['groessen']) ) {
+				if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+					if( $this->in_artikelid != 0) {
+						// Artikel suchen
+						$art = $this->getCachedArtikel($this->in_artikelid);
+						if( $art != null && is_array($art['groessen']) ) {
 						
-						// Groesse checken
-						if( in_array($this->in_groesse,$art['groessen'],TRUE) ) {
-							// Warenkorb aktualieren
-							if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
-								$this->delFromBasket($art,$this->in_groesse,1);
+							// Groesse checken
+							if( in_array($this->in_groesse,$art['groessen'],TRUE) ) {
+								// Warenkorb aktualieren
+								if( $this->getRequestMethod() == Plugin::METHOD_GET || $this->getRequestMethod() == Plugin::METHOD_POST) {
+									$this->delFromBasket($art,$this->in_groesse,1);
+								}
+							} else {
 							}
 						} else {
+							trigger_error('Ups');
 						}
-					} else {
-						trigger_error('Ups');
 					}
 				}
 				break;
 			case "commit":
 				// Bestellung abschicken
-				$my_accountid = $this->site->getMyAccountID();
-				$anz_artikel = 0;
-				for( $i=0; $i < count($this->basket); $i++) {
-					$artikelid = $this->basket[$i]['artikel']['artikelid'];
-					$anzahl = $this->basket[$i]['anzahl'];
-					$groesse = $this->basket[$i]['groesse'];
-					$this->addDebug('commitBasket('.$artikelid.','.$anzahl.','.$groesse.','.$my_accountid.')');
-					$rc = $this->artikel->orderArtikel($artikelid,$anzahl,$groesse,$my_accountid);
-					if( $rc != 0 ) {
-						$anz_artikel++;
+				if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+					$my_accountid = $this->site->getMyAccountID();
+					$anz_artikel = 0;
+					for( $i=0; $i < count($this->basket); $i++) {
+						$artikelid = $this->basket[$i]['artikel']['artikelid'];
+						$anzahl = $this->basket[$i]['anzahl'];
+						$groesse = $this->basket[$i]['groesse'];
+						$this->addDebug('commitBasket('.$artikelid.','.$anzahl.','.$groesse.','.$my_accountid.')');
+						$rc = $this->artikel->orderArtikel($artikelid,$anzahl,$groesse,$my_accountid);
+						if( $rc != 0 ) {
+							$anz_artikel++;
+						}
 					}
+					$this->basket = array();
+					$this->smarty_assign['COMMITED'] = true;
+					$_SESSION['basket'] = array();
+					$_SESSION['basket_preis'] = 0.0;
 				}
-				$this->basket = array();
-				$_SESSION['basket'] = array();
-				$_SESSION['basket_preis'] = 0.0;
 				break;
 		}
 		$this->recalcBasket();
