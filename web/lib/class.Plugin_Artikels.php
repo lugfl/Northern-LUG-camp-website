@@ -58,7 +58,7 @@ class Plugin_Artikels extends Plugin {
 		switch($this->mode) {
 			case "kaufe":
 				// Artikel in den Warenkorb
-				if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+				if( $this->getRequestMethod() == Plugin::METHOD_GET ) {
 					if( $this->in_artikelid != 0) {
 						// Artikel suchen
 						$art = $this->getCachedArtikel($this->in_artikelid);
