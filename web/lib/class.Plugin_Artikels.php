@@ -80,7 +80,7 @@ class Plugin_Artikels extends Plugin {
 				break;
 			case "del":
 				// Artikel aus Warenkorb loeschen
-				if( $this->getRequestMethod() == Plugin::METHOD_POST ) {
+				if( $this->getRequestMethod() == Plugin::METHOD_GET ) {
 					if( $this->in_artikelid != 0) {
 						// Artikel suchen
 						$art = $this->getCachedArtikel($this->in_artikelid);
