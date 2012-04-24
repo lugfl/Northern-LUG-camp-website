@@ -36,14 +36,12 @@ $site = new Site($pdo);
 $p = http_get_var('p');
 $domaininfo = $site->getDomain();
 
+$ip_version = $site->get_ip_version($_SERVER['REMOTE_ADDR']);
+
 $SSLenabled = false;
 if( isset($domaininfo['sslname']) && $domaininfo['sslname'] != '' ) {
   // ssl possible
-
-	$ip_version = $site->get_ip_version($_SERVER['REMOTE_ADDR']);
-  if( $ip_version == 'IPv6' ) {
-	  $SSLenabled = true;
-	}
+  $SSLenabled = true;
 }
 
 $page = $site->getPage($p);
@@ -161,6 +159,11 @@ if( $plugin != null ) {
 	}
 }
 
+$port = '';
+// dirty workaround for lc2012 problem...
+if( $ip_version == 'IPv4' )
+	$port = ':444';
+
 $rootpath = $site->getRootPath($p);
 // Create Naviline
 $naviarr = array();
@@ -171,7 +174,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 	{
 		$item['pageid'] = $nav1['pageid'];
 		if( $SSLenabled && $nav1['sslreq'] != 0 ) {
-			$item['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p=' . $nav1['pageid'];
+			$item['url'] = 'https://' . $domaininfo['sslname'] . $port . '/index.php?p=' . $nav1['pageid'];
 		} else {
 			$item['url'] = './index.php?p='.$nav1['pageid'];
 		}
@@ -189,7 +192,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 				{
 					$subItem['pageid'] = $nav2['pageid'];
 					if( $SSLenabled && $nav2['sslreq'] != 0 ) {
-						$subItem['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p='.$nav2['pageid'];
+						$subItem['url'] = 'https://' . $domaininfo['sslname'] . $port . '/index.php?p='.$nav2['pageid'];
 					} else {
 						$subItem['url'] = './index.php?p='.$nav2['pageid'];
 					}
