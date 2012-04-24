@@ -29,6 +29,10 @@ $EVENT_SCHWIMMEN['abzeichen_event_id'] = 0;
 // ID des Events, mit dem die Hallenbuchung und Quota geregelt wird.
 $EVENT_SCHWIMMEN['schwimmhalle_event_id'] = 0;
 
+// Workaround for IPv4 SSL-POrt
+// set this variable in .htconfig.php to configure other Ports than 443
+// $IPv4_SSL_PORT = 444;
+
 if(is_file('.htconfig.php')) {
 	include_once('.htconfig.php');
 }

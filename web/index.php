@@ -161,8 +161,11 @@ if( $plugin != null ) {
 
 $port = '';
 // dirty workaround for lc2012 problem...
-if( $ip_version == 'IPv4' )
-	$port = ':444';
+if( $ip_version == 'IPv4' ) {
+  if( isset($IPv4_SSL_PORT) ) {
+		$port = ':' . $IPv4_SSL_PORT;
+	}
+}
 
 $rootpath = $site->getRootPath($p);
 // Create Naviline
