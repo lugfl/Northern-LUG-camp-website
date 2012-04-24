@@ -60,7 +60,7 @@ class Site {
 		}
 
 		$ret = null;
-		$SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl FROM content_page ";
+		$SQL = "SELECT pageid,domainid,parentpageid,pagetypeid,title,content,navorder,acl,sslreq FROM content_page ";
 		$st = null;
 		if( $pageid == null) {
 			// query default landingpage
@@ -93,7 +93,7 @@ class Site {
 	*/
 	public function getNavigation($parentpageid = null) {
 		$ret = null;
-		$SQL = "SELECT pageid,domainid,parentpageid,title,navorder,acl FROM content_page ";
+		$SQL = "SELECT pageid,domainid,parentpageid,title,navorder,acl,sslreq FROM content_page ";
 		$st = null;
 		if( $parentpageid == null) {
 	  		$SQL .= " WHERE domainid=? AND parentpageid IS NULL ORDER BY navorder";
