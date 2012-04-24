@@ -53,7 +53,13 @@ $content = '';
 $pagetype = $site->getPageType($p);
 $template = TEMPLATE_STYLE . '/page.default.html';
 
-$tmpl->assign('TEMPLATE_STYLE',TEMPLATE_STYLE);
+$templatestyle = '.';
+if( isset( $domaininfo['templatestyle'] ) ) {
+  $templatestyle = $domaininfo['templatestyle'];
+} else {
+	$templatestyle = TEMPLATE_STYLE;
+}
+$tmpl->assign('TEMPLATE_STYLE',$templatestyle);
 
 // no editor per default, but define var to prevent notices
 $tmpl->assign('ENABLE_EDITOR', false);
@@ -120,7 +126,7 @@ if( $plugin != null ) {
 	}
 	switch( $plugin->getOutputMethod() ) {
 		case Plugin::OUTPUT_METHOD_SMARTY:
-			$template = TEMPLATE_STYLE . '/' . $plugin->getSmartyTemplate();
+			$template = $templatestyle . '/' . $plugin->getSmartyTemplate();
 			$tmpl->assign( $plugin->getSmartyVariables() );
 			break;
 		case Plugin::OUTPUT_METHOD_BUILDIN:
