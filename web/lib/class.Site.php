@@ -303,6 +303,38 @@ class Site {
 		$st->closeCursor();
 		return $ret;
 	}
+
+	/**
+	 * Determine the IP version of the given IP address
+	 * @param string $ip Address whose IP version shall be determined
+	 * @return string|bool Can be 'IPv4' or 'IPv6' in case of success or FALSE on error
+	 */
+	function get_ip_version($ip) {
+		// Patterns don't check the IP address for exact validity. But
+		// in this case the following checks should be sufficient.
+		$ipv6_patterns = array( // Complete IPv6 address
+			'([a-f0-9]{1,4}:){7}[a-f0-9]{1,4}',
+			// IPv6 address with stripped leading zeros
+			':(:[a-f0-9]{1,4}){1,6}',
+			// IPv6 address with stripped trailing zeros
+			'([a-f0-9]{1,4}:){1,6}:',
+			// IPv6 address with stripped zeros in the middle
+			'([a-f0-9]{1,4}:){1,6}(:[a-f0-9]{1,4}){1,6}',
+			// IPv6 address with only zeros
+			'::'
+		);
+
+		if (preg_match(sprintf('/^%s$/i', implode('|', $ipv6_patterns)), $ip)) {
+			return 'IPv6';
+		}
+		elseif (preg_match('/^(\d{1,3}\.){3}\d{1,3}$/', $ip)) {
+			return 'IPv4';
+		}
+		else {
+			return FALSE;
+		}
+	}
+
 }
 
 ?>
