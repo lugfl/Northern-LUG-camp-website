@@ -36,6 +36,16 @@ $site = new Site($pdo);
 $p = http_get_var('p');
 $domaininfo = $site->getDomain();
 
+$SSLenabled = false;
+if( isset($domaininfo['sslname']) && $domaininfo['sslname'] != '' ) {
+  // ssl possible
+
+	$ip_version = $site->get_ip_version($_SERVER['REMOTE_ADDR']);
+  if( $ip_version == 'IPv6' ) {
+	  $SSLenabled = true;
+	}
+}
+
 $page = $site->getPage($p);
 
 if( ! is_array($page) || sizeof($page) == 0) {
@@ -43,7 +53,8 @@ if( ! is_array($page) || sizeof($page) == 0) {
 	exit();
 }
 
-if( isset($page['sslreq']) && $page['sslreq'] != 0 ) {
+
+if( $SSLenabled && isset($page['sslreq']) && $page['sslreq'] != 0 ) {
   // SSL-Check required
   if( ! isset($_SERVER['HTTPS']) ) {
     // request via http
@@ -159,7 +170,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 	if( $site->isInRole($nav1['acl']) )
 	{
 		$item['pageid'] = $nav1['pageid'];
-		if( $nav1['sslreq'] != 0 ) {
+		if( $SSLenabled && $nav1['sslreq'] != 0 ) {
 			$item['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p=' . $nav1['pageid'];
 		} else {
 			$item['url'] = './index.php?p='.$nav1['pageid'];
@@ -177,7 +188,7 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 				if( $site->isInRole($nav2['acl']) )
 				{
 					$subItem['pageid'] = $nav2['pageid'];
-					if( $nav2['sslreq'] != 0 ) {
+					if( $SSLenabled && $nav2['sslreq'] != 0 ) {
 						$subItem['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p='.$nav2['pageid'];
 					} else {
 						$subItem['url'] = './index.php?p='.$nav2['pageid'];
