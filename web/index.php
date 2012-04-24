@@ -43,6 +43,14 @@ if( ! is_array($page) || sizeof($page) == 0) {
 	exit();
 }
 
+if( isset($page['sslreq']) && $page['sslreq'] != 0 ) {
+  // SSL-Check required
+  if( ! isset($_SERVER['HTTPS']) ) {
+    // request via http
+    print 'SSL Request required.';
+    exit();
+  }
+}
 
 // Every Template setup
 $tmpl = new smarty();
@@ -151,7 +159,11 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 	if( $site->isInRole($nav1['acl']) )
 	{
 		$item['pageid'] = $nav1['pageid'];
-		$item['url'] = './index.php?p='.$nav1['pageid'];
+		if( $nav1['sslreq'] != 0 ) {
+			$item['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p=' . $nav1['pageid'];
+		} else {
+			$item['url'] = './index.php?p='.$nav1['pageid'];
+		}
 		$item['title'] = $nav1['title'];
 		$item['active'] = ($p == $nav1['pageid'] || in_array($nav1['pageid'],$rootpath));
 		$item['subitems'] = ARRAY();
@@ -165,7 +177,11 @@ foreach( $site->getNavigation() as $nav1) // Level 1
 				if( $site->isInRole($nav2['acl']) )
 				{
 					$subItem['pageid'] = $nav2['pageid'];
-					$subItem['url'] = './index.php?p='.$nav2['pageid'];
+					if( $nav2['sslreq'] != 0 ) {
+						$subItem['url'] = 'https://' . $domaininfo['sslname'] . '/index.php?p='.$nav2['pageid'];
+					} else {
+						$subItem['url'] = './index.php?p='.$nav2['pageid'];
+					}
 					$subItem['title'] = $nav2['title'];
 					$subItem['active'] = ($p == $nav2['pageid'] || in_array($nav2['pageid'],$rootpath));
 					$item['subitems'][] = $subItem;
