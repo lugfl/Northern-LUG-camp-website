@@ -89,6 +89,9 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 		$SQL .= " an.anmeldungid,an.vorname,an.nachname ";
 		$SQL .= " FROM account a LEFT JOIN event_lug l ON a.lugid=l.lugid ";
 		$SQL .= " LEFT JOIN event_anmeldung an ON a.accountid=an.accountid ";
+    if( isset($CURRENT_EVENT_ID) && $CURRENT_EVENT_ID != 0) {
+			$SQL .= ' WHERE an.eventid=' . $CURRENT_EVENT_ID . ' ';
+		}
 		$SQL .= " ORDER BY vorname"; 
 		$res = my_query($SQL);
 		
