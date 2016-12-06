@@ -4,3 +4,9 @@ web/admin/.htconfig.php
 *.save
 web/templates_c
 web/pi.php
+.DS_Store
+Thumbs.db
+npm-debug.log
+/bower_components
+/node_modules
+/vendor
