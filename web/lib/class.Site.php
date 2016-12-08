@@ -1,11 +1,10 @@
 <?php
 
-require_once('Text/Wiki.php');
 
 class Site {
 
 	const PAGETYPE_TEXT_HTML = 1;
-	const PAGETYPE_TEXT_WIKI = 2;
+	const PAGETYPE_TEXT_WIKI = 2; // @@deprecated
 	const PAGETYPE_PLUGIN_LOGIN = 3;
 	const PAGETYPE_PLUGIN_EVENTS = 4;
 	const PAGETYPE_PLUGIN_NEWS = 5;
@@ -128,11 +127,6 @@ class Site {
 				case Site::PAGETYPE_TEXT_HTML:
 					$ret = $page['content'];
 					break;
-				case Site::PAGETYPE_TEXT_WIKI:
-					// Neues Objekt instanziieren
-					$wiki = new Text_Wiki();
-					// Text nach XHTML formatieren
-					$ret = $wiki->transform($page['content'], 'Xhtml');
 				case Site::PAGETYPE_PLUGIN_LOGIN:
 					// TODO
 					break;
