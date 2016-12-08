@@ -7,11 +7,22 @@ require_once(WEB_ROOT.'/lib/class.Site.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Login.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Events.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Text_Html.php');
-require_once(WEB_ROOT.'/lib/class.Plugin_Text_Wiki.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_News.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_MyCamp_Rechnung.php');
 require_once(WEB_ROOT.'/lib/class.Plugin_Artikels.php');
-require_once(WEB_ROOT.'/lib/smarty/libs/Smarty.class.php');
+
+// initialize Logger
+$logdir = false;
+$logdirsearch = array("../../logs","../logs","./logs","/tmp");
+foreach ( $logdirsearch as $ldir ) {
+	if( is_dir($ldir) ) {
+		$logdir = $ldir;
+		break;
+	}
+}
+$log = new Monolog\Logger('name');
+$log->pushHandler(new Monolog\Handler\StreamHandler($logdir . '/nlcw.log', Monolog\Logger::WARNING));
+
 
 // connect to Database
 $pdo = null;
@@ -61,8 +72,10 @@ if( $SSLenabled && isset($page['sslreq']) && $page['sslreq'] != 0 ) {
   }
 }
 
-// Every Template setup
-$tmpl = new smarty();
+
+
+// Smarty Template setup
+$tmpl = new Smarty();
 $tmpl->template_dir = TEMPLATE_DIR;
 
 // regular pages with database content
@@ -91,12 +104,6 @@ switch( $pagetype ) {
 		break;
 	case Site::PAGETYPE_TEXT_HTML:
 		$plugin = new Plugin_Text_Html($pdo,$page);
-		if( $site->isInRole('admin') ) {
-			$plugin->enableEditing();
-		}
-		break;
-	case Site::PAGETYPE_TEXT_WIKI:
-		$plugin = new Plugin_Text_Wiki($pdo,$page);
 		if( $site->isInRole('admin') ) {
 			$plugin->enableEditing();
 		}
