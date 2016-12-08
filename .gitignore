@@ -2,6 +2,7 @@ web/.htconfig.php
 web/admin/.htconfig.php
 *~
 *.save
+*.lock
 web/templates_c
 web/pi.php
 .DS_Store
