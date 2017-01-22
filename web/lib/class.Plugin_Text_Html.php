@@ -60,6 +60,21 @@ class Plugin_Text_Html extends Plugin {
 
 	protected function processFilemanager()
 	{
+		// process uploads
+		if(@$_FILES['upload'])
+		{
+			if( !@is_uploaded_file($_FILES['upload']['tmp_name']) )
+				throw new Exception('Not an HTTP upload...');
+			if( !@getimagesize($_FILES['upload']['tmp_name']) )
+				throw new Exception('Only image uploads are allowed...');
+			// generate unique filename if filename is taken
+			$suffix = 0;
+			while(file_exists($uploadFilename = WEB_ROOT.USER_UPLOAD_DIR.'/'.($suffix?$suffix:'').$_FILES['upload']['name']))
+				$suffix++;
+			if( !@move_uploaded_file($_FILES['upload']['tmp_name'], $uploadFilename) )
+				throw new Exception('Could not save upload..');
+		}
+
 		$this->smartyTemplate = '../page_editor.filemanager.tpl';
 		$this->smartyVars['file_path'] = USER_UPLOAD_DIR;
 		$dir  = opendir(WEB_ROOT.USER_UPLOAD_DIR);

@@ -3,6 +3,12 @@
 	<div class='filemanager_file' data-src='{$file_path}/{$file}'><img src="{$file_path}/{$file}" style="height:128px;"><br />{$file}</div>
 {/foreach}
 
+<form method="POST" enctype="multipart/form-data">
+	<input type="file" name="upload">
+	<input type="submit">
+</form>
+
+
 <script src="/templates/{$TEMPLATE_STYLE}/js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 $(document).on("click","div.filemanager_file",function(){
