@@ -7,6 +7,8 @@ class Plugin_Text_Html extends Plugin {
 
 	private $enable_edit = false;
 	private $edited_content = null;
+	private $smartyTemplate = 'page.default.html';
+	private $smartyVars = ARRAY();
 
 	public function enableEditing()
 	{
@@ -30,6 +32,14 @@ class Plugin_Text_Html extends Plugin {
 		if(!$this->enable_edit)
 			return;
 
+		if(http_get_var('filemanager'))
+			$this->processFilemanager();
+		else
+			$this->processSiteactions();
+	}
+
+	protected function processSiteactions()
+	{
 		// get the edited content from the browser
 		if(http_get_var('editor') == 1)
 			$this->edited_content = http_get_var('codeeditor');
@@ -48,6 +58,16 @@ class Plugin_Text_Html extends Plugin {
 		}
 	}
 
+	protected function processFilemanager()
+	{
+		$this->smartyTemplate = '../page_editor.filemanager.tpl';
+		$this->smartyVars['file_path'] = USER_UPLOAD_DIR;
+		$dir  = opendir(WEB_ROOT.USER_UPLOAD_DIR);
+		while( $file = readdir($dir) )
+			if(!is_dir($file) && $file[0] != '.' )
+				$this->smartyVars['filelist'][] = $file;
+	}
+
 	public function getOutputMethod()
 	{
 		return Plugin::OUTPUT_METHOD_SMARTY;
@@ -58,19 +78,16 @@ class Plugin_Text_Html extends Plugin {
 	*/
 	public function getSmartyTemplate()
 	{
-		return 'page.default.html';
+		return $this->smartyTemplate;
 	}
 
 	public function getSmartyVariables()
 	{
-		$ret = ARRAY();
 		if( isset($this->page['content']) )
-			$ret['CONTENT'] = $this->page['content'];
+			$this->smartyVars['CONTENT'] = $this->page['content'];
 		if( $this->enable_edit )
-		{
-			$ret['ENABLE_EDITOR'] = true;
-		}
-		return $ret;
+			$this->smartyVars['ENABLE_EDITOR'] = true;
+		return $this->smartyVars;
 	}
 
 	public function getAdminNavigation()

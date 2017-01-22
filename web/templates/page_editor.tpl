@@ -62,8 +62,20 @@
 		content_css: '/templates/{$TEMPLATE_STYLE}/style.css',
 		plugins: ['advlist autolink link media lists charmap preview hr anchor pagebreak spellchecker',
 			'searchreplace visualblocks visualchars code fullscreen nonbreaking',
-			'table contextmenu directionality paste'
+			'table contextmenu directionality paste image imagetools',
 		],
+		file_browser_callback: function(field_name, url, type, win) {
+			tinymce.activeEditor.windowManager.open({
+				title : "Dateibrowser",
+				width : 520,
+				height : 400,
+				url : window.location.href+"&filemanager=1",
+			}, {
+				window : win,
+				input : field_name
+			});
+			return false;
+		},
 	});
 </script>
 {/if}

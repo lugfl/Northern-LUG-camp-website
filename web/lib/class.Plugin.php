@@ -128,7 +128,7 @@ abstract class Plugin {
 					exit();
 				}
 				break;
-                }
+		}
 	}
 
 	protected function checkMaintenance() {
