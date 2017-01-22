@@ -4,7 +4,7 @@ function show_window(name, state)
 	var obj = parent.document.getElementById(name);
 	if(state == true)
 	{
-		obj.style.left = "100px";
+		obj.style.left = "0px";
 		obj.style.top = "150px";
 	}
 	else
