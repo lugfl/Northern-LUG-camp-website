@@ -5,6 +5,7 @@ web/admin/.htconfig.php
 *.lock
 web/templates_c
 web/pi.php
+web/content_pics/*
 .DS_Store
 Thumbs.db
 npm-debug.log
