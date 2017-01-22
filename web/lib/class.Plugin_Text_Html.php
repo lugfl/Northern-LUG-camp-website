@@ -63,6 +63,8 @@ class Plugin_Text_Html extends Plugin {
 		// process uploads
 		if(@$_FILES['upload'])
 		{
+			if( stristr($_FILES['upload']['name'], '..' ) )
+				throw new Exception('Security exception');
 			if( !@is_uploaded_file($_FILES['upload']['tmp_name']) )
 				throw new Exception('Not an HTTP upload...');
 			if( !@getimagesize($_FILES['upload']['tmp_name']) )
