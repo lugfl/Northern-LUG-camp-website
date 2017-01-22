@@ -13,7 +13,7 @@ require_once(WEB_ROOT.'/lib/class.Plugin_Artikels.php');
 
 // initialize Logger
 $logdir = false;
-$logdirsearch = array("../../logs","../logs","./logs","/tmp");
+$logdirsearch = array("./logs","../logs","../../logs","/tmp");
 foreach ( $logdirsearch as $ldir ) {
 	if( is_dir($ldir) ) {
 		$logdir = $ldir;
@@ -36,7 +36,7 @@ try {
 	$pdo->exec('SET names utf8');
 	$pdo->exec('SET character set utf8');
 } catch (PDOException $e) {
-	$log->error('DB-Connect ' . $e->getMessage());
+	$log->addError('DB-Connect ' . $e->getMessage());
 	exit();
 }
 
@@ -58,7 +58,7 @@ if( isset($domaininfo['sslname']) && $domaininfo['sslname'] != '' ) {
 $page = $site->getPage($p);
 
 if( ! is_array($page) || sizeof($page) == 0) {
-	$log->error('Page not found');
+	$log->addError('Page not found');
 	print '404er';
 	exit();
 }
@@ -68,7 +68,7 @@ if( $SSLenabled && isset($page['sslreq']) && $page['sslreq'] != 0 ) {
   // SSL-Check required
   if( ! isset($_SERVER['HTTPS']) ) {
     // request via http
-    $log->error('SSL Request required.');
+    $log->addError('SSL Request required.');
     print 'SSL Request required.';
     exit();
   }
@@ -130,7 +130,7 @@ switch( $pagetype ) {
 		$plugin = new Plugin_Artikels($pdo,$page,$site);
 		break;
  	default:
-		$log->error('Unknown Pagetype ' . $pagetype );
+		$log->addError('Unknown Pagetype ' . $pagetype );
 		exit();
 		break;
 }
