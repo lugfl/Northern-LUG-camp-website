@@ -67,7 +67,7 @@
 		file_browser_callback: function(field_name, url, type, win) {
 			tinymce.activeEditor.windowManager.open({
 				title : "Dateibrowser",
-				width : 520,
+				width : 620,
 				height : 400,
 				url : window.location.href+"&filemanager=1",
 			}, {
