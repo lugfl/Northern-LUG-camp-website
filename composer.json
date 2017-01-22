@@ -11,6 +11,7 @@
 	"pear/net_smtp": "*",
         "pear/Mail": "*",
         "pear/mail_mime": "*",
-        "monolog/monolog": ">=1.0 <1.1"
+        "monolog/monolog": ">=1.0 <1.1",
+        "tinymce/tinymce": "^4.5"
     }
 }
