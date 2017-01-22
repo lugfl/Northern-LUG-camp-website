@@ -57,8 +57,13 @@
 
 <script>
 	tinymce.init({
+		width: 1000,
 		selector: '#codeeditor',
-		content_css: '/templates/{$TEMPLATE_STYLE}/style.css'
+		content_css: '/templates/{$TEMPLATE_STYLE}/style.css',
+		plugins: ['advlist autolink link media lists charmap preview hr anchor pagebreak spellchecker',
+			'searchreplace visualblocks visualchars code fullscreen nonbreaking',
+			'table contextmenu directionality paste'
+		],
 	});
 </script>
 {/if}
