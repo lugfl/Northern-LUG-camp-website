@@ -93,7 +93,6 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		if( $this->enable_edit )
 		{
 			$this->smarty_assign['ENABLE_EDITOR'] = true;
-			$this->smarty_assign['XINHA_DIR'] = XINHA_WEBROOT;
 		}
 
 		// only save if content has been altered..

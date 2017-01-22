@@ -69,7 +69,6 @@ class Plugin_Text_Html extends Plugin {
 		if( $this->enable_edit )
 		{
 			$ret['ENABLE_EDITOR'] = true;
-			$ret['XINHA_DIR'] = XINHA_WEBROOT;
 		}
 		return $ret;
 	}
