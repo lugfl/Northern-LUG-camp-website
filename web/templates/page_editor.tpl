@@ -59,10 +59,13 @@
 	tinymce.init({
 		width: 1000,
 		selector: '#codeeditor',
-		content_css: '/templates/{$TEMPLATE_STYLE}/style.css',
+		content_css: ['/templates/{$TEMPLATE_STYLE}/style.css','/templates/{$TEMPLATE_STYLE}/css/skeleton.css'],
 		plugins: ['advlist autolink link media lists charmap preview hr anchor pagebreak spellchecker',
 			'searchreplace visualblocks visualchars code fullscreen nonbreaking',
-			'table contextmenu directionality paste image imagetools',
+			'table contextmenu directionality paste image imagetools template',
+		],
+		toolbar: [
+			'undo redo visualblocks | styleselect | bold italic | link image template',
 		],
 		file_browser_callback: function(field_name, url, type, win) {
 			tinymce.activeEditor.windowManager.open({
@@ -76,6 +79,7 @@
 			});
 			return false;
 		},
+		templates: [{include file="{$TEMPLATE_STYLE}/tinymce_templates.tpl"}],
 	});
 </script>
 {/if}
