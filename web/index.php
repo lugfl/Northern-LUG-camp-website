@@ -69,6 +69,7 @@ if( $SSLenabled && isset($page['sslreq']) && $page['sslreq'] != 0 ) {
   if( ! isset($_SERVER['HTTPS']) ) {
     // request via http
     $log->addError('SSL Request required.');
+    header('Location: https://' . $domaininfo['sslname'] . '?p=' . $p);
     print 'SSL Request required.';
     exit();
   }
