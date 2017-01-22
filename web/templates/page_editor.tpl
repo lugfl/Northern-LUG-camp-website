@@ -1,14 +1,8 @@
 {if $ENABLE_EDITOR}
+<script type="text/javascript" src="lib/javascript/tinymce/tinymce.min.js"></script>
+
+
 <script type="text/javascript" src="lib/javascript/editor.js"></script>
-<script type="text/javascript">
-	_editor_url  = "{$XINHA_DIR}";
-	_editor_lang = "en";
-	_editor_skin = "silva";
-	_editor_icons = "classic";
-	var css_path = "/templates/{$TEMPLATE_STYLE}/style.css";
-</script>
-<script type="text/javascript" src="{$XINHA_DIR}XinhaCore.js"></script>
-<script type="text/javascript" src="{$XINHA_DIR}xinha_config.js"></script>
 <div id="content_editor" style="position:absolute; z-index: 99; left: -10000px; top: -10000px;">
 	<form id="editor_form" method="POST">
 		<input type="hidden" name="editor" value="1">
@@ -60,4 +54,11 @@
 		<span class="editor_buttons"><button name="news_submit" value="submitted" onclick="news_create_save();">save</button><button onclick="show_window('news_addform', false);return false;">discard</button></span>
 	</form>
 </div>
+
+<script>
+	tinymce.init({
+		selector: '#codeeditor',
+		content_css: '/templates/{$TEMPLATE_STYLE}/style.css'
+	});
+</script>
 {/if}
