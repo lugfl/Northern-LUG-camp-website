@@ -79,20 +79,18 @@ if( $SSLenabled && isset($page['sslreq']) && $page['sslreq'] != 0 ) {
 
 // Smarty Template setup
 $tmpl = new Smarty();
-$tmpl->template_dir = TEMPLATE_DIR;
+#$tmpl->template_dir = TEMPLATE_DIR;
+$tmpl->setTemplateDir( array(
+		'templates/' . $domaininfo['templatestyle'],
+		'templates/'
+	));
 
 // regular pages with database content
 $content = '';
 $pagetype = $site->getPageType($p);
-$template = TEMPLATE_STYLE . '/page.default.html';
+$template = 'page.default.html';
 
-$templatestyle = '.';
-if( isset( $domaininfo['templatestyle'] ) ) {
-  $templatestyle = $domaininfo['templatestyle'];
-} else {
-	$templatestyle = TEMPLATE_STYLE;
-}
-$tmpl->assign('TEMPLATE_STYLE',$templatestyle);
+$tmpl->assign('TEMPLATE_STYLE',$domaininfo['templatestyle']);
 
 // no editor per default, but define var to prevent notices
 $tmpl->assign('ENABLE_EDITOR', false);
@@ -154,7 +152,7 @@ if( $plugin != null ) {
 	}
 	switch( $plugin->getOutputMethod() ) {
 		case Plugin::OUTPUT_METHOD_SMARTY:
-			$template = $templatestyle . '/' . $plugin->getSmartyTemplate();
+  			$template = $plugin->getSmartyTemplate();
 			$tmpl->assign( $plugin->getSmartyVariables() );
 			break;
 		case Plugin::OUTPUT_METHOD_BUILDIN:
@@ -242,6 +240,11 @@ $tmpl->assign('T',time());
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
 //$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
+
+
+if( $plugin != null && $plugin->getOutputMethod() != Plugin::OUTPUT_METHOD_SMARTY ) {
+}
+
 $tmpl->display($template) ;
 
 if( defined('DEBUG') && DEBUG == 1 ) {
