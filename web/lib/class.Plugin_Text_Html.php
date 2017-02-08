@@ -77,7 +77,7 @@ class Plugin_Text_Html extends Plugin {
 				throw new Exception('Could not save upload..');
 		}
 
-		$this->smartyTemplate = '../page_editor.filemanager.tpl';
+		$this->smartyTemplate = 'page_editor.filemanager.tpl';
 		$this->smartyVars['file_path'] = USER_UPLOAD_DIR;
 		$dir  = opendir(WEB_ROOT.USER_UPLOAD_DIR);
 		while( $file = readdir($dir) )
