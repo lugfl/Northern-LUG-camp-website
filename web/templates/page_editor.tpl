@@ -63,11 +63,16 @@
 	tinymce.init({
 		width: 1000,
 		selector: '#codeeditor',
+		forced_root_block: '',
 		content_css: ['/templates/{$TEMPLATE_STYLE}/style.css','/templates/{$TEMPLATE_STYLE}/css/skeleton.css'],
-		plugins: ['advlist autolink link media lists charmap preview hr anchor pagebreak spellchecker',
+		plugins: ['advlist autolink link media lists preview hr anchor pagebreak spellchecker',
 			'searchreplace visualblocks visualchars code fullscreen nonbreaking',
 			'table contextmenu directionality paste image imagetools template',
 		],
+		style_formats: [
+			{ title: 'Absatz', block: 'div', classes: 'container'}
+		],
+		style_formats_merge: true,
 		toolbar: [
 			'undo redo visualblocks | styleselect | bold italic | link image template',
 		],
