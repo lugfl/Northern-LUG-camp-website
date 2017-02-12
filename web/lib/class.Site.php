@@ -255,6 +255,11 @@ class Site {
 					throw new Exception("Page relation type not supported..");
 			}
 
+			// load default content from template if it exists
+			$default_content = '';
+			if( file_exists(TEMPLATE_DIR.TEMPLATE_STYLE.'/plugin.site.newpage.tpl') )
+				$default_content = file_get_contents(TEMPLATE_DIR.TEMPLATE_STYLE.'/plugin.site.newpage.tpl');
+
 			// site seems to exists so insert new site..
 			$ins = $this->pdo->prepare("INSERT INTO content_page (domainId, parentpageid, pagetypeid, title, content, crdate, navorder,acl) VALUES (?,?,?,?,?,CURDATE(),?,?)");
 			$success = $ins->execute( ARRAY(
@@ -262,7 +267,7 @@ class Site {
 					$parent_page,
 					(int)$type,
 					$title,
-					'',
+					$default_content,
 					(int)$navorder,
 					$role )
 				);
