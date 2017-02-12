@@ -69,9 +69,6 @@
 			'searchreplace visualblocks visualchars code fullscreen nonbreaking',
 			'table contextmenu directionality paste image imagetools template',
 		],
-		style_formats: [
-			{ title: 'Absatz', block: 'div', classes: 'container'}
-		],
 		style_formats_merge: true,
 		toolbar: [
 			'undo redo visualblocks | styleselect | bold italic | link image template',
