@@ -21,7 +21,7 @@ foreach ( $logdirsearch as $ldir ) {
 	}
 }
 $log = new Monolog\Logger('name');
-$log->pushHandler(new Monolog\Handler\StreamHandler($logdir . '/nlcw.log', Monolog\Logger::WARNING));
+$log->pushHandler(new Monolog\Handler\StreamHandler($logdir . '/nlcw.log', Monolog\Logger::INFO));
 
 
 // connect to Database
