@@ -149,9 +149,11 @@ class Events  {
 			// first fetch all registered persons for the account
 			$SQL = 'SELECT ea.anmeldungid, ea.vorname, ea.nachname '
 				.'FROM event_anmeldung ea '
-				.'WHERE ea.accountid = ? ';
+				.'LEFT JOIN event_anmeldung_event eae ON ea.anmeldungid=eae.anmeldungid '
+				.'LEFT JOIN domain_event de ON eae.eventid=de.eventid '
+				.'WHERE ea.accountid = ? AND de.domainid=?';
 			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($accountid));
+			$st->execute(array($accountid,$domainid));
 			while( $row = $st->fetch(PDO::FETCH_ASSOC) ) {
 				$ret[] = $row;
 			}
