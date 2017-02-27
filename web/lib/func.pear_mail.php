@@ -4,6 +4,7 @@ require_once('Mail.php');
 
 function my_mailer($from,$to,$subject,$msg) {
 	global $MAILER;
+	global $log;
 
 	// Defaultwerte
 	$options = array ( 
@@ -25,11 +26,21 @@ function my_mailer($from,$to,$subject,$msg) {
 			$options['username'] = $MAILER['username'];
 		if(isset($MAILER['password']))
 			$options['password'] = $MAILER['password'];
+		if(isset($MAILER['port']))
+			$options['port'] = $MAILER['port'];
 
 	}
+	// $options['debug'] = true;
+	$options['socket_options'] = array('ssl' => array(
+		'CN_match' => $MAILER['host'],
+	));
+
 	$mailer = Mail::factory('smtp',$options); 
 	if (true === PEAR::isError($mailer)) 
 	{ 
+		$log->addError('Mail', "PEAR Mail Factory error: %s\n", $smtp->getMessage());
+		$log->addError('Mail', "SMTP Object: %s\n", $smtp->toString());
+		$log->addError('Mail', "SMTP Debug info: %s\n", $smtp->getDebugInfo());
 		return $mailer->getMessage(); 
 	} 
 
@@ -63,9 +74,15 @@ function my_mailer($from,$to,$subject,$msg) {
 	$res=$mailer->send($to,$headers,$body); 
 	if (true === PEAR::isError($res)) 
 	{ 
+		$log->addError('Mail', "PEAR SMTP Send error: %s\n", $res->getMessage());
+		$log->addError('Mail', "Mail object: %s\n", $res->toString());
+		$log->addError('Mail', "Mail debug info: %s\n", $res->getDebugInfo());
 		return $res->getMessage(); 
 	}
-	else { return 0; }
+	else {
+		$log->info('Mail',array("from"=>$from, 'to'=>$to, 'subject'=>$subject));
+		return 0;
+	}
 }
 
 ?>
