@@ -207,7 +207,7 @@ class Events  {
 				.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
 				.'WHERE eae.anmeldungid = ? ';
 			if($account_id)
-				$SQL .= 'AND ea.accountid = ? ';
+				$SQL .= 'AND eae.accountid = ? ';
 			$st = $this->pdo->prepare($SQL);
 			if($account_id)
 				$st->execute(array($anmeldungid, $account_id));
