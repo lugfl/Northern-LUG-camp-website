@@ -66,6 +66,8 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 	}
 
 	public function processInput() {
+		if(!$this->accountid)
+			throw new Exception("Access denied");
 
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
 		if($this->in['anmeldungid'] > 0) {
