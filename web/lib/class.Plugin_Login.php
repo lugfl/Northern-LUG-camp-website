@@ -17,6 +17,7 @@ require_once('lib/class.Plugin.php');
  * - confirmed (registration confirmed via mail-link)
  * - chpwform (change-password form)
  * - chpwconfirm (change-password confirm)
+ * - ualist (unverified account list
  */
 class Plugin_Login extends Plugin {
 
@@ -209,40 +210,40 @@ class Plugin_Login extends Plugin {
 					}
 				}
 				break;
-				case "newpwform":
-					// display form for new password requests
+			case "newpwform":
+				// display form for new password requests
+				$this->smarty_assign['login_block'] = 'newpwform';
+				break;
+			case "newpw":
+				// generate a new Password an send it per mail
+				$new_pw = $this->new_password($this->input_auth_user,$this->input_auth_email);
+				if( $new_pw != FALSE ) {
+					$u = $this->getAccount($this->input_auth_user);
+					$u['newpw'] = $new_pw;
+					$rc = $this->sendNewPasswordMail($u);
+					$this->smarty_assign['login_block'] = 'newpwconfirm';
+				} else {
+					// user not found
+					$this->smarty_assign['err_user_not_found'] = TRUE;
 					$this->smarty_assign['login_block'] = 'newpwform';
-					break;
-				case "newpw":
-					// generate a new Password an send it per mail
-					$new_pw = $this->new_password($this->input_auth_user,$this->input_auth_email);
-					if( $new_pw != FALSE ) {
-						$u = $this->getAccount($this->input_auth_user);
-						$u['newpw'] = $new_pw;
-						$rc = $this->sendNewPasswordMail($u);
-						$this->smarty_assign['login_block'] = 'newpwconfirm';
-					} else {
-						// user not found
-						$this->smarty_assign['err_user_not_found'] = TRUE;
-						$this->smarty_assign['login_block'] = 'newpwform';
-					}
-					break;
-				case "chpwform":
-					// display change-password-form
+				}
+				break;
+			case "chpwform":
+				// display change-password-form
+				$this->smarty_assign['login_block'] = 'chpwform';
+				break;
+			case "chpw":
+				// change password or redisplay form
+				if( FALSE == $this->validateChPasswordData() ) {
 					$this->smarty_assign['login_block'] = 'chpwform';
-					break;
-				case "chpw":
-					// change password or redisplay form
-					if( FALSE == $this->validateChPasswordData() ) {
-						$this->smarty_assign['login_block'] = 'chpwform';
+				} else {
+					if( TRUE == $this->updatePassword($this->input_auth_user,$this->input_auth_newpass) ) {
+						$this->smarty_assign['login_block'] = 'chpwconfirm';
 					} else {
-						if( TRUE == $this->updatePassword($this->input_auth_user,$this->input_auth_newpass) ) {
-							$this->smarty_assign['login_block'] = 'chpwconfirm';
-						} else {
-							$this->smarty_assign['login_block'] = 'chpwform';
-						}
+						$this->smarty_assign['login_block'] = 'chpwform';
 					}
-					break;
+				}
+				break;
 		}
 		$this->smarty_assign['auth_ok'] = $this->auth_ok;
 		$this->smarty_assign['error'] = $this->error;
@@ -252,6 +253,32 @@ class Plugin_Login extends Plugin {
 		}
 		
 	}
+
+	public function processAdminInput() {
+		parent::processAdminInput();
+
+		// process action dependant code
+		switch(http_get_var('a'))
+		{
+			case "ualist":
+				// list unverified accounts
+				$this->smarty_assign['login_block'] = 'ualist';
+				$l = $this->getUnverifiedAccounts();
+				$this->smarty_assign['ualist'] = $l;
+				break;
+			case "reval":
+				$username = http_get_var('u');
+				$user = $this->getAccount($username);
+				if( is_array($user) ) {
+					$this->sendConfirmMail($user);
+				}
+				$this->smarty_assign['login_block'] = 'ualist';
+				$l = $this->getUnverifiedAccounts();
+				$this->smarty_assign['ualist'] = $l;
+				break;
+		}
+	}
+
 
 	/**
 	 * Send confirmationmail.
@@ -388,6 +415,30 @@ class Plugin_Login extends Plugin {
 	}
 
 	/**
+	 *
+	 */
+	protected function getUnverifiedAccounts() {
+		$ret = array();
+		try {
+			// create per-user-hash for confirmation-email
+			$SQL = 'SELECT a.*,SUBSTR(MD5(CONCAT(a.username,a.email,a.accountid)),1,6) AS h ';
+			$SQL .= ' FROM account a ';
+			$SQL .= ' WHERE active=0';
+			$SQL .= ' ORDER BY crdate';
+			$st = $this->pdo->prepare($SQL);
+			$st->execute();
+			while( $row = $st->fetch( PDO::FETCH_ASSOC ) ) {
+				array_push($ret,$row);
+			}
+			$st->closeCursor();
+		} catch (PDOException $e) {
+			print $e;
+		}
+		return $ret;
+	}
+
+
+	/**
 	 * Create a new random passworda
 	 *
 	 * @return new password or FALSE if user not found
@@ -434,7 +485,13 @@ class Plugin_Login extends Plugin {
 	}
 
 	public function getAdminNavigation() {
-		return array();
+		$ret = array();
+		$ret[] = array(
+			'pageid' => $this->page['pageid'],
+			'title' => 'List unverified accounts',
+			'url' => '?p=' . $this->page['pageid'] . '&a=ualist'
+		);
+		return $ret;
 	}
 
 }
