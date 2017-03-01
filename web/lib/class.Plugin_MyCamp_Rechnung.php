@@ -70,7 +70,7 @@ class Plugin_MyCamp_Rechnung extends Plugin {
 		$this->smarty_assign['PAGEID'] = $this->page['pageid'];
 		if($this->in['anmeldungid'] > 0) {
 			// display single registration
-			$this->smarty_assign = $this->events->getEventRegistration($this->in['anmeldungid']);
+			$this->smarty_assign = $this->events->getEventRegistration($this->in['anmeldungid'] , $this->accountid);
 			foreach(Plugin_Events::$ANREISE as $anreiseart) {
 				if($anreiseart['anreiseid'] == $this->smarty_assign['ANMELDUNG']['arrival']) {
 					$this->smarty_assign['ANMELDUNG']['anreise'] = $anreiseart['name'];

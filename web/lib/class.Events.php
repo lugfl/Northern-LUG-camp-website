@@ -179,7 +179,7 @@ class Events  {
 		return $ret;
 	}
 
-	public function getEventRegistration($anmeldungid) {
+	public function getEventRegistration($anmeldungid, $account_id=null) {
 		$ret = array();
 
 		try{
@@ -191,8 +191,13 @@ class Events  {
 				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
 				.'LEFT JOIN account a ON ea.accountid=a.accountid '
 				.'WHERE ea.anmeldungid = ? ';
+			if($account_id)
+				$SQL .= 'AND ea.accountid = ? ';
 			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($anmeldungid));
+			if($account_id)
+				$st->execute(array($anmeldungid, $account_id));
+			else
+				$st->execute(array($anmeldungid));
 			$ret['ANMELDUNG'] = $st->fetch(PDO::FETCH_ASSOC);
 			$st->closeCursor();
 
@@ -201,8 +206,13 @@ class Events  {
 				.'FROM event_anmeldung_event eae '
 				.'LEFT JOIN event_event ee ON ee.eventid = eae.eventid '
 				.'WHERE eae.anmeldungid = ? ';
+			if($account_id)
+				$SQL .= 'AND ea.accountid = ? ';
 			$st = $this->pdo->prepare($SQL);
-			$st->execute(array($anmeldungid));
+			if($account_id)
+				$st->execute(array($anmeldungid, $account_id));
+			else
+				$st->execute(array($anmeldungid));
 			while($row = $st->fetch(PDO::FETCH_ASSOC)) {
 				$ret['EVENTS'][] = $row;
 			}
