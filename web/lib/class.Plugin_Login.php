@@ -260,10 +260,12 @@ class Plugin_Login extends Plugin {
 		
 		$msg = "Hallo ".$user['username'].",\n\n"."Damit deine Registrierung erfolgreich abgeschlossen werden kann,";
 		$msg .= " klicke bitte auf folgenden Link:\n\n";
-		$msg .= 'http://'.$_SERVER['SERVER_NAME'];
-		if( $_SERVER['SERVER_PORT'] != 80 ) {
+		if($_SERVER['HTTPS'] or $_SERVER['SERVER_PORT'] == 443)
+			$msg .= 'https://'.$_SERVER['SERVER_NAME'];
+		else
+			$msg .= 'http://'.$_SERVER['SERVER_NAME'];
+		if( !in_array($_SERVER['SERVER_PORT'], ARRAY(80,443)) )
 			$msg .= ':' . $_SERVER['SERVER_PORT'];
-		}
 		$msg .= '/'.get_script_name().'?p='.$this->loginpageid.'&m=c&h='.$user['h'].'&au='.$user['username'];
 		$msg .= "\n";
 		$msg .= "\nNeuigkeiten zur Webseite werden auf der Mailingliste bekanntgegeben.";
