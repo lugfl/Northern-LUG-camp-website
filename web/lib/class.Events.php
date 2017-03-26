@@ -291,7 +291,7 @@ class Events  {
 				.'LEFT JOIN event_lug el ON el.lugid = ea.lugid '
 				.'LEFT JOIN event_anmeldung_event eae ON eae.anmeldungid=ea.anmeldungid '
 				.'LEFT JOIN account a ON eae.accountid=a.accountid '
-				.'WHERE eae.eventid = ? AND ea.bemerkung IS NOT NULL '
+				.'WHERE eae.eventid = ? AND ea.bemerkung IS NOT NULL AND ea.bemerkung!="" '
 				.'ORDER BY ea.crdate ';
 			$st = $this->pdo->prepare($SQL);
 			$st->execute(array($eventid));
