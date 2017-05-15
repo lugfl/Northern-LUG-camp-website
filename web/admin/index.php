@@ -23,7 +23,7 @@ $page = new $pclass;
 <html>
   <head>
     <title> LUG-CAMP 2008 Flensburg - Germany</title>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="Content-Style-Type" content="text/css">
     <link rel="stylesheet" type="text/css" href="style.css">
     

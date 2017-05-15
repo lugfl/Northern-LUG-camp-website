@@ -11,5 +11,7 @@ my_connect('DEFAULT');
 
 require_once('lib/inc.auth.php');
 
+// load composer autoloader
+require_once('../../vendor/autoload.php');
 
 ?>

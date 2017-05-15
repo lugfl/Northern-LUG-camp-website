@@ -19,7 +19,7 @@ class HtmlPage_shirts_csv extends HtmlPage {
 	
 	function getContent() {
     		$ret = '';
-		$SQL = "SELECT aa.accountid,aa.artikelid,aa.anzahl,aa.crdate,aa.groesse,aa.bezahlt,a.username,ea.name AS artikelname ";
+		$SQL = "SELECT aa.accountid,aa.artikelid,aa.anzahl,aa.crdate,aa.groesse,aa.bezahlt,a.username,ea.name AS artikelname,ea.eventid ";
 		$SQL .= "FROM event_account_artikel aa ";
 		$SQL .= "LEFT JOIN account a ON a.accountid = aa.accountid ";
 		$SQL .= "LEFT JOIN event_artikel ea ON ea.artikelid = aa.artikelid ";
@@ -28,11 +28,11 @@ class HtmlPage_shirts_csv extends HtmlPage {
 		
 		if($res) {
 			if(mysql_num_rows($res) >0) {
-				$csv = '"LfdNr";"Name";"Farbe";"Größe";"Anzahl";"Bestelldatum";"bezahlt";"ausgegeben"'."\n";
+				$csv = '"LfdNr";"Name";"Farbe";"Größe";"Anzahl";"Bestelldatum";"bezahlt";"ausgegeben";"eventid"'."\n";
 				$ctr = 1;
 			
 				while($row = mysql_fetch_assoc($res)) {
-					$csv .= $ctr.';"'.$row['username'].'";"'.$row['artikelname'].'";"'.$row['groesse'].'";"'.$row['anzahl'].'";"'.$row['crdate'].'";"'.($row['bezahlt'] ? "     X" : "").'";""';
+					$csv .= $ctr.';"'.$row['username'].'";"'.$row['artikelname'].'";"'.$row['groesse'].'";"'.$row['anzahl'].'";"'.$row['crdate'].'";"'.($row['bezahlt'] ? "     X" : "").'";"";'.$row['eventid'];
 					$csv .= "\n";
 					$ctr++;
 				}

@@ -24,6 +24,7 @@ class HtmlPage_shirts extends HtmlPage {
 		$ret .= '
 		<table>
 			<tr>
+				<th>eventid</th>
 				<th>Artikel</th>
 				<th>Gr&ouml&szlig;e</th>
 				<th>Anzahl</th>
@@ -39,14 +40,14 @@ class HtmlPage_shirts extends HtmlPage {
 			$res2 = my_query($SQL);
 			while($brow = mysql_fetch_object($res2)) {
 				if($groesse != $brow->groesse && $groesse != '') {
-					$ret .= '<tr><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
+					$ret .= '<tr><td>'.$row->eventid.'</td><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
 					$anzahl = $brow->anzahl;
 				} else {
 					$anzahl += $brow->anzahl;		
 				}
 				$groesse = $brow->groesse;
 			}
-			$ret .= '<tr><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
+			$ret .= '<tr><td>'.$row->eventid.'</td><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
 		}
 		$ret .= '
 		</table>
