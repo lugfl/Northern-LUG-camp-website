@@ -88,7 +88,7 @@ class HtmlPage_kasse extends HtmlPage {
 
 			if($nomsg != $msg) {
 				$msg .= "\nGruﬂ\nJan Boysen\nKassenwart Lug Flensburg";
-				$send_mail = my_mailer('kasse@lug-camp-2012.de',$email,'Geldeingang LugCamp 2012',$msg);
+				$send_mail = my_mailer('kasse@lugfl.de',$email,'Geldeingang LugCamp 2017',$msg);
 			}
 		} else {
 			if($nickname) {
