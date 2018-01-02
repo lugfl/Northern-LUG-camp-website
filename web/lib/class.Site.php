@@ -29,7 +29,7 @@ class Site {
 	 */
 	protected function searchMyDomain() {
 		$ret = FALSE;
-		$SQL = "SELECT domainid,name,email,sslname,templatestyle FROM content_domain WHERE name=? OR sslname=?";
+		$SQL = "SELECT domainid,name,email,sslname,templatestyle,accountregistration FROM content_domain WHERE name=? OR sslname=?";
 		$st = $this->pdo->prepare($SQL);
 		$res = $st->execute(array($_SERVER['SERVER_NAME'],$_SERVER['SERVER_NAME']));
 		if ( $row = $st->fetch(PDO::FETCH_ASSOC)) {

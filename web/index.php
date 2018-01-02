@@ -239,6 +239,7 @@ $tmpl->assign('pagetypeid',$page['pagetypeid']);
 $tmpl->assign('T',time());
 $tmpl->assign('TITLE',$page['title']);
 $tmpl->assign('SPONSOREN',get_sponsoren_image($pdo));
+$tmpl->assign('ACCOUNTREGISTRATION_ENABLED',$domaininfo['accountregistration']);
 //$tmpl->assign('DEBUG',print_r($_SESSION,TRUE));
 
 
