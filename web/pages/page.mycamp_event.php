@@ -45,8 +45,8 @@ class HtmlPage_mycamp_event extends HtmlPage {
 		$SQL1 .= " WHERE a.accountid=".$_SESSION['_accountid']." AND ae.eventid=".$ceventid;
 		$res1 = my_query($SQL1);
 		if($res1) {
-			if(mysql_num_rows($res1)>0) {
-				while($row1 = mysql_fetch_assoc($res1)) {
+			if(mysqli_num_rows($res1)>0) {
+				while($row1 = mysqli_fetch_assoc($res1)) {
 				$ret .= '
 					<h2>
 						Anmeldungen f&uuml;r '.$row1['vorname'].' '.$row1['nachname'].'
@@ -68,10 +68,10 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$res2 = my_query($SQL2);
 					$gebuchte = Array();
 					if($res2) {
-						while($row2 = mysql_fetch_assoc($res2)) {
+						while($row2 = mysqli_fetch_assoc($res2)) {
 							array_push($gebuchte,$row2['eventid']);
 						} // while fetch_assoc res2
-						mysql_free_result($res2);
+						mysqli_free_result($res2);
 					} // if res2
 
 					$SQL3 = "SELECT e.eventid,e.name,UNIX_TIMESTAMP(e.anfang) AS anfang, UNIX_TIMESTAMP(e.ende) AS ende,e.charge,e.quota,e.barzahlung ";
@@ -82,15 +82,15 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					$SQL3 .= " AND e.hidden=0 ";
 					$SQL3 .= " AND e.buchanfang<NOW() AND e.buchende>NOW() ";
 					if(count($gebuchte)>0) 
-						$SQL3 .= " AND e.eventid NOT IN (".join($gebuchte,',').")";
+						$SQL3 .= " AND e.eventid NOT IN (".join(',', $gebuchte).")";
 					$SQL3 .= " GROUP BY e.eventid ";
 					$SQL3 .= " HAVING (e.quota-teilnehmerzahl)>0 ";
 					$SQL3 .= " ORDER BY sort ";
 					$res3 = my_query($SQL3);
 					$barzahlhinweis = 0;
 					if($res3) {
-						if(mysql_num_rows($res3)>0) {
-							while($row3 = mysql_fetch_assoc($res3)) {
+						if(mysqli_num_rows($res3)>0) {
+							while($row3 = mysqli_fetch_assoc($res3)) {
 								$betrag = number_format($row3['charge'],2,',','.')." &euro;";
 								if($row3['barzahlung']==1) {
 									$barzahlhinweis = 1;
@@ -115,7 +115,7 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					}else{ // if res3
 						// Fehler
 						print "FEHLER";
-						print mysql_error();
+						print mysqli_error();
 					}	
 					$ret .= '
 					</table>
@@ -131,8 +131,8 @@ class HtmlPage_mycamp_event extends HtmlPage {
 					Die Veranstaltungen, f&uuml;r die Du Dich bereits angemeldet hast, kannst Du auf der Seite <a href="?p=rechnung">Rechnung</a> einsehen.
 					</p>
 				';
-			} // if mysql_num_rows res1
-			mysql_free_result($res1);
+			} // if mysqli_num_rows res1
+			mysqli_free_result($res1);
 
 		} // if res1
 

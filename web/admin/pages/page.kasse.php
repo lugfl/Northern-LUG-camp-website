@@ -12,7 +12,7 @@ class HtmlPage_kasse extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_kasse() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -27,19 +27,19 @@ class HtmlPage_kasse extends HtmlPage {
 			$artikel_bezahlt	= http_get_var('artikel_bezahlt');
 			$uSQL = "SELECT username,email FROM account WHERE accountid = '".$accountid."'";
 			$uquery = my_query($uSQL);
-			$uarray = mysql_fetch_array($uquery);
+			$uarray = mysqli_fetch_array($uquery);
 			$username = $uarray['username'];
 			$email = $uarray['email'];
 
 			$msg = 'Hallo '.$username.",\n\n";
-			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du für das LugCamp gebucht hast als bezahlt markiert:'."\n\n";
+			$msg .= 'Soeben wurden folgende Events und/oder Artikel, die du fï¿½r das LugCamp gebucht hast als bezahlt markiert:'."\n\n";
 			
 			$nomsg = $msg;
 
 			$eSQL = "SELECT eventid,bezahlt FROM event_anmeldung_event ";
 			$eSQL .= "WHERE anmeldungid = '".$anmeldungid."'";
 			$eres = my_query($eSQL);
-			while($row = mysql_fetch_object($eres)) {
+			while($row = mysqli_fetch_object($eres)) {
 				if($row->bezahlt == NULL && $events_bezahlt[$row->eventid] == 'on') {
 					$SQL = "UPDATE event_anmeldung_event SET bezahlt = NOW() ";
 					$SQL .= "WHERE anmeldungid = '".$anmeldungid."' AND eventid='".$row->eventid."'";
@@ -48,7 +48,7 @@ class HtmlPage_kasse extends HtmlPage {
 					
 					$iSQL = "SELECT * FROM event_event WHERE eventid='".$row->eventid."'";
 					$ires = my_query($iSQL);
-					$iarray = mysql_fetch_array($ires);
+					$iarray = mysqli_fetch_array($ires);
 					
 					$msg .= $iarray['name']."\n";
 				} elseif($row->bezahlt != NULL && !$events_bezahlt[$row->eventid]) {
@@ -62,7 +62,7 @@ class HtmlPage_kasse extends HtmlPage {
 			$aSQL = "SELECT * FROM event_account_artikel ";
 			$aSQL .= "WHERE accountid = '".$accountid."'";
 			$ares = my_query($aSQL);
-			while($row = mysql_fetch_object($ares)) {
+			while($row = mysqli_fetch_object($ares)) {
 				if($row->bezahlt == NULL && $artikel_bezahlt[$row->accountartikelid] == 'on') {
 					$SQL = "UPDATE event_account_artikel SET bezahlt = NOW() ";
 					$SQL .= "WHERE accountid = '".$accountid."' AND accountartikelid='".$row->accountartikelid."'";
@@ -71,10 +71,10 @@ class HtmlPage_kasse extends HtmlPage {
 					
 					$iSQL = "SELECT * FROM event_artikel WHERE artikelid='".$row->artikelid."'";
 					$ires = my_query($iSQL);
-					$iarray = mysql_fetch_array($ires);
+					$iarray = mysqli_fetch_array($ires);
 					
 					if($row->groesse) {
-						$groesse = ' Größe '.$row->groesse.' ';
+						$groesse = ' Grï¿½ï¿½e '.$row->groesse.' ';
 					} else { $groesse = ''; }
 										
 					$msg .= $row->anzahl.'x '.$iarray['name'].$groesse."\n";					
@@ -87,16 +87,16 @@ class HtmlPage_kasse extends HtmlPage {
 			}
 
 			if($nomsg != $msg) {
-				$msg .= "\nGruß\nJan Boysen\nKassenwart Lug Flensburg";
+				$msg .= "\nGruï¿½\nJan Boysen\nKassenwart Lug Flensburg";
 				$send_mail = my_mailer('kasse@lugfl.de',$email,'Geldeingang LugCamp 2017',$msg);
 			}
 		} else {
 			if($nickname) {
 				$SQL = "SELECT * FROM account WHERE username = '$nickname'";
 				$search_query = my_query($SQL);
-				if(mysql_num_rows($search_query) >0) {
+				if(mysqli_num_rows($search_query) >0) {
 					$ret = '<p>Gefundene Nicknames:</p>';
-					while($row = mysql_fetch_assoc($search_query)) {
+					while($row = mysqli_fetch_assoc($search_query)) {
 						$ret .= '<a href="?p=account&accountid='.$row["accountid"].'">'.$row["username"].'</a>';
 					}
 				}
@@ -109,20 +109,20 @@ class HtmlPage_kasse extends HtmlPage {
 				$eSQL = "SELECT eventid,charge FROM event_event";
 				$equery = my_query($eSQL);
 				$earray = array();
-				while($row = mysql_fetch_assoc($equery)) {
+				while($row = mysqli_fetch_assoc($equery)) {
 					$earray[$row['eventid']] = $row['charge'];
 				}
 				
 				$aSQL = "SELECT artikelid,preis FROM event_artikel";
 				$aquery = my_query($aSQL);
 				$aarray = array();
-				while($row = mysql_fetch_assoc($aquery)) {
+				while($row = mysqli_fetch_assoc($aquery)) {
 					$aarray[$row['artikelid']] = $row['preis'];
 				}
 				
 				$SQL = "SELECT * FROM event_anmeldung_event";
 				$query = my_query($SQL);
-				while($row = mysql_fetch_object($query)) {
+				while($row = mysqli_fetch_object($query)) {
 					if($row->eventid == 1) {
 						$teilnehmer++;
 					}
@@ -135,7 +135,7 @@ class HtmlPage_kasse extends HtmlPage {
 				
 				$SQL = "SELECT * FROM event_account_artikel";
 				$query = my_query($SQL);
-				while($row = mysql_fetch_object($query)) {
+				while($row = mysqli_fetch_object($query)) {
 					$topay = $topay+$aarray[$row->artikelid]*$row->anzahl;
 					if($row->bezahlt != NULL)  {
 						$payed = $payed+$aarray[$row->artikelid]*$row->anzahl;

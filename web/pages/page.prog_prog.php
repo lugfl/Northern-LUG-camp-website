@@ -10,7 +10,7 @@ class HtmlPage_prog_prog extends HtmlPage {
 
 	var $ceventid = 0;
 
-	function HtmlPage_prog_prog() {
+	function __construct() {
 		global $CURRENT_EVENT_ID;
 		if(isset($CURRENT_EVENT_ID) && is_numeric($CURRENT_EVENT_ID))
 			$this->ceventid = $CURRENT_EVENT_ID;		
@@ -27,7 +27,7 @@ class HtmlPage_prog_prog extends HtmlPage {
 		$SQL .= " AND eventid=".$this->ceventid;
 		$SQL .= " ORDER BY start";
 		$res = my_query($SQL);
-		if(mysql_num_rows($res)>0) {
+		if(mysqli_num_rows($res)>0) {
 			$ret .= '
 				<table class="datatable1">
 				<colgroup>
@@ -38,7 +38,7 @@ class HtmlPage_prog_prog extends HtmlPage {
 				</colgroup>
 			';
 			$letztertag = "";
-			while($row = mysql_fetch_assoc($res)) {
+			while($row = mysqli_fetch_assoc($res)) {
 				$tag = date("d.m.y",$row['start']);
 				$endetag = date("d.m.y",$row['ende']);
 				if($tag!=$letztertag) {

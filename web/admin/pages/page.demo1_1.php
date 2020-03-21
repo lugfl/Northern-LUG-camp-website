@@ -12,7 +12,7 @@ class HtmlPage_demo1_1 extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_demo1_1() {
+	function __construct() {
 	}
 	
 	function getContent() {

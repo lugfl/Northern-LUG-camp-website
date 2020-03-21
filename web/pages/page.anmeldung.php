@@ -59,7 +59,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			$this->err['nickname'] = '<p class="error">Dieser Nickname enth&auml;lt ung&uuml;ltige Zeichen, ist zu kurz oder zu lang! (3-30 Zeichen)</p>';
 		}
 		$nickname_query	= my_query("SELECT accountid FROM account WHERE username='".my_escape_string($this->in['nickname'])."';");
-		if(mysql_num_rows($nickname_query) != 0) {
+		if(mysqli_num_rows($nickname_query) != 0) {
 			$this->err['nickname'] = '<p class="error">Dieser Nickname ist bereits vergeben!</p>';
 		}
 		
@@ -247,7 +247,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 					<select id="anmeldung_form_landid" name="anmeldung_form_landid">
 					<option value="0"></option>';
 		$land_query = my_query("SELECT * FROM event_land");
-		while($land_row = mysql_fetch_object($land_query))
+		while($land_row = mysqli_fetch_object($land_query))
 		{
 			if($this->in['landid'] == $land_row->landid) {
 				$ret .= '<option value="'.$land_row->landid.'" selected="selected">'.$land_row->name.'</option>';
@@ -282,7 +282,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 					<select id="anmeldung_form_lug" name="anmeldung_form_lug">
 					<option value="0"></option>';
 		$lugs_query = my_query("SELECT * FROM event_lug ORDER BY name");
-		while($lugs_row = mysql_fetch_object($lugs_query))
+		while($lugs_row = mysqli_fetch_object($lugs_query))
 		{
 			if($this->in['lugid'] == $lugs_row->lugid) {
 				$ret .= '<option value="'.$lugs_row->lugid.'" selected="selected">'.$lugs_row->name.'</option>';
@@ -312,7 +312,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 
 		$events_query = my_query("SELECT * FROM event_event WHERE hidden=0 AND (eventid='".$ceventid."' OR parent='".$ceventid."') ORDER BY parent,name");
 		$ret .= '<input type="hidden" name="anmeldung_form_events[]" value="'.$ceventid.'" />';
-		while($events_row = mysql_fetch_object($events_query)) {
+		while($events_row = mysqli_fetch_object($events_query)) {
 			$quota_ret		= '';
 			$ret .= '<dd><input id="anmeldung_form_events[]" name="anmeldung_form_events[]" type="checkbox" value="'.$events_row->eventid.'"';
 			# Hauptevent ?
@@ -327,7 +327,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 			if($events_row->quota) {
 				$event_quota_SQL	= "SELECT * FROM event_anmeldung_event WHERE eventid='".$events_row->eventid."'";
 				$event_quota_query	= my_query($event_quota_SQL);
-				$event_member		= mysql_num_rows($event_quota_query);
+				$event_member		= mysqli_num_rows($event_quota_query);
 				# noch Plätze frei ?
 				if(($events_row->quota-$event_member) > 0) {
 					$quota_ret = 'noch '.($events_row->quota-$event_member).' Pl&auml;tze frei';
@@ -436,14 +436,14 @@ class HtmlPage_anmeldung extends HtmlPage {
 		if($this->in['lugnew'] != '') {
 			$lug_exists_SQL = "SELECT lugid FROM event_lug WHERE name='".my_escape_string($this->in['lugnew'])."'";
 			$lug_exists_query = my_query($lug_exists_SQL);
-			if(mysql_num_rows($lug_exists_query) == 0)
+			if(mysqli_num_rows($lug_exists_query) == 0)
 			{
 				# neue Lug in DB einfuegen und id zurückbekommen
 				$lugnew_SQL	= "INSERT INTO event_lug (name,crdate) VALUES ('".my_escape_string($this->in['lugnew'])."',NOW());";
 				$lugnew_query	= my_query($lugnew_SQL);
 				$this->in['lugid']	= my_insert_id();
 			}else{
-				$lugid_array	= mysql_fetch_array($lug_exists_query);
+				$lugid_array	= mysqli_fetch_array($lug_exists_query);
 				$this->in['lugid']	= $lugid_array['lugid'];
 			}
 		}
@@ -451,14 +451,14 @@ class HtmlPage_anmeldung extends HtmlPage {
 		if($this->in['landnew'] != '') {
 			$land_exists_SQL = "SELECT landid FROM event_land WHERE name='".my_escape_string($this->in['landnew'])."'";
 			$land_exists_query = my_query($land_exists_SQL);
-			if(mysql_num_rows($land_exists_query) == 0)
+			if(mysqli_num_rows($land_exists_query) == 0)
 			{
 				# neues Land in DB einfuegen und id zurückbekommen
 				$landnew_SQL	= "INSERT INTO event_land (name,crdate) VALUES ('".my_escape_string($this->in['landnew'])."',NOW());";
 				$landnew_query	= my_query($landnew_SQL);
 				$this->in['landid']	= my_insert_id();
 			}else{
-				$landid_array	= mysql_fetch_array($land_exists_query);
+				$landid_array	= mysqli_fetch_array($land_exists_query);
 				$this->in['landid']	= $landid_array['landid'];
 			}
 		}
@@ -507,12 +507,12 @@ class HtmlPage_anmeldung extends HtmlPage {
 				$event_anmeldung_query = my_query($event_anmeldung_sql);
 				$event_event_sql = "SELECT charge FROM event_event WHERE eventid='".$eventid."'";
 				$event_event_query = my_query($event_event_sql);
-				$event_event_array = mysql_fetch_array($event_event_query);
+				$event_event_array = mysqli_fetch_array($event_event_query);
 				$kosten += $event_event_array['charge'];
 			}
 		}
 
-		if(mysql_errno() == 0) {
+		if(mysqli_errno() == 0) {
 			$code = md5($this->in['nickname']);
 			if($account_id < 10) { $code .= '0'; }
 			if($account_id < 100) { $code .= '0'; }
@@ -557,7 +557,7 @@ class HtmlPage_anmeldung extends HtmlPage {
 		$id = intval(substr($crypt,-3));
 		$code = substr($crypt,0,-3);
 		$account_query = my_query("SELECT username,active,acl FROM account WHERE accountid='".$id."'");
-		$account_array = mysql_fetch_array($account_query);
+		$account_array = mysqli_fetch_array($account_query);
 		$code_real = md5($account_array[0]);
 		# Passt der Code zur ID / richtiger Code ?
 		if($code == $code_real)

@@ -14,7 +14,7 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 	var $barcodeupdates = 0;
-	function HtmlPage_anmeldungsliste_csv() {
+	function __construct() {
 	}
 	
 	function paystatus($anmeldungid,$accountid,$events_array,$artikel_array) {
@@ -27,7 +27,7 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 			);
 		$e_SQL = "SELECT eventid,bezahlt FROM event_anmeldung_event WHERE anmeldungid = '".$anmeldungid."'";
 		$e_res = my_query($e_SQL);
-		while($e_row = mysql_fetch_assoc($e_res)) {
+		while($e_row = mysqli_fetch_assoc($e_res)) {
 			$topay = $payed = 0;
 			if($e_row['eventid'] == 1) {
 				$array['brauerei'] = "NICHT bezahlt";
@@ -61,7 +61,7 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 						
 		$a_SQL = "SELECT artikelid,anzahl,bezahlt,groesse,crdate FROM event_account_artikel WHERE accountid = '".$accountid."'";
 		$a_res = my_query($a_SQL);
-		while($a_row = mysql_fetch_assoc($a_res)) {
+		while($a_row = mysqli_fetch_assoc($a_res)) {
 			$array['shirts'] .= $a_row['anzahl']."x ".$artikel_array[$a_row['artikelid']]['name']." ".$a_row['groesse'];
 			$array['artikel'][$a_row['artikelid']] = $a_row['bezahlt'];
 			$topay += $a_row['anzahl']*$artikel_array[$a_row['artikelid']]['charge'];
@@ -96,14 +96,14 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
+			if(mysqli_num_rows($res) >0) {
 				$csv = '"Nr";"Vorname";"Name";"Nickname";"LUG";"Beitrag";"T-Shirts";"Brauerei";"Schwimmabzeichen"'."\n";
 				$ctr = 1;
 
 				$events_SQL = "SELECT eventid,name,charge FROM event_event";
 				$events_res = my_query($events_SQL);
 				$events_array = array();
-				while($events_row = mysql_fetch_assoc($events_res)) {
+				while($events_row = mysqli_fetch_assoc($events_res)) {
 					$events_array[$events_row['eventid']]['charge'] = $events_row['charge'];
 					$events_array[$events_row['eventid']]['name'] = $events_row['name'];
 				}
@@ -111,12 +111,12 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 				$artikel_SQL = "SELECT artikelid,name,preis FROM event_artikel";
 				$artikel_res = my_query($artikel_SQL);
 				$artikel_array = array();
-				while($artikel_row = mysql_fetch_assoc($artikel_res)) {
+				while($artikel_row = mysqli_fetch_assoc($artikel_res)) {
 					$artikel_array[$artikel_row['artikelid']]['charge'] = $artikel_row['preis'];
 					$artikel_array[$artikel_row['artikelid']]['name'] = $artikel_row['name'];
 				}
 			
-				while($row = mysql_fetch_assoc($res)) {
+				while($row = mysqli_fetch_assoc($res)) {
 					$pay_array = $this->paystatus($row['anmeldungid'],$row['accountid'],$events_array,$artikel_array);
 					$paystatus = $pay_array['camp'];
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
@@ -126,7 +126,7 @@ class HtmlPage_anmeldungsliste_csv extends HtmlPage {
 					$ctr++;
 				}
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		$handle = fopen("tmp/anmeldungen.csv","w");
 		fwrite($handle, $csv);

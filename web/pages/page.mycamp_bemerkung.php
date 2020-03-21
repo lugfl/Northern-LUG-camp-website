@@ -30,7 +30,7 @@ class HtmlPage_bemerkung extends HtmlPage {
 		
 		$SQL = "SELECT bemerkung FROM event_anmeldung WHERE accountid = '".$accountid."'";
 		$res = my_query($SQL);
-		$row = mysql_fetch_assoc($res);
+		$row = mysqli_fetch_assoc($res);
 		
 		$ret = '
 		<p>Hier kannst Du die Bemerkung, die du uns bei der Anmeldung mitgeteilt hast &auml;ndern. Die &Auml;nderung wird sofort wirksam.</p>

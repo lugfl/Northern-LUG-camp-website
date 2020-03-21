@@ -14,7 +14,7 @@ class HtmlPage_shirts_csv extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 	var $barcodeupdates = 0;
-	function HtmlPage_shirts_csv() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -27,17 +27,17 @@ class HtmlPage_shirts_csv extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
-				$csv = '"LfdNr";"Name";"Farbe";"Größe";"Anzahl";"Bestelldatum";"bezahlt";"ausgegeben";"eventid"'."\n";
+			if(mysqli_num_rows($res) >0) {
+				$csv = '"LfdNr";"Name";"Farbe";"Grï¿½ï¿½e";"Anzahl";"Bestelldatum";"bezahlt";"ausgegeben";"eventid"'."\n";
 				$ctr = 1;
 			
-				while($row = mysql_fetch_assoc($res)) {
+				while($row = mysqli_fetch_assoc($res)) {
 					$csv .= $ctr.';"'.$row['username'].'";"'.$row['artikelname'].'";"'.$row['groesse'].'";"'.$row['anzahl'].'";"'.$row['crdate'].'";"'.($row['bezahlt'] ? "     X" : "").'";"";'.$row['eventid'];
 					$csv .= "\n";
 					$ctr++;
 				}
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		$handle = fopen("tmp/shirts.csv","w");
 		fwrite($handle, $csv);

@@ -14,7 +14,7 @@ class HtmlPage_kommentare extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_kommentare() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -26,7 +26,7 @@ class HtmlPage_kommentare extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
+			if(mysqli_num_rows($res) >0) {
 				$ret .= '
 				<table>
 					<tr>
@@ -42,7 +42,7 @@ class HtmlPage_kommentare extends HtmlPage {
 				';
 				$ctr = 1;
 
-				while($row = mysql_fetch_assoc($res)) {
+				while($row = mysqli_fetch_assoc($res)) {
 					$crdate = date("d.m.Y G:i:s",$row['crdate']);
 					$act = ($row['active'] ? 'aktiv': '- <a href="?p=remail&a='.$row['accountid'].'">Aktivierungsmail senden</a>');
 					$ret .= '
@@ -63,7 +63,7 @@ class HtmlPage_kommentare extends HtmlPage {
 				</table>
 				';
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		
 		return $ret;

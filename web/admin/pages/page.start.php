@@ -12,7 +12,7 @@ class HtmlPage_start extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_start() {
+	function __construct() {
 	}
 	
 	function getContent() {

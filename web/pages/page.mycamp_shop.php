@@ -75,7 +75,7 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 		$res1 = my_query($SQL1);
 
 		if($res1) {
-			if(mysql_num_rows($res1)>0) {
+			if(mysqli_num_rows($res1)>0) {
 				$ret .= '
 				<form action="?" method="post">
 				<div>
@@ -91,7 +91,7 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 						<th>Anzahl</th>
 					</tr>
 				';
-				while($row1 = mysql_fetch_assoc($res1)) {
+				while($row1 = mysqli_fetch_assoc($res1)) {
 
 					$anzahl = '';
 					$selgr = '';
@@ -121,7 +121,7 @@ class HtmlPage_mycamp_shop extends HtmlPage {
 					';
 
 					$gr = $row1['groessen'] ? $row1['groessen'] : '';
-					$arr_gr = split(',',$gr);
+					$arr_gr = preg_split(',',$gr);
 					foreach( $arr_gr as $g) {
 						$sel = '';
 						if($selgr==$g)

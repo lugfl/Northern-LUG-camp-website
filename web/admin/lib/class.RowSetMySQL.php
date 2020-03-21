@@ -5,13 +5,13 @@ class RowSetMySQL {
 	var $colmeta;
 	var $numcols;
 
-	function RowSetMySQL($res) {
+	function __construct($res) {
 		$this->colmeta = Array();
 		$this->result = $res;
-		$this->numcols = mysql_num_fields($this->result);
+		$this->numcols = mysqli_num_fields($this->result);
 		$i = 0;
 		while($i < $this->numcols) {
-			$meta = mysql_fetch_field($this->result,$i);
+			$meta = mysqli_fetch_field($this->result,$i);
 			$debug_str = "<pre>
 			blob:         $meta->blob
 			max_length:   $meta->max_length
@@ -49,7 +49,7 @@ class RowSetMySQL {
 		array_push($rows,$str2);
 		
 		// Inhalt auflisten
-		while($row = mysql_fetch_array($this->result)) {
+		while($row = mysqli_fetch_array($this->result)) {
 			$tmprow = Array();
 			for($i=0; $i < $this->numcols;$i++) {
 				$inhalt = '';

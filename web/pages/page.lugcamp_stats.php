@@ -12,7 +12,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 
 	var $ceventid = 0;
 	
-	function HtmlPage_lugcamp_stats() {
+	function __construct() {
 		global $CURRENT_EVENT_ID;
 
 		// Feststellen fuer welches Event wir grade anmelden
@@ -36,7 +36,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 		$SQL .= " GROUP BY l.lugid ";
 		$SQL .= " ORDER BY l.name ";
 		$res1 = my_query($SQL);
-		if($res1 && mysql_num_rows($res1)>0) {
+		if($res1 && mysqli_num_rows($res1)>0) {
 			$ret .= '<table class="datatable1">
 				<caption><h3>Von welchen LUGs kommen die Teilnehmer</h3></caption>
 				<thead>
@@ -46,7 +46,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 				</thead>
 			';
 			$ges = 0;
-			while($row1 = mysql_fetch_assoc($res1)) {
+			while($row1 = mysqli_fetch_assoc($res1)) {
 				$ctr = '';
 
 				$ret .= '<tr>';
@@ -65,7 +65,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 				Somit haben wir insgesamt <span class="bold">'.$ges.'</span> Anmeldungen zum Camp.
 			</p>
 			';
-			mysql_free_result($res1);
+			mysqli_free_result($res1);
 		}
 
 		return $ret;
@@ -81,7 +81,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 		$SQL .= " GROUP BY e.eventid ";
 		$SQL .= " ORDER BY e.name ";
 		$res1 = my_query($SQL);
-		if($res1 && mysql_num_rows($res1)>0) {
+		if($res1 && mysqli_num_rows($res1)>0) {
 			$ret .= '<table class="datatable1">
 			<caption><h3>Wie viele Anmeldungen haben wir zu den einzelnen Veranstaltungen?</h3></caption>
 				<thead>
@@ -90,7 +90,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 				</thead>
 			';
 			$ges = 0;
-			while($row1 = mysql_fetch_assoc($res1)) {
+			while($row1 = mysqli_fetch_assoc($res1)) {
 				$ctr = '';
 
 				$ret .= '<tr>';
@@ -101,7 +101,7 @@ class HtmlPage_lugcamp_stats extends HtmlPage {
 			}
 			$ret .= '</table>
 			';
-			mysql_free_result($res1);
+			mysqli_free_result($res1);
 		}
 		return $ret;
 	}

@@ -40,12 +40,12 @@ class HtmlPage_rechnung extends HtmlPage {
 
 					$res = my_query($SQL);
 					$sch = Array();
-					while($row = mysql_fetch_assoc($res)) {
+					while($row = mysqli_fetch_assoc($res)) {
 						array_push($sch,$row['eventid']);
 					}
-					mysql_free_result($res);
+					mysqli_free_result($res);
 					if(count($sch)>0) {
-						$SQL = "DELETE FROM event_anmeldung_event WHERE anmeldungid=".$anmeldungid." AND eventid IN (".join($sch,",").")";
+						$SQL = "DELETE FROM event_anmeldung_event WHERE anmeldungid=".$anmeldungid." AND eventid IN (".join(",", $sch).")";
 
 						my_query($SQL);
 					}
@@ -75,7 +75,7 @@ class HtmlPage_rechnung extends HtmlPage {
 			$SQL1 .= " WHERE a.accountid=".$_SESSION['_accountid']." AND ae.eventid=".$ceventid;
 			$res1 = my_query($SQL1);
 			if($res1) {
-				while($row1 = mysql_fetch_assoc($res1) ) { // alle Personen durchgehen
+				while($row1 = mysqli_fetch_assoc($res1) ) { // alle Personen durchgehen
 					$anmeldungid = $row1['anmeldungid'];
 	
 					$ret .= '<h2>'.$row1['vorname']." " . $row1['nachname'].'</h2>';
@@ -90,7 +90,7 @@ class HtmlPage_rechnung extends HtmlPage {
 					$SQL2 .= " ORDER BY e.sort";
 					$res2 = my_query($SQL2);
 					if($res2) {
-						if(mysql_num_rows($res2)>0) {
+						if(mysqli_num_rows($res2)>0) {
 							$ret .= '<table class="datatable1">
 							<caption><h3>Anmeldungen</h3></caption>
 							<thead>
@@ -104,7 +104,7 @@ class HtmlPage_rechnung extends HtmlPage {
 							<tbody>
 							';
 							$barzahlhinweis=0;
-							while($row2 = mysql_fetch_assoc($res2)) {
+							while($row2 = mysqli_fetch_assoc($res2)) {
 								$bezahlstatus = "-";
 								if(isset($row2['bezahlt']) && $row2['bezahlt'] != 0) {
 									$bezahlstatus = "ja";
@@ -145,11 +145,11 @@ class HtmlPage_rechnung extends HtmlPage {
 								';
 							}
 						} // if num_rows
-						mysql_free_result($res2);
+						mysqli_free_result($res2);
 					} // if res2
 
 				} // while personen
-				mysql_free_result($res1);
+				mysqli_free_result($res1);
 			} // if res1
 			$ret .= '<br/>';
 
@@ -162,7 +162,7 @@ class HtmlPage_rechnung extends HtmlPage {
 			$SQL2 .= " WHERE aa.accountid=".$_SESSION['_accountid'];
 			$res2 = my_query($SQL2);
 			if($res2) {
-				if(mysql_num_rows($res2)>0) {
+				if(mysqli_num_rows($res2)>0) {
 					$ret .= '
 						<table class="datatable1">
 						<caption><h3>Bestellungen</h3></caption>
@@ -179,7 +179,7 @@ class HtmlPage_rechnung extends HtmlPage {
 							</thead>
 							<tbody>
 					';
-					while($row2 = mysql_fetch_assoc($res2)) {
+					while($row2 = mysqli_fetch_assoc($res2)) {
 						$bezahlstatus='-';
 						if(isset($row2['bezahlt']) && $row2['bezahlt'] != 0) {
 							$bezahlstatus = "ja";
@@ -214,7 +214,7 @@ class HtmlPage_rechnung extends HtmlPage {
 						</table>
 					';
 				} // if num_rows res2
-				mysql_free_result($res2);
+				mysqli_free_result($res2);
 			} // if res2 (Auflistung der Artikel)
 
 			$ret .= '
@@ -226,8 +226,8 @@ class HtmlPage_rechnung extends HtmlPage {
 			$SQL3 = "SELECT username FROM account WHERE accountid=".$_SESSION['_accountid'];
 			$res3 = my_query($SQL3);
 			if($res3) {
-				if(mysql_num_rows($res3)>0) {
-					while($row3 = mysql_fetch_assoc($res3)) {
+				if(mysqli_num_rows($res3)>0) {
+					while($row3 = mysqli_fetch_assoc($res3)) {
 						$nickname = $row3['username'];
 						$ret .= '
 						<h1>Bankverbindung</h1>
@@ -257,7 +257,7 @@ class HtmlPage_rechnung extends HtmlPage {
 						';
 					}
 				}
-				mysql_free_result($res3);
+				mysqli_free_result($res3);
 			}
 		} // if is_numeric accountid
 

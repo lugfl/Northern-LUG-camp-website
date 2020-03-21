@@ -5,14 +5,14 @@ require_once('.htconfig.php');
 function my_connect($db='DFAULT') {
 	global $DB;
 
-	$DB[$db]['conn'] = @mysql_connect($DB[$db]['host'],$DB[$db]['user'],$DB[$db]['pass']);
-	if(mysql_errno() != 0) {
+	$DB[$db]['conn'] = @mysqli_connect($DB[$db]['host'],$DB[$db]['user'],$DB[$db]['pass']);
+	if(mysqli_errno() != 0) {
 		trigger_error("Database Problem",E_USER_ERROR);
 		return false;
 	}
 
-	mysql_select_db($DB[$db]['name'],$DB[$db]['conn']);
-	if(mysql_errno() != 0) {
+	mysqli_select_db($DB[$db]['name'],$DB[$db]['conn']);
+	if(mysqli_errno() != 0) {
 		trigger_error("Database Problem",E_USER_ERROR);
 		return false;
 	}
@@ -36,10 +36,10 @@ function my_query($SQL,$db='DEFAULT') {
 	global $DB;
 	$ret = false;
 	if(is_resource($DB[$db]['conn'])) {
-		$ret = @mysql_query($SQL,$DB[$db]['conn']);
-		if(mysql_errno() != 0) {
+		$ret = @mysqli_query($SQL,$DB[$db]['conn']);
+		if(mysqli_errno() != 0) {
 			if(defined('DEBUG')) {
-				trigger_error('Database Problem: '.mysql_error(),E_USER_ERROR);
+				trigger_error('Database Problem: '.mysqli_error(),E_USER_ERROR);
 			}else{
 				trigger_error('Database Problem',E_USER_ERROR);
 			}
@@ -56,7 +56,7 @@ function my_escape_string($str,$db='DEFAULT') {
 		$ret = stripslashes($str);
 	//else
 		//$ret = $str;
-	return mysql_real_escape_string($ret,$DB[$db]['conn']);
+	return mysqli_real_escape_string($ret,$DB[$db]['conn']);
 }
 
 function my_affected_rows($db='DEFAULT') {
@@ -65,10 +65,10 @@ function my_affected_rows($db='DEFAULT') {
 
 	$ret = false;
 	if(is_resource($DB[$db]['conn'])) {
-		$ret = @mysql_affected_rows($DB[$db]['conn']);
-		if(mysql_errno() != 0) {
+		$ret = @mysqli_affected_rows($DB[$db]['conn']);
+		if(mysqli_errno() != 0) {
 			if( isset($DEBUG) && $DEBUG==1 ) {
-				trigger_error('Database Error: '.mysql_error().' ('.$SQL.')',E_USER_ERROR);
+				trigger_error('Database Error: '.mysqli_error().' ('.$SQL.')',E_USER_ERROR);
 			}else{
 				trigger_error('Database Problem',E_USER_ERROR);
 			}

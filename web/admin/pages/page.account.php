@@ -21,19 +21,19 @@ class HtmlPage_account extends HtmlPage {
 	var $a = ''; // Action
 	private $messages;
 
-	function HtmlPage_account() {
+	function __construct() {
 	}
 
 	function updateAdminBemerkung($anmeldungid,$bemerkung) {
 		$SQL = "UPDATE event_anmeldung SET admin_bemerkung = '".$bemerkung."' WHERE anmeldungid = '".$anmeldungid."'";
 		$res = my_query($SQL);
-		return '<p>Admin-Bemerkung geändert !</p>';
+		return '<p>Admin-Bemerkung geï¿½ndert !</p>';
 	}
 	
 	function editAccount($accountid,$email) {
 		$SQL = "UPDATE account SET email = '".$email."' WHERE accountid = '".$accountid."'";
 		$res = my_query($SQL);
-		return '<p>Email-Adresse geändert !</p>';
+		return '<p>Email-Adresse geï¿½ndert !</p>';
 	}
 
 	function _readInput() {
@@ -105,7 +105,7 @@ class HtmlPage_account extends HtmlPage {
 			$llogin_SQL = "SELECT * FROM logins WHERE accountid='".$daten['accountid']."' ORDER BY logintime DESC";
 			$llogin_res = my_query($llogin_SQL);
 			if (my_affected_rows() != 0) {
-				$llogin_row = mysql_fetch_assoc($llogin_res);
+				$llogin_row = mysqli_fetch_assoc($llogin_res);
 				$logintime = $llogin_row['logintime'];
 			}
 			
@@ -116,7 +116,7 @@ class HtmlPage_account extends HtmlPage {
 				</tr>
 				<tr>
 					<th></th>
-					<td><input type="submit" value="Änderungen übernehmen" /></td>
+					<td><input type="submit" value="ï¿½nderungen ï¿½bernehmen" /></td>
 				</tr>
 				</form>
 				<tr>
@@ -182,7 +182,7 @@ class HtmlPage_account extends HtmlPage {
 					if($zuzahlen == 0) { $ret .= '<p class="bezahlt">Alles bezahlt !</p>';}
 					else { $ret .= '<p class="zuzahlen">Insgesamt zu zahlender Betrag: '.$zuzahlen.' &euro;</p>';}
 					$ret .= '
-						<p><dd><input type="submit" value=" Zahlungen übernehmen " /></dd></p>
+						<p><dd><input type="submit" value=" Zahlungen ï¿½bernehmen " /></dd></p>
 					</form>
 					<p>
 						<form method="post" action="?p=account&action=abemerkung">
@@ -246,11 +246,11 @@ class HtmlPage_account extends HtmlPage {
 			$SQL1 .= " FROM account a LEFT JOIN event_lug l ON a.lugid=l.lugid WHERE a.accountid=".$accountid;
 			$res1 = my_query($SQL1);
 			if($res1) {
-				$row1 = mysql_fetch_assoc($res1);
+				$row1 = mysqli_fetch_assoc($res1);
 				if($row1) {
 					$ret = $row1;
 				}
-				mysql_free_result($res1);
+				mysqli_free_result($res1);
 			}
 
 			$SQL2 = "SELECT a.anmeldungid,a.vorname,a.nachname,a.strasse,a.hausnr,a.plz,a.ort,a.land,a.email,a.vegetarier,a.arrival,a.ankunft,a.abfahrt,a.bemerkung,a.admin_bemerkung, ";
@@ -260,7 +260,7 @@ class HtmlPage_account extends HtmlPage {
 			$SQL2 .= " WHERE accountid=".$accountid;
 			$res2 = my_query($SQL2);
 			if($res2) {
-				while($row2 = mysql_fetch_assoc($res2)) {
+				while($row2 = mysqli_fetch_assoc($res2)) {
 					$ret['anmeldung'][$row2['anmeldungid']] = $row2;
 
 					// Events fuer diese Anmeldung
@@ -269,13 +269,13 @@ class HtmlPage_account extends HtmlPage {
 					$SQL3 .= " WHERE ae.anmeldungid=".$row2['anmeldungid'];
 					$res3 = my_query($SQL3);
 					if($res3) {
-						while($row3 = mysql_fetch_assoc($res3)) {
+						while($row3 = mysqli_fetch_assoc($res3)) {
 							$ret['anmeldung'][$row2['anmeldungid']]['events'][$row3['eventid']] = $row3;
 						}
-						mysql_free_result($res3);
+						mysqli_free_result($res3);
 					} // if res3
 				} // while fetch_assoc Anmeldungen
-				mysql_free_result($res2);
+				mysqli_free_result($res2);
 
 				$SQL4 = "SELECT aa.accountartikelid,a.name,a.preis,a.pic,aa.anzahl,aa.groesse,aa.bezahlt,(aa.anzahl*a.preis) AS gesamtpreis ";
 				$SQL4 .= " FROM event_account_artikel aa ";
@@ -283,11 +283,11 @@ class HtmlPage_account extends HtmlPage {
 				$SQL4 .= " WHERE aa.accountid=".$accountid;
 				$res4 = my_query($SQL4);
 				if($res4) {
-					while($row4 = mysql_fetch_assoc($res4)) {
+					while($row4 = mysqli_fetch_assoc($res4)) {
 						
 						$ret['artikel'][$row4['accountartikelid']] = $row4;
 					}
-					mysql_free_result($res4);
+					mysqli_free_result($res4);
 				}
 			}
 		} // if is_numeric accountid

@@ -83,7 +83,7 @@ while (!feof($fp))
 		$buffer_temp = fgets($fp, 1024);
 		
 		// Remove newlines from new buffer
-		$buffer_temp = ereg_replace("[\r\n]", '', $buffer_temp);
+		$buffer_temp = preg_replace("[\r\n]", '', $buffer_temp);
 		
 		// Check to see if this is a multi-line part,
 		// (they begin with a space)
@@ -93,7 +93,7 @@ while (!feof($fp))
 			// new buffer line doesn't begin with " ".
 			$buffer = $buffer.substr($buffer_temp, 1);
 			$buffer_temp = fgets($fp, 1024);	
-			$buffer_temp = ereg_replace("[\r\n]", '', $buffer_temp);
+			$buffer_temp = preg_replace("[\r\n]", '', $buffer_temp);
 			}
 		
 	
@@ -127,7 +127,7 @@ while (!feof($fp))
 			default:
 			$line = '';
 			//Break up the line. We want indices 1 and 2. Not 0.
-			ereg ("([^:]+):(.*)", $buffer, $line);
+			preg_match ("([^:]+):(.*)", $buffer, $line);
 			
 			// Need to both trim the field down and keep a copy for later processing.
 			$field = $line[1];
@@ -200,10 +200,10 @@ while (!feof($fp))
 				$date = '';
 				$data = str_replace('T', '', $data);
 				
-				if (ereg('DTSTART;VALUE=DATE', $field)) 
+				if (preg_match('DTSTART;VALUE=DATE', $field)) 
 					{
 					// ALL-DAY EVENT
-					ereg('([0-9]{4})([0-9]{2})([0-9]{2})', $data, $date);
+					preg_match('([0-9]{4})([0-9]{2})([0-9]{2})', $data, $date);
 					
 					// UNIX timestamps can't deal with pre 1970 dates
 					if ($date[1] <= 1970) 
@@ -219,7 +219,7 @@ while (!feof($fp))
 				else 
 					{
 					// TIME LIMITED EVENT
-					ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
+					preg_match('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
 					
 					// UNIX timestamps can't deal with pre 1970 dates
 					if ($date[1] <= 1970) 
@@ -246,7 +246,7 @@ while (!feof($fp))
 				$data = str_replace('T', '', $data);
 				
 				// TIME LIMITED EVENT
-				ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
+				preg_match('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
 					
 				// UNIX timestamps can't deal with pre 1970 dates
 				if ($date[1] <= 1970) 
@@ -272,7 +272,7 @@ while (!feof($fp))
 				$data = str_replace('Z', '', $data);
 				
 				// TIME LIMITED EVENT
-				ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
+				preg_match('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
 					
 				// UNIX timestamps can't deal with pre 1970 dates
 				if ($date[1] <= 1970) 
@@ -469,7 +469,7 @@ while (!feof($fp))
 						$data = str_replace('Z', '', $data);
 						
 						// TIME LIMITED EVENT
-						ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
+						preg_match('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $data, $date);
 							
 						// UNIX timestamps can't deal with pre 1970 dates
 						if ($date[1] <= 1970) 

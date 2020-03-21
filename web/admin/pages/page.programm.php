@@ -18,7 +18,7 @@ class HtmlPage_programm extends HtmlPage {
 	var $action = "";
 	var $ceventid = 0;
 
-	function HtmlPage_programm() {
+	function __construct() {
 		global $CURRENT_EVENT_ID;
 		if(isset($CURRENT_EVENT_ID) && is_numeric($CURRENT_EVENT_ID))
 			$this->ceventid = $CURRENT_EVENT_ID;		
@@ -49,11 +49,11 @@ class HtmlPage_programm extends HtmlPage {
 		$SQL = "SELECT titel,start,ende,kategorie,beschreibung ";
 		$SQL .= "FROM event_programm WHERE eventid=".$this->ceventid." ORDER BY start";
 		$res = my_query($SQL);
-		if(mysql_num_rows($res)>0) {
+		if(mysqli_num_rows($res)>0) {
 			$ret .= '
 				<table>
 			';
-			while($row = mysql_fetch_assoc($res)) {
+			while($row = mysqli_fetch_assoc($res)) {
 				$ret .= '
 					<tr>
 						<td>'.$row['start'].'</td>
@@ -70,7 +70,7 @@ class HtmlPage_programm extends HtmlPage {
 				</table>
 			';
 		}
-		mysql_free_result($res);
+		mysqli_free_result($res);
 		return $ret;
 	}
 

@@ -31,8 +31,8 @@ class HtmlPage_passwd extends HtmlPage {
 			$SQL1 = "SELECT accountid FROM account WHERE username='".my_escape_string($username)."' AND passwd=MD5('".$this->data['alt']."')";
 			$res1 = my_query($SQL1);
 			if($res1) {
-				$row1 = mysql_fetch_assoc($res1);
-				mysql_free_result($res1);
+				$row1 = mysqli_fetch_assoc($res1);
+				mysqli_free_result($res1);
 				if($row1 && $row1['accountid'] = $accountid) {
 					if(strlen($this->data['neu1'])<6)
 						$this->errors['tooshort'] = 'Das neue Passwort ist zu kurz. Bitte w&auml;hle ein Passwort mit mindestens 6 Zeichen.';
@@ -43,9 +43,9 @@ class HtmlPage_passwd extends HtmlPage {
 		} elseif($this->data['alt'] == '' && $this->data['neu1'] == '') {
 			$SQL2 = "SELECT email FROM account WHERE accountid='".my_escape_string($accountid)."'";
 			$res2 = my_query($SQL2);
-			$email_array = mysql_fetch_Array($res2);
+			$email_array = mysqli_fetch_Array($res2);
 			if($email_array['email'] == $this->data['email']) {
-				$this->errors['notchanged'] = 'Die Email-Adresse hat sich nicht ge�ndert.';
+				$this->errors['notchanged'] = 'Die Email-Adresse hat sich nicht ge�ndert.';
 			}
 		} else {
 			$this->errors['password'] = 'Du hast dein altes Passwort nicht eingegeben.';
@@ -56,7 +56,7 @@ class HtmlPage_passwd extends HtmlPage {
 		}
 
 		if(!preg_match('/^[a-z0-9-_.@äöüß]{8,50}$/i',$this->data['email'])) 
-			$this->errors['email'] = 'Die eingegebene Email-Adresse ist ung�ltig.';
+			$this->errors['email'] = 'Die eingegebene Email-Adresse ist ung�ltig.';
 	
 	}
 
@@ -66,8 +66,8 @@ class HtmlPage_passwd extends HtmlPage {
 		$SQL1 = "SELECT email FROM account WHERE accountid = '".my_escape_string($accountid)."'";
 		$res1 = my_query($SQL1);
 		if($res1) {
-			$row1 = mysql_fetch_assoc($res1);
-			mysql_free_result($res1);
+			$row1 = mysqli_fetch_assoc($res1);
+			mysqli_free_result($res1);
 		}
 		$ret = '
 		<p>Hier kannst Du Dein Passwort und deine Email-Adresse &auml;ndern. Die &Auml;nderungen werden sofort wirksam. Falls du dein Passwort &auml;ndern m&ouml;chtest, gib bitte zur Kontrolle dein altes Passwort an.</p>

@@ -14,7 +14,7 @@ class HtmlPage_shirts extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_shirts() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -31,14 +31,14 @@ class HtmlPage_shirts extends HtmlPage {
 			</tr>
 		';
 		
-		while($row = mysql_fetch_object($res))
+		while($row = mysqli_fetch_object($res))
 		{
 			$anzahl = 0;
 			$groesse = '';
 			$eintrag = '';
 			$SQL = "SELECT * FROM event_account_artikel WHERE artikelid = '".$row->artikelid."' ORDER BY groesse";
 			$res2 = my_query($SQL);
-			while($brow = mysql_fetch_object($res2)) {
+			while($brow = mysqli_fetch_object($res2)) {
 				if($groesse != $brow->groesse && $groesse != '') {
 					$ret .= '<tr><td>'.$row->eventid.'</td><td>'.$row->name.'</td><td>'.$groesse.'</td><td>'.$anzahl.'</td></tr>';
 					$anzahl = $brow->anzahl;
@@ -52,7 +52,7 @@ class HtmlPage_shirts extends HtmlPage {
 		$ret .= '
 		</table>
 		';
-		mysql_free_result($res);
+		mysqli_free_result($res);
 		return $ret;
 	}
 }

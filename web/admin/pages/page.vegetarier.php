@@ -14,7 +14,7 @@ class HtmlPage_vegetarier extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_vegetarier() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -27,7 +27,7 @@ class HtmlPage_vegetarier extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
+			if(mysqli_num_rows($res) >0) {
 				$ret .= '
 				<table>
 					<tr>
@@ -46,24 +46,24 @@ class HtmlPage_vegetarier extends HtmlPage {
 				$events_SQL = "SELECT eventid,charge FROM event_event";
 				$events_res = my_query($events_SQL);
 				$events_array = array();
-				while($events_row = mysql_fetch_assoc($events_res)) {
+				while($events_row = mysqli_fetch_assoc($events_res)) {
 					$events_array[$events_row['eventid']] = $events_row['charge'];
 				}
 
 				$artikel_SQL = "SELECT artikelid,preis FROM event_artikel";
 				$artikel_res = my_query($artikel_SQL);
 				$artikel_array = array();
-				while($artikel_row = mysql_fetch_assoc($artikel_res)) {
+				while($artikel_row = mysqli_fetch_assoc($artikel_res)) {
 					$artikel_array[$artikel_row['artikelid']] = $artikel_row['preis'];
 				}
 
-				while($row = mysql_fetch_assoc($res)) {
+				while($row = mysqli_fetch_assoc($res)) {
 					$topay = 0;
 					$payed = 0;
 					
 					$e_SQL = "SELECT eventid,bezahlt FROM event_anmeldung_event WHERE anmeldungid = '".$row['anmeldungid']."'";
 					$e_res = my_query($e_SQL);
-					while($e_row = mysql_fetch_assoc($e_res)) {
+					while($e_row = mysqli_fetch_assoc($e_res)) {
 						$topay += $events_array[$e_row['eventid']];
 						if($e_row['bezahlt'] != 0) {
 							$payed += $events_array[$e_row['eventid']];
@@ -72,7 +72,7 @@ class HtmlPage_vegetarier extends HtmlPage {
 					
 					$a_SQL = "SELECT artikelid,bezahlt FROM event_account_artikel WHERE accountid = '".$row['accountid']."'";
 					$a_res = my_query($a_SQL);
-					while($a_row = mysql_fetch_assoc($a_res)) {
+					while($a_row = mysqli_fetch_assoc($a_res)) {
 						$topay += $artikel_array[$a_row['artikelid']];
 						if($a_row['bezahlt'] != 0) {
 							$payed += $artikel_array[$a_row['artikelid']];
@@ -105,7 +105,7 @@ class HtmlPage_vegetarier extends HtmlPage {
 				</table>
 				';
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		
 		return $ret;

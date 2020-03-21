@@ -35,8 +35,8 @@ if($auth_user != '' && $auth_pass != '') {
 	$SQL = "SELECT accountid,username,acl FROM account WHERE username='".my_escape_string($auth_user)."' AND passwd=MD5('".my_escape_string($auth_pass)."') AND active=1";
 	$res = my_query($SQL);
 	if($res) {
-		if(mysql_num_rows($res)) {
-			$row = mysql_fetch_assoc($res);
+		if(mysqli_num_rows($res)) {
+			$row = mysqli_fetch_assoc($res);
 			if($row) {
 				$_SESSION['_login_ok'] = 1;
 				$_SESSION['_accountid'] = $row['accountid'];
@@ -45,7 +45,7 @@ if($auth_user != '' && $auth_pass != '') {
 				loglogin($row['accountid']);
 			}
 		}
-		mysql_free_result($res);
+		mysqli_free_result($res);
 	}
 }
 $auth_user = '';

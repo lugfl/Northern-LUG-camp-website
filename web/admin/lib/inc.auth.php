@@ -30,8 +30,8 @@ if($auth_user != '' && $auth_pass != '') {
 	$SQL .= my_escape_string($auth_pass)."')";
 	$SQL .= " AND FIND_IN_SET('admin',acl)";
 	$result = my_query($SQL,'DEFAULT');
-	if($result && mysql_num_rows($result)==1) {
-		$row = mysql_fetch_assoc($result);
+	if($result && mysqli_num_rows($result)==1) {
+		$row = mysqli_fetch_assoc($result);
 		$au = new AuthUser();
 		$au->email = $row['email'];
 		$au->username = $row['username'];

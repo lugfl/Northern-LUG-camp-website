@@ -20,7 +20,7 @@ class HtmlPage_news extends HtmlPage {
 	var $details;			// Detaildaten zur News oder Newscat
 	var $formdata;			// Eingabedaten aus dem Formular
 
-	function HtmlPage_news() {
+	function __construct() {
 		$this->tn = '';
 		$this->id = 0;
 		$this->details = Array();
@@ -182,7 +182,7 @@ class HtmlPage_news extends HtmlPage {
 
 		$ret .= htmlpage_link('news','Neue News eintragen',$args);
 		$ret .= $rowset->getHtmlTable();
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		$ret .= htmlpage_link('news','Neue News eintragen',$args);
 		return $ret;
 	}
@@ -259,10 +259,10 @@ class HtmlPage_news extends HtmlPage {
 			WHERE news_eintrag.eintragid=' . $this->id;
 			$result = my_query($SQL);
 			if($result ) {
-				if(mysql_num_rows($result)==1) {
-					$this->details = mysql_fetch_assoc($result);
+				if(mysqli_num_rows($result)==1) {
+					$this->details = mysqli_fetch_assoc($result);
 				}
-				mysql_free_result($result);
+				mysqli_free_result($result);
 			}
 		}
 		

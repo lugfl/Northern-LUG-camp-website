@@ -42,11 +42,11 @@ class HtmlPage_newpw extends HtmlPage {
 			$SQL2 = "SELECT username,email FROM account WHERE username='".$user."'";
 			$query = my_query($SQL2);
 			if ($query) {
-				$array = mysql_fetch_array($query);
+				$array = mysqli_fetch_array($query);
 				if ($array['email'] == $email && $array['username'] == $user) {
 					$newpw = $this->new_password($user,$email);
 					$message = "Hallo ".$user."!\n\nDu hast auf www.lug-camp-2008.de ein neues Passwort angefordert! Dieses lautet wie folgt.\n\n\tPasswort: $newpw\n\ndie Mitglieder der LUG Flensburg";
-					my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($email),'Lugcamp 2008 - Neues Passwort für MyCamp',$message);
+					my_mailer('anmeldung@lug-camp-2008.de',my_escape_string($email),'Lugcamp 2008 - Neues Passwort fï¿½r MyCamp',$message);
 					$ret .= "<p>Dein neues Passwort wurde an die angegebene E-Mailadresse geschickt!</p>";
 				} else {
 					$ret .= $error;

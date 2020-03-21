@@ -7,7 +7,7 @@ class AuthUser {
 	var $username;
 	var $email;
 
-	function AuthUser() {
+	function __construct() {
 		$this->vorname = '';
 		$this->nachname = '';
 		$this->username = '';

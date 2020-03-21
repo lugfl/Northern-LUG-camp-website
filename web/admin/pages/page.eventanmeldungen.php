@@ -14,7 +14,7 @@ class HtmlPage_eventanmeldungen extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_eventanmeldungen() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -28,8 +28,8 @@ class HtmlPage_eventanmeldungen extends HtmlPage {
 		$e_SQL = "SELECT eventid,name FROM event_event";
 		$e_res = my_query($e_SQL);
 		
-		$ret .= 'Nur Anmeldungen für folgendes Event: <form method="post"><select name="event">';
-		while($e_row = mysql_fetch_assoc($e_res)) {
+		$ret .= 'Nur Anmeldungen fï¿½r folgendes Event: <form method="post"><select name="event">';
+		while($e_row = mysqli_fetch_assoc($e_res)) {
 			if($s_event == $e_row['eventid']) {
 				$ret .= '<option value="'.$e_row['eventid'].'" selected="selected">'.$e_row['name'].'</option>';
 			} else {
@@ -50,7 +50,7 @@ class HtmlPage_eventanmeldungen extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
+			if(mysqli_num_rows($res) >0) {
 				$ret .= '
 				<table>
 					<tr>
@@ -63,7 +63,7 @@ class HtmlPage_eventanmeldungen extends HtmlPage {
 				';
 				$ctr = 1;
 
-				while($row = mysql_fetch_assoc($res)) {		
+				while($row = mysqli_fetch_assoc($res)) {		
 					$ret .= '
 					<tr>
 						<td>'.$ctr.'</td>
@@ -79,7 +79,7 @@ class HtmlPage_eventanmeldungen extends HtmlPage {
 				</table>
 				';
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		
 		return $ret;

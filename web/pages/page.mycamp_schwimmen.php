@@ -11,7 +11,7 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 	var $tuxe = Array(); // Liste der Abzeichen
 
 
-	function HtmlPage_mycamp_schwimmen() {
+	function __construct() {
 		global $EVENT_SCHWIMMEN;
 
 		if(!isset($EVENT_SCHWIMMEN['abzeichen_event_id']) || !is_numeric($EVENT_SCHWIMMEN['abzeichen_event_id'])) {
@@ -32,9 +32,9 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 		if(is_numeric($anmeldungid)) {
 			$SQL = "SELECT COUNT(*) AS ctr FROM event_anmeldung_event WHERE eventid=".$EVENT_SCHWIMMEN['abzeichen_event_id']." AND anmeldungid=" . $anmeldungid;
 			$res = my_query($SQL);
-			$row = mysql_fetch_assoc($res);
+			$row = mysqli_fetch_assoc($res);
 			$ret = $row['ctr'];
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		return $ret;
 	}
@@ -47,9 +47,9 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 		if(is_numeric($anmeldungid)) {
 			$SQL = "SELECT COUNT(*) AS ctr FROM event_anmeldung_event WHERE eventid=".$EVENT_SCHWIMMEN['schwimmhalle_event_id']." AND anmeldungid=" . $anmeldungid;
 			$res = my_query($SQL);
-			$row = mysql_fetch_assoc($res);
+			$row = mysqli_fetch_assoc($res);
 			$ret = $row['ctr'];
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		return $ret;
 	}
@@ -63,10 +63,10 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 			$SQL = "SELECT e.eventid FROM event_event e LEFT JOIN event_anmeldung_event ae ON e.eventid=ae.eventid ";
 			$SQL .= " WHERE e.parent=".$EVENT_SCHWIMMEN['abzeichen_event_id']." AND ae.anmeldungid=" . $anmeldungid;
 			$res = my_query($SQL);
-			while($row = mysql_fetch_assoc($res)) {
+			while($row = mysqli_fetch_assoc($res)) {
 				array_push($ret,$row['eventid']);
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		return $ret;
 		
@@ -84,7 +84,7 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 		$SQL .= " GROUP BY e.eventid ";
 		$SQL .= " ORDER BY e.sort";
 		$res = my_query($SQL);
-		while($row = mysql_fetch_assoc($res)) {
+		while($row = mysqli_fetch_assoc($res)) {
 			if($row['teilnehmerzahl'] <= $row['quota']) {
 				$row['buchungmoeglich'] = 1;
 			}else{
@@ -92,7 +92,7 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 			}
 			array_push($ret,$row);
 		}
-		mysql_free_result($res);
+		mysqli_free_result($res);
 		return $ret;
 	}
 
@@ -176,8 +176,8 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 		$SQL1 .= " WHERE a.accountid=".$_SESSION['_accountid']." AND ae.eventid=".$ceventid;
 		$res1 = my_query($SQL1);
 		if($res1) {
-			if(mysql_num_rows($res1)>0) {
-				while($anmeldung = mysql_fetch_assoc($res1)) {
+			if(mysqli_num_rows($res1)>0) {
+				while($anmeldung = mysqli_fetch_assoc($res1)) {
 				$ret .= '
 					<h2>
 						Schwimmpr&uuml;fungen f&uuml;r '.$anmeldung['vorname'].' '.$anmeldung['nachname'].'
@@ -252,8 +252,8 @@ class HtmlPage_mycamp_schwimmen extends HtmlPage {
 					} // if count tuxe
 					
 				} // while Anmeldungen
-			} // if mysql_num_rows res1
-			mysql_free_result($res1);
+			} // if mysqli_num_rows res1
+			mysqli_free_result($res1);
 
 		} // if res1
 

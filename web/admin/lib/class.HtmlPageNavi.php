@@ -44,7 +44,7 @@ class HtmlPageNavi {
 	var $has_subnavi = 0;
 	var $default_page = 'start';
 	
-function HtmlPageNavi() {
+function __construct() {
 	global $PAGE;
 	
 	$this->current_page = http_get_var('p');

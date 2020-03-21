@@ -14,14 +14,14 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 	var $barcodeupdates = 0;
-	function HtmlPage_anmeldungsliste() {
+	function __construct() {
 	}
 	
 	function paystatus($anmeldungid,$accountid,$events_array,$artikel_array) {
 		$topay = $payed = 0;
 		$e_SQL = "SELECT eventid,bezahlt FROM event_anmeldung_event WHERE anmeldungid = '".$anmeldungid."'";
 		$e_res = my_query($e_SQL);
-		while($e_row = mysql_fetch_assoc($e_res)) {
+		while($e_row = mysqli_fetch_assoc($e_res)) {
 			$topay += $events_array[$e_row['eventid']];
 			if($e_row['bezahlt'] != 0) {
 				$payed += $events_array[$e_row['eventid']];
@@ -30,7 +30,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						
 		$a_SQL = "SELECT artikelid,anzahl,bezahlt FROM event_account_artikel WHERE accountid = '".$accountid."'";
 		$a_res = my_query($a_SQL);
-		while($a_row = mysql_fetch_assoc($a_res)) {
+		while($a_row = mysqli_fetch_assoc($a_res)) {
 			$topay += $a_row['anzahl']*$artikel_array[$a_row['artikelid']];
 			if($a_row['bezahlt'] != 0) {
 				$payed +=  $a_row['anzahl']*$artikel_array[$a_row['artikelid']];
@@ -53,7 +53,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 		$res = my_query($SQL);
 		
 		if($res) {
-			if(mysql_num_rows($res) >0) {
+			if(mysqli_num_rows($res) >0) {
 				$ret .= '
 				<table>
 					<tr>
@@ -72,20 +72,20 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 				$events_SQL = "SELECT eventid,charge FROM event_event";
 				$events_res = my_query($events_SQL);
 				$events_array = array();
-				while($events_row = mysql_fetch_assoc($events_res)) {
+				while($events_row = mysqli_fetch_assoc($events_res)) {
 					$events_array[$events_row['eventid']] = $events_row['charge'];
 				}
 
 				$artikel_SQL = "SELECT artikelid,preis FROM event_artikel";
 				$artikel_res = my_query($artikel_SQL);
 				$artikel_array = array();
-				while($artikel_row = mysql_fetch_assoc($artikel_res)) {
+				while($artikel_row = mysqli_fetch_assoc($artikel_res)) {
 					$artikel_array[$artikel_row['artikelid']] = $artikel_row['preis'];
 				}
 				
 				if($sort == 'pay') {
 					$anm_array = array();
-					while($row = mysql_fetch_assoc($res)) {
+					while($row = mysqli_fetch_assoc($res)) {
 						$pay_array = $this->paystatus($row['anmeldungid'],$row['accountid'],$events_array,$artikel_array);
 						$anm_array[$row['anmeldungid']] = $pay_array['topay']-$pay_array['payed'];
 					}
@@ -96,8 +96,8 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						$SQL .= " FROM account a LEFT JOIN event_lug l ON a.lugid=l.lugid ";
 						$SQL .= " LEFT JOIN event_anmeldung an ON a.accountid=an.accountid ";
 						$SQL .= " WHERE an.anmeldungid = $anmeldungid";
-						$res2 = mysql_query($SQL);
-						$anm_data = mysql_fetch_array($res2);
+						$res2 = mysqli_query($SQL);
+						$anm_data = mysqli_fetch_array($res2);
 						
 						if($anm_array[$anmeldungid] == 0) {
 							$paystatus = '<div class="bezahlt">Alles bezahlt</div>';
@@ -122,7 +122,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 						$ctr++;
 					}
 				} else {
-					while($row = mysql_fetch_assoc($res)) {
+					while($row = mysqli_fetch_assoc($res)) {
 						$pay_array = $this->paystatus($row['anmeldungid'],$row['accountid'],$events_array,$artikel_array);
 						if($pay_array['topay']-$pay_array['payed'] == 0) {
 							$paystatus = '<div class="bezahlt">Alles bezahlt</div>';
@@ -151,7 +151,7 @@ class HtmlPage_anmeldungsliste extends HtmlPage {
 					';
 				}
 			}
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		}
 		
 		return $ret;

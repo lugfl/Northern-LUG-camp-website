@@ -15,7 +15,7 @@ class HtmlPage_remail extends HtmlPage {
 	var $navilevel = 1;
 	var $login_required = 1;
 
-	function HtmlPage_remail() {
+	function __construct() {
 	}
 	
 	function getContent() {
@@ -23,7 +23,7 @@ class HtmlPage_remail extends HtmlPage {
 		
 		$SQL = "SELECT a.accountid,a.username,a.email,ea.vorname FROM account a LEFT JOIN event_anmeldung ea ON a.accountid = ea.accountid WHERE a.accountid='".$accountid."'";
 		$res = my_query($SQL);
-		$row = mysql_fetch_assoc($res);
+		$row = mysqli_fetch_assoc($res);
 
 		$code = md5($row['username']);
 		if($accountid < 10) { $code .= '0'; }

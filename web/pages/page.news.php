@@ -30,11 +30,11 @@ class HtmlPage_news extends HtmlPage {
 			$SQL .= " LIMIT ". WEB_NEWSTEASER_ANZAHL;
 		}
 		$news_query = my_query($SQL);
-		if($news_query && mysql_num_rows($news_query)>0) {
+		if($news_query && mysqli_num_rows($news_query)>0) {
 			$content .= '
 				<div class="news-list">
 			';
-			while($news_row = mysql_fetch_object($news_query)) {   
+			while($news_row = mysqli_fetch_object($news_query)) {   
 				$content .= '
 					<div class="news-single">
 					<div class="news-title">'.$news_row->title.'</div>
@@ -69,12 +69,12 @@ class HtmlPage_news extends HtmlPage {
 			} // while
 			$content .= '
 			</div>';
-			mysql_free_result($news_query);
+			mysqli_free_result($news_query);
 			if($limit != 'no') {   
 				$content .=  '<p><a href="?p=news&amp;limit=no" class="news-navi-link">Alle News anzeigen</a></p>';
 			}   
 		} else { // if news_query
-			$content .=  "<!-- MySQL-Fehler: ".mysql_errno() . " -->";
+			$content .=  "<!-- MySQL-Fehler: ".mysqli_errno() . " -->";
 			$content .=  "Momentan sind keine News eingetragen.";
 		}
 		return $content;
@@ -87,7 +87,7 @@ class HtmlPage_news extends HtmlPage {
 		$news_query = my_query($SQL);
 
 		if($news_query) {
-			$news_daten = mysql_fetch_array($news_query);
+			$news_daten = mysqli_fetch_array($news_query);
 			$content .= '
 			<div class="news-single">
 				<div class="news-title">'.$news_daten["title"].'</div>
@@ -108,9 +108,9 @@ class HtmlPage_news extends HtmlPage {
 				<div class="news-author">News geschrieben am '.$news_daten["crdatestr"].' von '.$news_daten["author"].'</div>
 			</div>';
 			$content .= '<a href="?p=news" class="news-navi-link">zur&uuml;ck zur News&uuml;bersicht.</a>';
-			mysql_free_result($news_query);
+			mysqli_free_result($news_query);
 		}else{ // if news_query
-			$content .=  "<!-- MySQL-Fehler: ".mysql_errno() . " -->";
+			$content .=  "<!-- MySQL-Fehler: ".mysqli_errno() . " -->";
 			$content .=  "Eine News mit dieser ID existiert nicht.";
 		}
 		return $content;

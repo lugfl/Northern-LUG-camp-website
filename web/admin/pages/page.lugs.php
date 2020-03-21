@@ -20,7 +20,7 @@ class HtmlPage_lugs extends HtmlPage {
 	var $details;			// 
 	var $formdata;			// Eingabedaten aus dem Formular
 
-	function HtmlPage_lugs() {
+	function __construct() {
 		$this->tn = '';
 		$this->id = 0;
 		$this->details = Array();
@@ -90,7 +90,7 @@ class HtmlPage_lugs extends HtmlPage {
 
 		$ret .= htmlpage_link('lugs','Neue LUG eintragen',$args);
 		$ret .= $rowset->getHtmlTable();
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		$ret .= htmlpage_link('lugs','Neue LUG eintragen',$args);
 		return $ret;
 	}
@@ -206,10 +206,10 @@ class HtmlPage_lugs extends HtmlPage {
 			WHERE event_lug.lugid=' . $this->id;
 			$result = my_query($SQL);
 			if($result ) {
-				if(mysql_num_rows($result)==1) {
-					$this->details = mysql_fetch_assoc($result);
+				if(mysqli_num_rows($result)==1) {
+					$this->details = mysqli_fetch_assoc($result);
 				}
-				mysql_free_result($result);
+				mysqli_free_result($result);
 			}
 		}
 		
